@@ -100,13 +100,17 @@ public class ConnectionPool {
 
     public void closeConnection(Connection connection, Statement st, ResultSet rs) throws ConnectionPoolException {
         try {
-            rs.close();
+            if(rs!=null) {
+                rs.close();
+            }
         } catch (SQLException e) {
             // logger.log(Level.ERROR, "ResultSet isn't closed.");
         }
 
         try {
-            st.close();
+            if(st!=null) {
+                st.close();
+            }
         } catch (SQLException e) {
             // logger.log(Level.ERROR, "Statement isn't closed.");
         }

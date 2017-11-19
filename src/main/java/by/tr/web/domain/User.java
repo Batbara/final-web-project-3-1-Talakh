@@ -13,7 +13,11 @@ public class User implements Serializable {
     private boolean isBanned;
     private int id;
 
-    public User(){}
+    public User(){
+        userName="";
+        eMail="";
+        password = new Password();
+    }
     public User(String userName, String password, String eMail, Status status){
         setUserName(userName);
         setPassword(password);
@@ -41,7 +45,6 @@ public class User implements Serializable {
     }
 
     public void setPassword(String plainPassword) {
-        this.password = new Password();
         this.password.setPassword(plainPassword);
     }
 

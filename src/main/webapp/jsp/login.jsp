@@ -1,11 +1,6 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Barbarossa
-  Date: 19.11.2017
-  Time: 2:02
-  To change this template use File | Settings | File Templates.
---%>
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
 <head>
     <title>Sign In</title>
@@ -16,7 +11,7 @@
         <input type="hidden" name="command" value="login">
         Login:<br>
         <label>
-            <input type="text" name="userLogin" value="">
+            <input type="text" name="login" value="">
         </label><br>
         Password:<br>
         <label>
@@ -24,5 +19,8 @@
         </label><br>
         <p id="button"><input type="submit" value="Sign in!"></p>
     </form>
+    <c:if test="${not empty sessionScope.loginError}">
+        <c:out value="${sessionScope.loginError}"/>
+    </c:if>
 </body>
 </html>

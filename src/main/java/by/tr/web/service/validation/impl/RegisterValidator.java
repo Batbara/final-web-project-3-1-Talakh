@@ -15,6 +15,7 @@ public class RegisterValidator implements UserValidator {
     }
 
     public boolean checkPassword(String password) {
+
         return password.length() >= MIN_PASSWORD_LENGTH && password.length() <= MAX_PASSWORD_LENGTH;
     }
     public boolean checkEMail(String eMail){

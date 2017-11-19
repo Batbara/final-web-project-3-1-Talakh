@@ -5,7 +5,10 @@ import by.tr.web.dao.impl.connection_pool.ConnectionPool;
 import by.tr.web.domain.Status;
 import by.tr.web.domain.User;
 import by.tr.web.exception.dao.ConnectionPoolException;
+import by.tr.web.exception.dao.PasswordDAOException;
+import by.tr.web.exception.service.IncorrectPasswordException;
 import by.tr.web.exception.dao.UserDAOException;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -18,18 +21,17 @@ public class SQLUserDAOImpl implements UserDAO {
     private Connection connection;
 
     @Override
-    public User register(String login, String password, String eMail) throws UserDAOException {
+    public boolean register(User user) throws UserDAOException {
         try {
             connectionPool = ConnectionPool.getInstance();
         } catch (ConnectionPoolException e) {
             throw new UserDAOException("Failed to get instance of connection pool", e);
         }
+        PreparedStatement ps = null;
         try {
             connection = connectionPool.takeConnection();
             String registerQuery = "INSERT INTO mpb.users (userName, eMail, password, status) VALUES (?, ?, ?, ?)";
-            PreparedStatement ps = connection.prepareStatement(registerQuery, Statement.RETURN_GENERATED_KEYS);
-
-            User user = new User(login, password, eMail, Status.user);
+            ps = connection.prepareStatement(registerQuery, Statement.RETURN_GENERATED_KEYS);
 
             ps.setString(1, user.getUserName());
             ps.setString(2, user.geteMail());
@@ -44,28 +46,105 @@ public class SQLUserDAOImpl implements UserDAO {
 
             user.setId(userID);
 
-            return user;
+            return true;
         } catch (ConnectionPoolException e) {
             throw new UserDAOException("Failed to get connection", e);
         } catch (SQLException e) {
             throw new UserDAOException(e);
         } finally {
-            connectionPool.closeConnection(connection);
+            connectionPool.closeConnection(connection, ps);
         }
     }
 
     @Override
-    public User login(String login, String password) {
-        return null;
+    public User login(String login, String password) throws UserDAOException {
+        try {
+            connectionPool = ConnectionPool.getInstance();
+        } catch (ConnectionPoolException e) {
+            throw new UserDAOException("Failed to get instance of connection pool", e);
+        }
+        Statement st = null;
+        ResultSet rs = null;
+        try {
+            connection = connectionPool.takeConnection();
+            String getPasswordQuery = "SELECT mpb.users.password FROM mpb.users WHERE mpb.users.userName = \"" + login + "\"";
+            st = connection.createStatement();
+            rs = st.executeQuery(getPasswordQuery);
+
+            String storedPassword;
+            if(rs.next()) {
+                storedPassword = rs.getString(1);
+
+                if (!checkPassword(password, storedPassword)) {
+                    throw new PasswordDAOException();
+                }
+            }
+
+            String getUserQuery = "SELECT mpb.users.id, mpb.users.eMail, mpb.users.status " +
+                    "FROM mpb.users WHERE mpb.users.userName = \"" + login + "\"";
+            rs = st.executeQuery(getUserQuery);
+            User user = null;
+            if(rs.next()) {
+                int userID = rs.getInt(1);
+                String eMail = rs.getString(2);
+                String status = rs.getString(3);
+                Status userStatus = Status.valueOf(status);
+                user =  formUser(userID, login, eMail, userStatus);
+            }
+
+            return user;
+        } catch (SQLException e) {
+            throw new UserDAOException("SQL errors");
+        } finally {
+            connectionPool.closeConnection(connection, st, rs);
+        }
+
+    }
+
+    private User formUser(int id, String login, String eMail, Status status) {
+        User user = new User();
+        user.setId(id);
+        user.setUserName(login);
+        user.seteMail(eMail);
+        user.setStatus(status);
+        return user;
+    }
+
+    private boolean checkPassword(String userPassword, String storedHash) throws PasswordDAOException {
+        boolean isPasswordCorrect;
+        String algorithmVersion = "$2a$";
+        if (null == storedHash || !storedHash.startsWith(algorithmVersion)) {
+            throw new PasswordDAOException();
+        }
+
+        isPasswordCorrect = BCrypt.checkpw(userPassword, storedHash);
+
+        return isPasswordCorrect;
     }
 
     @Override
-    public boolean checkUniqueData(String login, String eMail) {
-        return false;
+    public boolean isUserRegistered(String login) throws UserDAOException {
+        try {
+            connectionPool = ConnectionPool.getInstance();
+        } catch (ConnectionPoolException e) {
+            throw new UserDAOException("Failed to get instance of connection pool", e);
+        }
+        Statement st = null;
+        ResultSet rs = null;
+
+        try {
+            connection = connectionPool.takeConnection();
+
+            String checkUserQuery = "SELECT * FROM mpb.users WHERE mpb.users.userName = \"" + login + "\"";
+            st = connection.createStatement();
+            rs = st.executeQuery(checkUserQuery);
+
+            return rs.next();
+        } catch (SQLException e) {
+            throw new UserDAOException(e);
+        } finally {
+            connectionPool.closeConnection(connection, st, rs);
+        }
     }
 
-    @Override
-    public boolean isPasswordConfirmed(String login, String password) {
-        return false;
-    }
 }
