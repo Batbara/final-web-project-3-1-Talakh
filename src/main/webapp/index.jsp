@@ -1,6 +1,19 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <html>
+<head>
+    <fmt:setLocale value="${sessionScope.local}"/>
+    <fmt:setBundle basename="localization.local" var="loc"/>
+
+</head>
 <body>
-    <a href="${pageContext.request.contextPath}/login">Login</a><br/>
-    <a href="${pageContext.request.contextPath}/register">Sign up</a>
+<div class="wrapper">
+    <jsp:include page="/WEB-INF/jsp/header.jsp"/>
+    <footer>
+
+    </footer>
+</div>
 </body>
 </html>

@@ -2,12 +2,12 @@ package by.tr.web.service.impl;
 
 import by.tr.web.dao.UserDAO;
 import by.tr.web.dao.factory.DAOFactory;
-import by.tr.web.domain.Status;
+import by.tr.web.domain.UserStatus;
 import by.tr.web.domain.User;
 import by.tr.web.exception.dao.PasswordDAOException;
 import by.tr.web.exception.service.IncorrectPasswordException;
 import by.tr.web.exception.dao.UserDAOException;
-import by.tr.web.exception.service.ExceptionMessage;
+import by.tr.web.exception.ExceptionMessage;
 import by.tr.web.exception.service.NoSuchUserException;
 import by.tr.web.exception.service.UserServiceException;
 import by.tr.web.exception.service.ValidationException;
@@ -35,9 +35,9 @@ public class UserServiceImpl implements UserService {
         try {
             boolean isUserRegistered = userDAO.isUserRegistered(login);
             if(isUserRegistered) {
-                throw new UserServiceException("Existing user");
+                throw new UserServiceException(ExceptionMessage.EXISTING_USER);
             } else {
-                user = new User(login,password,eMail, Status.user);
+                user = new User(login,password,eMail, UserStatus.user);
                 userDAO.register(user);
             }
         } catch (UserDAOException ex){

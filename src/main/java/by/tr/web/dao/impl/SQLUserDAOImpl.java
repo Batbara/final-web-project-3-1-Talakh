@@ -2,11 +2,11 @@ package by.tr.web.dao.impl;
 
 import by.tr.web.dao.UserDAO;
 import by.tr.web.dao.impl.connection_pool.ConnectionPool;
-import by.tr.web.domain.Status;
+import by.tr.web.domain.UserStatus;
 import by.tr.web.domain.User;
+import by.tr.web.exception.ExceptionMessage;
 import by.tr.web.exception.dao.ConnectionPoolException;
 import by.tr.web.exception.dao.PasswordDAOException;
-import by.tr.web.exception.service.IncorrectPasswordException;
 import by.tr.web.exception.dao.UserDAOException;
 import org.mindrot.jbcrypt.BCrypt;
 
@@ -25,7 +25,7 @@ public class SQLUserDAOImpl implements UserDAO {
         try {
             connectionPool = ConnectionPool.getInstance();
         } catch (ConnectionPoolException e) {
-            throw new UserDAOException("Failed to get instance of connection pool", e);
+            throw new UserDAOException(ExceptionMessage.CONNECTION_POOL_INSTANCE_FAILURE, e);
         }
         PreparedStatement ps = null;
         try {
@@ -36,7 +36,7 @@ public class SQLUserDAOImpl implements UserDAO {
             ps.setString(1, user.getUserName());
             ps.setString(2, user.geteMail());
             ps.setString(3, user.getPassword());
-            ps.setString(4, user.getStatus().name());
+            ps.setString(4, user.getUserStatus().name());
 
             ps.executeUpdate();
 
@@ -48,9 +48,9 @@ public class SQLUserDAOImpl implements UserDAO {
 
             return true;
         } catch (ConnectionPoolException e) {
-            throw new UserDAOException("Failed to get connection", e);
+            throw new UserDAOException(ExceptionMessage.CONNECTION_FAILURE, e);
         } catch (SQLException e) {
-            throw new UserDAOException(e);
+            throw new UserDAOException(ExceptionMessage.SQL_ERROR, e);
         } finally {
             connectionPool.closeConnection(connection, ps);
         }
@@ -61,55 +61,65 @@ public class SQLUserDAOImpl implements UserDAO {
         try {
             connectionPool = ConnectionPool.getInstance();
         } catch (ConnectionPoolException e) {
-            throw new UserDAOException("Failed to get instance of connection pool", e);
+            throw new UserDAOException(ExceptionMessage.CONNECTION_POOL_INSTANCE_FAILURE, e);
         }
         Statement st = null;
         ResultSet rs = null;
         try {
             connection = connectionPool.takeConnection();
-            String getPasswordQuery = "SELECT mpb.users.password FROM mpb.users WHERE mpb.users.userName = \"" + login + "\"";
-            st = connection.createStatement();
-            rs = st.executeQuery(getPasswordQuery);
 
-            String storedPassword;
-            if(rs.next()) {
-                storedPassword = rs.getString(1);
-
-                if (!checkPassword(password, storedPassword)) {
-                    throw new PasswordDAOException();
-                }
+            boolean passwordCorrect = isPasswordCorrect(connection, login,password);
+            if(!passwordCorrect){
+                throw new UserDAOException(ExceptionMessage.UNEXPECTED_ERROR);
             }
 
             String getUserQuery = "SELECT mpb.users.id, mpb.users.eMail, mpb.users.status " +
                     "FROM mpb.users WHERE mpb.users.userName = \"" + login + "\"";
+            st = connection.createStatement();
             rs = st.executeQuery(getUserQuery);
             User user = null;
-            if(rs.next()) {
+            if (rs.next()) {
                 int userID = rs.getInt(1);
                 String eMail = rs.getString(2);
                 String status = rs.getString(3);
-                Status userStatus = Status.valueOf(status);
-                user =  formUser(userID, login, eMail, userStatus);
+                UserStatus statusOfUser = UserStatus.valueOf(status);
+                user = formUser(userID, login, eMail, statusOfUser);
             }
 
             return user;
         } catch (SQLException e) {
-            throw new UserDAOException("SQL errors");
+            throw new UserDAOException(ExceptionMessage.SQL_ERROR, e);
         } finally {
             connectionPool.closeConnection(connection, st, rs);
         }
 
     }
 
-    private User formUser(int id, String login, String eMail, Status status) {
+    private User formUser(int id, String login, String eMail, UserStatus userStatus) {
         User user = new User();
         user.setId(id);
         user.setUserName(login);
         user.seteMail(eMail);
-        user.setStatus(status);
+        user.setStatus(userStatus);
         return user;
     }
+    private boolean isPasswordCorrect(Connection connection, String login, String password) throws SQLException, PasswordDAOException {
 
+        String getPasswordQuery = "SELECT mpb.users.password FROM mpb.users WHERE mpb.users.userName = \"" + login + "\"";
+        Statement st = connection.createStatement();
+        ResultSet rs = st.executeQuery(getPasswordQuery);
+
+        String storedPassword;
+        if (rs.next()) {
+            storedPassword = rs.getString(1);
+
+            if (!checkPassword(password, storedPassword)) {
+                throw new PasswordDAOException();
+            }
+        }
+        return true;
+
+    }
     private boolean checkPassword(String userPassword, String storedHash) throws PasswordDAOException {
         boolean isPasswordCorrect;
         String algorithmVersion = "$2a$";
@@ -127,7 +137,7 @@ public class SQLUserDAOImpl implements UserDAO {
         try {
             connectionPool = ConnectionPool.getInstance();
         } catch (ConnectionPoolException e) {
-            throw new UserDAOException("Failed to get instance of connection pool", e);
+            throw new UserDAOException(ExceptionMessage.CONNECTION_POOL_INSTANCE_FAILURE, e);
         }
         Statement st = null;
         ResultSet rs = null;
@@ -141,7 +151,7 @@ public class SQLUserDAOImpl implements UserDAO {
 
             return rs.next();
         } catch (SQLException e) {
-            throw new UserDAOException(e);
+            throw new UserDAOException(ExceptionMessage.SQL_ERROR, e);
         } finally {
             connectionPool.closeConnection(connection, st, rs);
         }

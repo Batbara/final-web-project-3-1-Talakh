@@ -9,7 +9,7 @@ public class User implements Serializable {
     private String userName;
     private String eMail;
     private Password password;
-    private Status status;
+    private UserStatus userStatus;
     private boolean isBanned;
     private int id;
 
@@ -18,11 +18,11 @@ public class User implements Serializable {
         eMail="";
         password = new Password();
     }
-    public User(String userName, String password, String eMail, Status status){
+    public User(String userName, String password, String eMail, UserStatus userStatus){
         setUserName(userName);
         setPassword(password);
         seteMail(eMail);
-        setStatus(status);
+        setStatus(userStatus);
     }
     public String getUserName() {
         return userName;
@@ -48,15 +48,15 @@ public class User implements Serializable {
         this.password.setPassword(plainPassword);
     }
 
-    public Status getStatus() {
-        return status;
+    public UserStatus getUserStatus() {
+        return userStatus;
     }
 
-    public void setStatus(String status) {
-        this.status = Status.valueOf(status);
+    public void setUserStatus(String userStatus) {
+        this.userStatus = UserStatus.valueOf(userStatus);
     }
-    public void setStatus(Status status){
-        this.status = status;
+    public void setStatus(UserStatus userStatus){
+        this.userStatus = userStatus;
     }
 
     public boolean isBanned() {
@@ -73,5 +73,31 @@ public class User implements Serializable {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        User user = (User) o;
+
+        if (isBanned != user.isBanned) return false;
+        if (id != user.id) return false;
+        if (!userName.equals(user.userName)) return false;
+        if (!eMail.equals(user.eMail)) return false;
+        if (!password.equals(user.password)) return false;
+        return userStatus == user.userStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = userName.hashCode();
+        result = 31 * result + eMail.hashCode();
+        result = 31 * result + password.hashCode();
+        result = 31 * result + userStatus.hashCode();
+        result = 31 * result + (isBanned ? 1 : 0);
+        result = 31 * result + id;
+        return result;
     }
 }

@@ -31,4 +31,19 @@ public class Password implements Serializable {
     public String toString() {
         return password;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Password password1 = (Password) o;
+
+        return password.equals(password1.password);
+    }
+
+    @Override
+    public int hashCode() {
+        return password.hashCode();
+    }
 }
