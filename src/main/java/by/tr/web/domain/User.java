@@ -8,7 +8,7 @@ public class User implements Serializable {
 
     private String userName;
     private String eMail;
-    private Password password = new Password();
+    private String password;
     private UserStatus userStatus;
     private boolean isBanned;
     private int id;
@@ -16,7 +16,7 @@ public class User implements Serializable {
     public User() {
         userName = "";
         eMail = "";
-        password = new Password();
+        password = "";
     }
 
     public User(String userName, String password, String eMail, UserStatus userStatus) {
@@ -43,11 +43,11 @@ public class User implements Serializable {
     }
 
     public String getPassword() {
-        return password.toString();
+        return password;
     }
 
     public void setPassword(String plainPassword) {
-        this.password.setPassword(plainPassword);
+        this.password = plainPassword;
     }
 
     public UserStatus getUserStatus() {
@@ -55,7 +55,7 @@ public class User implements Serializable {
     }
 
     public void setUserStatus(String userStatus) {
-        this.userStatus = UserStatus.valueOf(userStatus);
+        this.userStatus = UserStatus.valueOf(userStatus.toUpperCase());
     }
 
     public void setStatus(UserStatus userStatus) {

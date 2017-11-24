@@ -5,12 +5,12 @@ import by.tr.web.controller.Path;
 import by.tr.web.controller.command.Command;
 import by.tr.web.domain.User;
 import by.tr.web.exception.service.IncorrectPasswordException;
+import by.tr.web.exception.service.InvalidLoginException;
 import by.tr.web.exception.service.NoSuchUserException;
 import by.tr.web.exception.service.UserServiceException;
 import by.tr.web.service.UserService;
 import by.tr.web.service.factory.ServiceFactory;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -34,32 +34,23 @@ public class Logination implements Command {
 
             session.setAttribute(Parameter.USER, user);
             session.setAttribute(Parameter.USER_STATUS, user.getUserStatus());
-            session.setAttribute(Parameter.LOCALE, request.getParameter(Parameter.LOCALE));
 
             response.sendRedirect(Path.SHOW_ACCOUNT_QUERY);
-        } catch (NoSuchUserException e) {
-            showNoSuchUserMessage(request, response);
-        } catch (IncorrectPasswordException e) {
-            showIncorrectPasswordMessage(request, response);
+        } catch (InvalidLoginException ex) {
+            showErrorMessage(request, response, Parameter.LOGIN);
+        }catch (NoSuchUserException e) {
+            showErrorMessage(request, response, Parameter.USER);
+        } catch (IncorrectPasswordException e ) {
+            showErrorMessage(request, response, Parameter.PASSWORD);
         } catch (UserServiceException ex) {
-            response.sendRedirect(Path.INDEX);
+            //TODO: log exception and redirect to unknown error page
         }
 
     }
 
-    private void showNoSuchUserMessage(HttpServletRequest request, HttpServletResponse response)
+    private void showErrorMessage(HttpServletRequest request, HttpServletResponse response, String errorType)
             throws ServletException, IOException {
-        request.setAttribute(Parameter.LOGIN_ERROR, Parameter.LOGIN);
-        request.getSession().setAttribute(Parameter.LOCALE, request.getParameter(Parameter.LOCALE));
-
-        request.getRequestDispatcher(Path.LOGIN_PAGE).forward(request, response);
-    }
-
-    private void showIncorrectPasswordMessage(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        request.setAttribute(Parameter.LOGIN_ERROR, Parameter.PASSWORD);
-        request.getSession().setAttribute(Parameter.LOCALE, request.getParameter(Parameter.LOCALE));
-
+        request.setAttribute(Parameter.LOGIN_ERROR, errorType);
         request.getRequestDispatcher(Path.LOGIN_PAGE).forward(request, response);
     }
 }

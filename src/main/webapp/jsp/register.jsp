@@ -12,10 +12,43 @@
     <fmt:message bundle="${loc}" key="local.message.username" var="username"/>
     <fmt:message bundle="${loc}" key="local.message.password" var="password"/>
     <fmt:message bundle="${loc}" key="local.submit.signup" var="signupButton"/>
-    <fmt:message bundle="${loc}" key="local.error.register.login" var="regLoginError"/>
+    <fmt:message bundle="${loc}" key="local.error.register.user" var="regUserError"/>
+    <fmt:message bundle="${loc}" key="local.error.login" var="regLoginError"/>
+    <fmt:message bundle="${loc}" key="local.error.register.eMail" var="regEMailError"/>
+    <fmt:message bundle="${loc}" key="local.error.register.password" var="regPasswordError"/>
 
     <title><c:out value="${signupButton}"/> - MotionPicture Bank [MPB]</title>
-    <script src="${pageContext.request.contextPath}/WEB-INF/js/validation.js"></script>
+    <script type="text/javascript">
+            function checkForm(form)
+            {
+                if(document.form.login.value === "") {
+                    alert("Error: Username cannot be blank!");
+                    form.login.focus();
+                    return false;
+                }
+                re = /^\w+$/;
+                if(!re.test(form.login.value)) {
+                    alert("Error: Username must contain only letters, numbers and underscores!");
+                    form.login.focus();
+                    return false;
+                }
+
+                if(form.password.value !== "") {
+                    if(form.password.value.length < 5 || form.password.value.length > 16 ) {
+                        alert("Error: Incorrect password length!");
+                        form.password.focus();
+                        return false;
+                    }
+
+                } else {
+                    alert("Error: Please check that you've entered and confirmed your password!");
+                    form.password.focus();
+                    return false;
+                }
+
+                return true;
+            }
+    </script>
 </head>
 <body>
 <jsp:include page="/WEB-INF/jsp/header.jsp"/>
@@ -44,6 +77,15 @@
             <c:choose>
                 <c:when test="${requestScope.registerError == 'login'}">
                     <c:out value="${regLoginError}"/>
+                </c:when>
+                <c:when test="${requestScope.registerError == 'user'}">
+                    <c:out value="${regUserError}"/>
+                </c:when>
+                <c:when test="${requestScope.registerError == 'eMail'}">
+                    <c:out value="${regEMailError}"/>
+                </c:when>
+                <c:when test="${requestScope.registerError == 'password'}">
+                    <c:out value="${regPasswordError}"/>
                 </c:when>
 
             </c:choose>

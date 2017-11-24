@@ -4,11 +4,14 @@ import by.tr.web.controller.Parameter;
 import by.tr.web.controller.Path;
 import by.tr.web.controller.command.Command;
 import by.tr.web.domain.User;
+import by.tr.web.exception.service.IncorrectPasswordException;
+import by.tr.web.exception.service.InvalidEMailException;
+import by.tr.web.exception.service.InvalidLoginException;
+import by.tr.web.exception.service.UserAlreadyExistsException;
 import by.tr.web.exception.service.UserServiceException;
 import by.tr.web.service.UserService;
 import by.tr.web.service.factory.ServiceFactory;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -35,20 +38,27 @@ public class Registration implements Command {
             HttpSession session = request.getSession(true);
             session.setAttribute(Parameter.USER, newUser);
             session.setAttribute(Parameter.USER_STATUS, newUser.getUserStatus());
-            session.setAttribute(Parameter.LOCALE, request.getParameter(Parameter.LOCALE));
 
             response.sendRedirect(Path.SHOW_ACCOUNT_QUERY);
-        } catch (UserServiceException ex) {
-            showRegisterError(request, response);
+        } catch (IncorrectPasswordException ex) {
+            showRegisterError(request, response, Parameter.PASSWORD);
+        }
+        catch (InvalidLoginException ex) {
+            showRegisterError(request, response, Parameter.LOGIN);
+        }
+        catch (InvalidEMailException ex) {
+            showRegisterError(request, response, Parameter.EMAIL);
+        } catch (UserAlreadyExistsException ex) {
+            showRegisterError(request, response, Parameter.USER);
+        }catch (UserServiceException e) {
+            //TODO: log exception and redirect to unknown error page
         }
 
     }
 
-    private void showRegisterError(HttpServletRequest request, HttpServletResponse response)
+    private void showRegisterError(HttpServletRequest request, HttpServletResponse response, String errorType)
             throws ServletException, IOException {
-
-        request.setAttribute(Parameter.REGISTER_ERROR, Parameter.LOGIN);
-        request.getSession().setAttribute(Parameter.LOCALE, request.getParameter(Parameter.LOCALE));
+        request.setAttribute(Parameter.REGISTER_ERROR, errorType);
         request.getRequestDispatcher(Path.REGISTER_PAGE).forward(request, response);
     }
 }

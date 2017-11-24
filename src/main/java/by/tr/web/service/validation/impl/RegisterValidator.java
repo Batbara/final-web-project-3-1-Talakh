@@ -1,6 +1,9 @@
 package by.tr.web.service.validation.impl;
 
-import by.tr.web.exception.service.ValidationException;
+import by.tr.web.exception.service.IncorrectPasswordException;
+import by.tr.web.exception.service.InvalidEMailException;
+import by.tr.web.exception.service.InvalidLoginException;
+import by.tr.web.exception.service.UserServiceException;
 import by.tr.web.service.validation.UserValidator;
 
 import java.util.regex.Matcher;
@@ -30,15 +33,15 @@ public class RegisterValidator implements UserValidator {
         Matcher matcher = eMailPattern.matcher(eMail);
         return matcher.matches();
     }
-    public boolean validate(String login, String password, String eMail) throws ValidationException {
+    public boolean validate(String login, String password, String eMail) throws UserServiceException {
         if(!checkLogin(login)){
-            throw new ValidationException("Incorrect login");
+            throw new InvalidLoginException("Incorrect login");
         }
         if(!checkEMail(eMail)){
-            throw  new ValidationException("Invalid email");
+            throw  new InvalidEMailException("Invalid email");
         }
         if(!checkPassword(password)){
-            throw new ValidationException("Invalid password");
+            throw new IncorrectPasswordException("Invalid password");
         }
 
         return true;

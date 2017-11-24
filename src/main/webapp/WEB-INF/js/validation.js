@@ -1,6 +1,6 @@
 function checkForm(form)
 {
-    if(form.login.value === "") {
+    if(document.form.login.value === "") {
         alert("Error: Username cannot be blank!");
         form.login.focus();
         return false;

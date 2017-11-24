@@ -2,13 +2,11 @@ package by.tr.web.dao.impl;
 
 import by.tr.web.dao.UserDAO;
 import by.tr.web.dao.impl.connection_pool.ConnectionPool;
-import by.tr.web.domain.Password;
-import by.tr.web.domain.UserStatus;
 import by.tr.web.domain.User;
+import by.tr.web.domain.UserStatus;
 import by.tr.web.exception.dao.ConnectionPoolException;
 import by.tr.web.exception.dao.PasswordDAOException;
 import by.tr.web.exception.dao.UserDAOException;
-import org.mindrot.jbcrypt.BCrypt;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -24,12 +22,12 @@ public class SQLUserDAOImpl implements UserDAO {
     private ResultSet resultSet;
     private PreparedStatement preparedStatement;
 
-    private String REGISTER_QUERY = "INSERT INTO mpb.users (userName, eMail, password, status) VALUES (?, ?, ?, ?)";
+    private String REGISTER_QUERY = "INSERT INTO mpb.users (userName, eMail, password, status) " +
+            "VALUES (?, ?, MD5(CONCAT(?,CURRENT_TIMESTAMP)), ?)";
     private String GET_USER_QUERY = "SELECT mpb.users.id, mpb.users.eMail, mpb.users.status " +
             "FROM mpb.users WHERE mpb.users.userName = \"";
-    private String GET_PASSWORD_QUERY = "SELECT mpb.users.password FROM mpb.users WHERE mpb.users.userName = \"";
     private String CHECK_USER_QUERY = "SELECT * FROM mpb.users WHERE mpb.users.userName = \"";
-
+    private String CHECK_PASSWORD_QUERY = "SELECT mpb.users.id FROM mpb.users WHERE mpb.users.userName = \"";
 
     @Override
     public boolean register(User user) throws UserDAOException {
@@ -80,7 +78,7 @@ public class SQLUserDAOImpl implements UserDAO {
 
             boolean passwordCorrect = isPasswordCorrect(connection, login, password);
             if (!passwordCorrect) {
-                throw new UserDAOException("Unexpected error");
+                throw new PasswordDAOException("Unexpected error");
             }
 
             String getUserQuery = constructQuery(GET_USER_QUERY,login);
@@ -120,43 +118,24 @@ public class SQLUserDAOImpl implements UserDAO {
         queryConstructor.append("\"");
         return queryConstructor.toString();
     }
+    private String getPasswordCheckingQuery(String login, String inputPassword){
+        StringBuilder queryConstructor = new StringBuilder(CHECK_PASSWORD_QUERY);
+        queryConstructor.append(login);
+        queryConstructor.append("\" AND mpb.users.password = MD5(\"");
+        queryConstructor.append(inputPassword);
+        queryConstructor.append("\")");
+        return queryConstructor.toString();
+    }
     private boolean isPasswordCorrect(Connection connection, String login, String password) throws SQLException, PasswordDAOException {
 
-        String getPasswordQuery = constructQuery(GET_PASSWORD_QUERY, login);
+        String passwordCheckingQuery = getPasswordCheckingQuery(login,password);
         statement = connection.createStatement();
-        resultSet = statement.executeQuery(getPasswordQuery);
+        resultSet = statement.executeQuery(passwordCheckingQuery);
 
-        String storedPassword;
-        if (resultSet.next()) {
-            storedPassword = resultSet.getString(1);
-
-            if (!checkPassword(password, storedPassword)) {
-                throw new PasswordDAOException("Incorrect password");
-            }
-        }
-        return true;
+        return resultSet.next();
 
     }
 
-    /*private boolean checkPassword(String userInput, String storedPassword) throws PasswordDAOException {
-        boolean isPasswordCorrect;
-        Password password = new Password(userInput);
-        String hashUserPassword = password.getPassword();
-
-        isPasswordCorrect = storedPassword.equals(hashUserPassword);
-        return isPasswordCorrect;
-    }*/
-    private boolean checkPassword(String userPassword, String storedHash) throws PasswordDAOException {
-        boolean isPasswordCorrect;
-        String algorithmVersion = "$2a$";
-        if (null == storedHash || !storedHash.startsWith(algorithmVersion)) {
-            throw new PasswordDAOException();
-        }
-
-        isPasswordCorrect = BCrypt.checkpw(userPassword, storedHash);
-
-        return isPasswordCorrect;
-    }
 
     @Override
     public boolean isUserRegistered(String login) throws UserDAOException {
