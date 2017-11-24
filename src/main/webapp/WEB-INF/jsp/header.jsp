@@ -23,15 +23,15 @@
                 <div class="nav_button"><c:out value="${home}" /></div>
             </a>
             <c:choose>
-                <c:when test="${sessionScope.userStatus == 'user' or sessionScope.userStatus == 'admin'}">
+                <c:when test="${sessionScope.userStatus == 'USER' or sessionScope.userStatus == 'ADMIN'}">
                     <form action="${pageContext.request.contextPath}/mpb" method="get">
-                        <input type="hidden" name="command" value="showAccount"/>
+                        <input type="hidden" name="command" value="show_account"/>
 
                         <input class="nav_button" type="submit" value="<c:out value="${profile}" />"/>
 
                     </form>
                     <form action="${pageContext.request.contextPath}/mpb" method="get">
-                        <input type="hidden" name="command" value="logOut"/>
+                        <input type="hidden" name="command" value="logout"/>
 
                         <input class="nav_button" type="submit" value="<c:out value="${logout}" />"/>
 
@@ -51,14 +51,14 @@
 
             <div class="lang_button">
             <form action="${pageContext.request.contextPath}/mpb" method="post">
-                <input type="hidden" name="command" value="changeLanguage"/>
+                <input type="hidden" name="command" value="change_language"/>
 
                 <input type="hidden" name="local" value="ru"/>
                 <input id="ruButton" type="submit"  value=""/>
 
             </form>
             <form action="${pageContext.request.contextPath}/mpb" method="post">
-                <input type="hidden" name="command" value="changeLanguage"/>
+                <input type="hidden" name="command" value="change_language"/>
 
                 <input type="hidden" name="local" value="en"/>
                 <input  type="submit" id="enButton" value=""/>

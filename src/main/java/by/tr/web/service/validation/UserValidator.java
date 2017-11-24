@@ -5,7 +5,9 @@ public interface UserValidator {
     String LOGIN_REGEXP = "^[a-zA-Z0-9_]{3,}$";
     int MIN_PASSWORD_LENGTH = 5;
     int MAX_PASSWORD_LENGTH = 16;
+
     boolean checkLogin(String login);
+
     boolean checkPassword(String password);
 
 }

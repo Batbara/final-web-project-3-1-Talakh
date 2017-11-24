@@ -1,6 +1,5 @@
 package by.tr.web.service.validation.impl;
 
-import by.tr.web.exception.ExceptionMessage;
 import by.tr.web.exception.service.ValidationException;
 import by.tr.web.service.validation.UserValidator;
 
@@ -8,12 +7,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class LoginValidator implements UserValidator {
+    private  Pattern loginPattern = Pattern.compile(UserValidator.LOGIN_REGEXP);
     public boolean checkLogin(String login) {
         if(login.isEmpty()){
             return false;
         }
-        Pattern pattern = Pattern.compile(UserValidator.LOGIN_REGEXP);
-        Matcher matcher = pattern.matcher(login);
+
+        Matcher matcher = loginPattern.matcher(login);
         return matcher.matches();
     }
 
@@ -25,10 +25,10 @@ public class LoginValidator implements UserValidator {
     }
     public boolean validate(String login, String password) throws ValidationException {
         if(!checkLogin(login)){
-            throw new ValidationException(ExceptionMessage.INVALID_LOGIN);
+            throw new ValidationException("Incorrect login");
         }
         if(!checkPassword(password)){
-            throw new ValidationException(ExceptionMessage.INVALID_PASSWORD);
+            throw new ValidationException("Invalid password");
         }
         return true;
     }

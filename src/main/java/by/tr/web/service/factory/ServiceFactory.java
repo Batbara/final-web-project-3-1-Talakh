@@ -9,7 +9,8 @@ public class ServiceFactory {
 
     private UserService userService = new UserServiceImpl();
 
-    private ServiceFactory() {}
+    private ServiceFactory() {
+    }
 
     public UserService getUserService() {
         return userService;

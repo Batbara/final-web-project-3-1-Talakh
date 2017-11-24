@@ -8,22 +8,24 @@ public class User implements Serializable {
 
     private String userName;
     private String eMail;
-    private Password password;
+    private Password password = new Password();
     private UserStatus userStatus;
     private boolean isBanned;
     private int id;
 
-    public User(){
-        userName="";
-        eMail="";
+    public User() {
+        userName = "";
+        eMail = "";
         password = new Password();
     }
-    public User(String userName, String password, String eMail, UserStatus userStatus){
+
+    public User(String userName, String password, String eMail, UserStatus userStatus) {
         setUserName(userName);
         setPassword(password);
         seteMail(eMail);
         setStatus(userStatus);
     }
+
     public String getUserName() {
         return userName;
     }
@@ -55,7 +57,8 @@ public class User implements Serializable {
     public void setUserStatus(String userStatus) {
         this.userStatus = UserStatus.valueOf(userStatus);
     }
-    public void setStatus(UserStatus userStatus){
+
+    public void setStatus(UserStatus userStatus) {
         this.userStatus = userStatus;
     }
 

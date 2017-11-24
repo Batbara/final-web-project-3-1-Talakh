@@ -33,23 +33,33 @@ public class Logination implements Command {
             HttpSession session = request.getSession(true);
 
             session.setAttribute(Parameter.USER, user);
-            session.setAttribute(Parameter.USER_STATUS,user.getUserStatus());
+            session.setAttribute(Parameter.USER_STATUS, user.getUserStatus());
             session.setAttribute(Parameter.LOCALE, request.getParameter(Parameter.LOCALE));
 
             response.sendRedirect(Path.SHOW_ACCOUNT_QUERY);
         } catch (NoSuchUserException e) {
-            request.setAttribute(Parameter.LOGIN_ERROR, Parameter.LOGIN);
-            request.getSession().setAttribute(Parameter.LOCALE, request.getParameter(Parameter.LOCALE));
-
-            request.getRequestDispatcher(Path.LOGIN_PAGE).forward(request,response);
+            showNoSuchUserMessage(request, response);
         } catch (IncorrectPasswordException e) {
-            request.setAttribute(Parameter.LOGIN_ERROR, Parameter.PASSWORD);
-            request.getSession().setAttribute(Parameter.LOCALE, request.getParameter(Parameter.LOCALE));
-
-            request.getRequestDispatcher(Path.LOGIN_PAGE).forward(request,response);
+            showIncorrectPasswordMessage(request, response);
         } catch (UserServiceException ex) {
             response.sendRedirect(Path.INDEX);
         }
 
+    }
+
+    private void showNoSuchUserMessage(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        request.setAttribute(Parameter.LOGIN_ERROR, Parameter.LOGIN);
+        request.getSession().setAttribute(Parameter.LOCALE, request.getParameter(Parameter.LOCALE));
+
+        request.getRequestDispatcher(Path.LOGIN_PAGE).forward(request, response);
+    }
+
+    private void showIncorrectPasswordMessage(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        request.setAttribute(Parameter.LOGIN_ERROR, Parameter.PASSWORD);
+        request.getSession().setAttribute(Parameter.LOCALE, request.getParameter(Parameter.LOCALE));
+
+        request.getRequestDispatcher(Path.LOGIN_PAGE).forward(request, response);
     }
 }

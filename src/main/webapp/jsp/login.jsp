@@ -42,7 +42,7 @@
         <p id="error">
         <c:if test="${not empty requestScope.loginError}">
             <c:choose>
-                <c:when test="${requestScope.loginError == 'login'}">
+                    <c:when test="${requestScope.loginError == 'login'}">
                     <c:out value="${loginUserError}"/>
                 </c:when>
                 <c:when test="${requestScope.loginError == 'password'}">

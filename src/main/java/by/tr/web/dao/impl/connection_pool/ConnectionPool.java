@@ -2,7 +2,6 @@ package by.tr.web.dao.impl.connection_pool;
 
 import by.tr.web.dao.impl.DBParameter;
 import by.tr.web.dao.impl.DBResourceManager;
-import by.tr.web.exception.ExceptionMessage;
 import by.tr.web.exception.dao.ConnectionPoolException;
 
 import java.sql.Connection;
@@ -12,6 +11,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ConnectionPool {
     private BlockingQueue<Connection> connectionQueue;
@@ -22,10 +23,11 @@ public class ConnectionPool {
     private String user;
     private String password;
     private int poolSize;
+    private Pattern isNumberPattern = Pattern.compile("\\d+");
 
     private static volatile ConnectionPool instance;
 
-    public static ConnectionPool getInstance() throws ConnectionPoolException {
+    public static ConnectionPool getInstance() {
         ConnectionPool localInstance = instance;
         if (localInstance == null) {
             synchronized (ConnectionPool.class) {
@@ -38,7 +40,7 @@ public class ConnectionPool {
         return localInstance;
     }
 
-    private ConnectionPool() throws ConnectionPoolException {
+    private ConnectionPool() {
         DBResourceManager dbResourceManager = DBResourceManager.getInstance();
 
         this.driverName = dbResourceManager.getValue(DBParameter.DB_DRIVER);
@@ -46,16 +48,22 @@ public class ConnectionPool {
         this.user = dbResourceManager.getValue(DBParameter.DB_USER);
         this.password = dbResourceManager.getValue(DBParameter.DB_PASSWORD);
 
-        try {
-            this.poolSize = Integer.parseInt(dbResourceManager
-                    .getValue(DBParameter.DB_POOL_SIZE));
-        } catch (NumberFormatException e) {
-            poolSize = 5;
-        }
-        initPoolData();
+        setPoolSize(dbResourceManager);
     }
 
-    private void initPoolData() throws ConnectionPoolException {
+    private void setPoolSize(DBResourceManager dbResourceManager) {
+
+        String poolSize = dbResourceManager.getValue(DBParameter.DB_POOL_SIZE);
+        Matcher matcher = isNumberPattern.matcher(poolSize);
+        if (matcher.matches()) {
+            this.poolSize = Integer.parseInt(poolSize);
+        } else {
+            this.poolSize = 5;
+        }
+
+    }
+
+    public void initPoolData() throws ConnectionPoolException {
 
         try {
             Class.forName(driverName);
@@ -67,9 +75,9 @@ public class ConnectionPool {
                 connectionQueue.add(connection);
             }
         } catch (SQLException e) {
-            throw new ConnectionPoolException(ExceptionMessage.SQL_ERROR, e);
+            throw new ConnectionPoolException("SQL error", e);
         } catch (ClassNotFoundException e) {
-            throw new ConnectionPoolException(ExceptionMessage.MISSING_DB_DRIVER, e);
+            throw new ConnectionPoolException("Can't find database driver class", e);
         }
     }
 
@@ -82,7 +90,7 @@ public class ConnectionPool {
             closeConnectionsQueue(givenAwayConQueue);
             closeConnectionsQueue(connectionQueue);
         } catch (SQLException e) {
-            throw new ConnectionPoolException(ExceptionMessage.CLOSING_CONNECTION_ERROR, e);
+            throw new ConnectionPoolException("Closing connection error", e);
         }
     }
 
@@ -92,7 +100,7 @@ public class ConnectionPool {
             connection = connectionQueue.take();
             givenAwayConQueue.add(connection);
         } catch (InterruptedException e) {
-            throw new ConnectionPoolException(ExceptionMessage.CONNECTING_TO_DATA_SOURCE_ERROR, e);
+            throw new ConnectionPoolException("Error connecting to the data source", e);
         }
         return connection;
     }
@@ -103,7 +111,7 @@ public class ConnectionPool {
                 rs.close();
             }
         } catch (SQLException e) {
-            throw new ConnectionPoolException(ExceptionMessage.CLOSING_RESULT_SET_ERROR, e);
+            throw new ConnectionPoolException("Closing result set error", e);
         }
 
         try {
@@ -111,7 +119,7 @@ public class ConnectionPool {
                 st.close();
             }
         } catch (SQLException e) {
-            throw new ConnectionPoolException(ExceptionMessage.CLOSING_STATEMENT_ERROR, e);
+            throw new ConnectionPoolException("Closing statement error", e);
         }
         closeConnection(connection);
     }
@@ -119,21 +127,21 @@ public class ConnectionPool {
     public void closeConnection(Connection connection) throws ConnectionPoolException {
         try {
             if (connection.isClosed()) {
-                throw new ConnectionPoolException(ExceptionMessage.CONNECTION_ALREADY_CLOSED);
+                throw new ConnectionPoolException("Trying to close closed connection");
             }
             if (connection.isReadOnly()) {
                 connection.setReadOnly(false);
             }
         } catch (SQLException e) {
-            throw new ConnectionPoolException(ExceptionMessage.CONNECTION_ACCESS_ERROR, e);
+            throw new ConnectionPoolException("Can't access connection", e);
         }
 
         if (!givenAwayConQueue.remove(connection)) {
-            throw new ConnectionPoolException(ExceptionMessage.GIVEN_AWAY_CONNECTION_QUEUE_ERROR);
+            throw new ConnectionPoolException("Error deleting connection from the given away connections pool");
         }
 
         if (!connectionQueue.offer(connection)) {
-            throw new ConnectionPoolException(ExceptionMessage.CONNECTION_QUEUE_ERROR);
+            throw new ConnectionPoolException("Error allocating connection in the pool");
         }
     }
 
@@ -141,7 +149,7 @@ public class ConnectionPool {
         try {
             st.close();
         } catch (SQLException e) {
-            throw new ConnectionPoolException(ExceptionMessage.CLOSING_STATEMENT_ERROR, e);
+            throw new ConnectionPoolException("Closing statement error", e);
         }
         closeConnection(con);
     }

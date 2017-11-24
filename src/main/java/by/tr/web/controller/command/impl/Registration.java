@@ -34,15 +34,21 @@ public class Registration implements Command {
 
             HttpSession session = request.getSession(true);
             session.setAttribute(Parameter.USER, newUser);
-            session.setAttribute(Parameter.USER_STATUS,newUser.getUserStatus());
+            session.setAttribute(Parameter.USER_STATUS, newUser.getUserStatus());
             session.setAttribute(Parameter.LOCALE, request.getParameter(Parameter.LOCALE));
+
             response.sendRedirect(Path.SHOW_ACCOUNT_QUERY);
         } catch (UserServiceException ex) {
-
-            request.setAttribute(Parameter.REGISTER_ERROR, Parameter.LOGIN);
-            request.getSession().setAttribute(Parameter.LOCALE, request.getParameter(Parameter.LOCALE));
-            request.getRequestDispatcher(Path.REGISTER_PAGE).forward(request,response);
+            showRegisterError(request, response);
         }
 
+    }
+
+    private void showRegisterError(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        request.setAttribute(Parameter.REGISTER_ERROR, Parameter.LOGIN);
+        request.getSession().setAttribute(Parameter.LOCALE, request.getParameter(Parameter.LOCALE));
+        request.getRequestDispatcher(Path.REGISTER_PAGE).forward(request, response);
     }
 }

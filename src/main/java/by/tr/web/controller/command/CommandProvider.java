@@ -1,6 +1,5 @@
-package by.tr.web.controller;
+package by.tr.web.controller.command;
 
-import by.tr.web.controller.command.Command;
 import by.tr.web.controller.command.impl.ChangeLanguageImpl;
 import by.tr.web.controller.command.impl.Logination;
 import by.tr.web.controller.command.impl.LogoutImpl;
@@ -14,15 +13,15 @@ public class CommandProvider {
     private Map<CommandName, Command> commands = new HashMap<>();
 
     public CommandProvider() {
-        commands.put(CommandName.login, new Logination());
-        commands.put(CommandName.register, new Registration());
-        commands.put(CommandName.showAccount, new ShowAccountImpl());
-        commands.put(CommandName.changeLanguage,new ChangeLanguageImpl());
-        commands.put(CommandName.logOut, new LogoutImpl());
+        commands.put(CommandName.LOGIN, new Logination());
+        commands.put(CommandName.REGISTER, new Registration());
+        commands.put(CommandName.SHOW_ACCOUNT, new ShowAccountImpl());
+        commands.put(CommandName.CHANGE_LANGUAGE,new ChangeLanguageImpl());
+        commands.put(CommandName.LOGOUT, new LogoutImpl());
     }
 
     public Command getCommand(String name) {
-        CommandName commandName = CommandName.valueOf(name);
+        CommandName commandName = CommandName.valueOf(name.toUpperCase());
         return commands.get(commandName);
     }
 

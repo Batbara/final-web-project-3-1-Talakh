@@ -10,7 +10,10 @@ public class Password implements Serializable {
     private String password;
 
     public Password(){}
-
+    public Password(String password){
+        super();
+        this.password = hashPassword(password);
+    }
     public String getPassword() {
         return password;
     }

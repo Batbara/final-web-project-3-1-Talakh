@@ -1,6 +1,7 @@
 package by.tr.web.controller;
 
 import by.tr.web.controller.command.Command;
+import by.tr.web.controller.command.CommandProvider;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;

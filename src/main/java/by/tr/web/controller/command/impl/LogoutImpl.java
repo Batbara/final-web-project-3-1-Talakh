@@ -1,6 +1,5 @@
 package by.tr.web.controller.command.impl;
 
-import by.tr.web.controller.Parameter;
 import by.tr.web.controller.Path;
 import by.tr.web.controller.command.Command;
 
