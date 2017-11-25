@@ -25,19 +25,13 @@ public class ConnectionPool {
     private int poolSize;
     private Pattern isNumberPattern = Pattern.compile("\\d+");
 
-    private static volatile ConnectionPool instance;
+    private static volatile ConnectionPool instance = new ConnectionPool();
 
     public static ConnectionPool getInstance() {
-        ConnectionPool localInstance = instance;
-        if (localInstance == null) {
-            synchronized (ConnectionPool.class) {
-                localInstance = instance;
-                if (localInstance == null) {
-                    instance = localInstance = new ConnectionPool();
-                }
-            }
+        if(instance.connectionQueue == null){
+            return null;
         }
-        return localInstance;
+       return instance;
     }
 
     private ConnectionPool() {
@@ -49,6 +43,11 @@ public class ConnectionPool {
         this.password = dbResourceManager.getValue(DBParameter.DB_PASSWORD);
 
         setPoolSize(dbResourceManager);
+        try {
+            initPoolData();
+        } catch (ConnectionPoolException e) {
+           //TODO: log this exception
+        }
     }
 
     private void setPoolSize(DBResourceManager dbResourceManager) {
@@ -75,7 +74,7 @@ public class ConnectionPool {
                 connectionQueue.add(connection);
             }
         } catch (SQLException e) {
-            throw new ConnectionPoolException("SQL error", e);
+            throw new ConnectionPoolException("Error while getting connection from Driver Manager", e);
         } catch (ClassNotFoundException e) {
             throw new ConnectionPoolException("Can't find database driver class", e);
         }

@@ -12,6 +12,7 @@ import by.tr.web.exception.service.UserServiceException;
 import by.tr.web.service.UserService;
 import by.tr.web.service.factory.ServiceFactory;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -22,7 +23,6 @@ public class Registration implements Command {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        request.getSession().setAttribute(Parameter.LOCALE, request.getParameter(Parameter.LOCALE));
 
         String login = request.getParameter(Parameter.LOGIN);
         String password = request.getParameter(Parameter.PASSWORD);
@@ -51,7 +51,8 @@ public class Registration implements Command {
         } catch (UserAlreadyExistsException ex) {
             showRegisterError(request, response, Parameter.USER);
         }catch (UserServiceException e) {
-            //TODO: log exception and redirect to unknown error page
+            RequestDispatcher dispatcher = request.getRequestDispatcher(Path.INTERNAL_ERROR_PAGE);
+            dispatcher.forward(request,response);
         }
 
     }

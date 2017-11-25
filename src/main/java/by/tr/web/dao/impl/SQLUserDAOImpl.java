@@ -31,10 +31,8 @@ public class SQLUserDAOImpl implements UserDAO {
 
     @Override
     public boolean register(User user) throws UserDAOException {
-        try {
-            connectionPool.initPoolData();
-        } catch (ConnectionPoolException e) {
-            throw new UserDAOException("Failed to init connection pool", e);
+        if (connectionPool == null) {
+            throw new UserDAOException("Failed to init connection pool");
         }
         preparedStatement = null;
         try {
@@ -55,8 +53,6 @@ public class SQLUserDAOImpl implements UserDAO {
             user.setId(userID);
 
             return true;
-        } catch (ConnectionPoolException e) {
-            throw new UserDAOException("Failed to get connection", e);
         } catch (SQLException e) {
             throw new UserDAOException("SQL error", e);
         } finally {
@@ -66,10 +62,8 @@ public class SQLUserDAOImpl implements UserDAO {
 
     @Override
     public User login(String login, String password) throws UserDAOException {
-        try {
-            connectionPool.initPoolData();
-        } catch (ConnectionPoolException e) {
-            throw new UserDAOException("Failed to init connection pool", e);
+        if (connectionPool == null) {
+            throw new UserDAOException("Failed to init connection pool");
         }
         statement = null;
         resultSet = null;
@@ -81,7 +75,7 @@ public class SQLUserDAOImpl implements UserDAO {
                 throw new PasswordDAOException("Unexpected error");
             }
 
-            String getUserQuery = constructQuery(GET_USER_QUERY,login);
+            String getUserQuery = constructQuery(GET_USER_QUERY, login);
             statement = connection.createStatement();
             resultSet = statement.executeQuery(getUserQuery);
 
@@ -112,13 +106,14 @@ public class SQLUserDAOImpl implements UserDAO {
         return user;
     }
 
-    private String constructQuery(String query, String criteria){
+    private String constructQuery(String query, String criteria) {
         StringBuilder queryConstructor = new StringBuilder(query);
         queryConstructor.append(criteria);
         queryConstructor.append("\"");
         return queryConstructor.toString();
     }
-    private String getPasswordCheckingQuery(String login, String inputPassword){
+
+    private String getPasswordCheckingQuery(String login, String inputPassword) {
         StringBuilder queryConstructor = new StringBuilder(CHECK_PASSWORD_QUERY);
         queryConstructor.append(login);
         queryConstructor.append("\" AND mpb.users.password = MD5(\"");
@@ -126,9 +121,10 @@ public class SQLUserDAOImpl implements UserDAO {
         queryConstructor.append("\")");
         return queryConstructor.toString();
     }
+
     private boolean isPasswordCorrect(Connection connection, String login, String password) throws SQLException, PasswordDAOException {
 
-        String passwordCheckingQuery = getPasswordCheckingQuery(login,password);
+        String passwordCheckingQuery = getPasswordCheckingQuery(login, password);
         statement = connection.createStatement();
         resultSet = statement.executeQuery(passwordCheckingQuery);
 
@@ -139,10 +135,8 @@ public class SQLUserDAOImpl implements UserDAO {
 
     @Override
     public boolean isUserRegistered(String login) throws UserDAOException {
-        try {
-            connectionPool.initPoolData();
-        } catch (ConnectionPoolException e) {
-            throw new UserDAOException("Failed to init connection pool", e);
+        if (connectionPool == null) {
+            throw new UserDAOException("Failed to init connection pool");
         }
         statement = null;
         resultSet = null;
@@ -150,7 +144,7 @@ public class SQLUserDAOImpl implements UserDAO {
         try {
             connection = connectionPool.takeConnection();
 
-            String checkUserQuery = constructQuery(CHECK_USER_QUERY,login);
+            String checkUserQuery = constructQuery(CHECK_USER_QUERY, login);
             statement = connection.createStatement();
             resultSet = statement.executeQuery(checkUserQuery);
 

@@ -11,6 +11,7 @@ import by.tr.web.exception.service.UserServiceException;
 import by.tr.web.service.UserService;
 import by.tr.web.service.factory.ServiceFactory;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -43,7 +44,8 @@ public class Logination implements Command {
         } catch (IncorrectPasswordException e ) {
             showErrorMessage(request, response, Parameter.PASSWORD);
         } catch (UserServiceException ex) {
-            //TODO: log exception and redirect to unknown error page
+            RequestDispatcher dispatcher = request.getRequestDispatcher(Path.INTERNAL_ERROR_PAGE);
+            dispatcher.forward(request,response);
         }
 
     }
