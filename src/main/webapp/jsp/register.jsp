@@ -16,6 +16,8 @@
     <fmt:message bundle="${loc}" key="local.error.login" var="regLoginError"/>
     <fmt:message bundle="${loc}" key="local.error.register.eMail" var="regEMailError"/>
     <fmt:message bundle="${loc}" key="local.error.register.password" var="regPasswordError"/>
+    <fmt:message bundle="${loc}" key="local.placeholder.password" var="passwordPlaceholder"/>
+    <fmt:message bundle="${loc}" key="local.placeholder.username" var="userNamePlaceholder"/>
 
     <title><c:out value="${signupButton}"/> - MotionPicture Bank [MPB]</title>
     <script type="text/javascript">
@@ -59,12 +61,14 @@
         <input type="hidden" name="command" value="register">
         <p align="right">
             <label for="login" ><c:out value="${username}"/>:</label>
-            <input id="login" type="text" name="login" value="" required>
+            <input id="login" type="text" name="login" value=""
+                   pattern="^[a-zA-Z0-9_]{3,}$" placeholder="${userNamePlaceholder}" required>
         </p>
 
         <p align="right">
             <label for="password" ><c:out value="${password}"/>:</label>
-            <input id="password" type="password" name="password" value="" required>
+            <input id="password" type="password" name="password" value=""
+                   pattern="^[a-zA-Z0-9!*_?@#$%^&]{5,}$" placeholder="${passwordPlaceholder}" required>
         </p>
 
         <p align="right">

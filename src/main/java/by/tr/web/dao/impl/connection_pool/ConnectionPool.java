@@ -14,7 +14,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class ConnectionPool {
+public final class ConnectionPool {
     private BlockingQueue<Connection> connectionQueue;
     private BlockingQueue<Connection> givenAwayConQueue;
 
@@ -27,11 +27,9 @@ public class ConnectionPool {
 
     private static volatile ConnectionPool instance = new ConnectionPool();
 
-    public static ConnectionPool getInstance() {
-        if(instance.connectionQueue == null){
-            return null;
-        }
-       return instance;
+    public static ConnectionPool getInstance()  {
+
+        return instance;
     }
 
     private ConnectionPool() {
@@ -43,13 +41,10 @@ public class ConnectionPool {
         this.password = dbResourceManager.getValue(DBParameter.DB_PASSWORD);
 
         setPoolSize(dbResourceManager);
-        try {
-            initPoolData();
-        } catch (ConnectionPoolException e) {
-           //TODO: log this exception
-        }
     }
-
+    public boolean isInitialized(){
+        return connectionQueue != null && givenAwayConQueue != null;
+    }
     private void setPoolSize(DBResourceManager dbResourceManager) {
 
         String poolSize = dbResourceManager.getValue(DBParameter.DB_POOL_SIZE);

@@ -39,7 +39,7 @@ public class Registration implements Command {
             session.setAttribute(Parameter.USER, newUser);
             session.setAttribute(Parameter.USER_STATUS, newUser.getUserStatus());
 
-            response.sendRedirect(Path.SHOW_ACCOUNT_QUERY);
+            response.sendRedirect(Path.USER_ACCOUNT_PATH);
         } catch (IncorrectPasswordException ex) {
             showRegisterError(request, response, Parameter.PASSWORD);
         }

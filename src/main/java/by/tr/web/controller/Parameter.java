@@ -11,6 +11,7 @@ public final class Parameter {
     public static final String LOGIN_ERROR = "loginError";
     public static final String TEXT_HTML_CONTENT_TYPE = "text/html";
     public static final String USER_STATUS ="userStatus";
+    public static final String ADDRESS ="address";
 
 
 }

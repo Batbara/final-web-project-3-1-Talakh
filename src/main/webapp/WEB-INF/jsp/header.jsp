@@ -33,6 +33,7 @@
                     <form action="${pageContext.request.contextPath}/mpb" method="get">
                         <input type="hidden" name="command" value="logout"/>
 
+
                         <input class="nav_button" type="submit" value="<c:out value="${logout}" />"/>
 
                     </form>
@@ -53,6 +54,8 @@
             <form action="${pageContext.request.contextPath}/mpb" method="post">
                 <input type="hidden" name="command" value="change_language"/>
 
+                <input type="hidden" name="address" value="${pageContext.request.requestURL}"/>
+                <input type="hidden" name="query" value="${pageContext.request.queryString}"/>
                 <input type="hidden" name="local" value="ru"/>
                 <input id="ruButton" type="submit"  value=""/>
 
@@ -60,6 +63,8 @@
             <form action="${pageContext.request.contextPath}/mpb" method="post">
                 <input type="hidden" name="command" value="change_language"/>
 
+                <input type="hidden" name="address" value="${pageContext.request.requestURL}"/>
+                <input type="hidden" name="query" value="${pageContext.request.queryString}"/>
                 <input type="hidden" name="local" value="en"/>
                 <input  type="submit" id="enButton" value=""/>
 

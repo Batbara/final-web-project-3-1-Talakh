@@ -36,7 +36,7 @@ public class Logination implements Command {
             session.setAttribute(Parameter.USER, user);
             session.setAttribute(Parameter.USER_STATUS, user.getUserStatus());
 
-            response.sendRedirect(Path.SHOW_ACCOUNT_QUERY);
+            response.sendRedirect(Path.USER_ACCOUNT_PATH);
         } catch (InvalidLoginException ex) {
             showErrorMessage(request, response, Parameter.LOGIN);
         }catch (NoSuchUserException e) {

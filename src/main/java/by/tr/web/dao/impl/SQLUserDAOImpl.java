@@ -4,7 +4,6 @@ import by.tr.web.dao.UserDAO;
 import by.tr.web.dao.impl.connection_pool.ConnectionPool;
 import by.tr.web.domain.User;
 import by.tr.web.domain.UserStatus;
-import by.tr.web.exception.dao.ConnectionPoolException;
 import by.tr.web.exception.dao.PasswordDAOException;
 import by.tr.web.exception.dao.UserDAOException;
 
@@ -25,13 +24,14 @@ public class SQLUserDAOImpl implements UserDAO {
     private String REGISTER_QUERY = "INSERT INTO mpb.users (userName, eMail, password, status) " +
             "VALUES (?, ?, MD5(CONCAT(?,CURRENT_TIMESTAMP)), ?)";
     private String GET_USER_QUERY = "SELECT mpb.users.id, mpb.users.eMail, mpb.users.status " +
-            "FROM mpb.users WHERE mpb.users.userName = \"";
-    private String CHECK_USER_QUERY = "SELECT * FROM mpb.users WHERE mpb.users.userName = \"";
-    private String CHECK_PASSWORD_QUERY = "SELECT mpb.users.id FROM mpb.users WHERE mpb.users.userName = \"";
+            "FROM mpb.users WHERE mpb.users.userName = ?";
+    private String CHECK_USER_QUERY = "SELECT * FROM mpb.users WHERE mpb.users.userName = ?";
+    private String CHECK_PASSWORD_QUERY = "SELECT mpb.users.id FROM mpb.users WHERE mpb.users.userName = ? " +
+            "AND mpb.users.password = MD5(?)";
 
     @Override
     public boolean register(User user) throws UserDAOException {
-        if (connectionPool == null) {
+        if (!connectionPool.isInitialized()) {
             throw new UserDAOException("Failed to init connection pool");
         }
         preparedStatement = null;
@@ -62,10 +62,11 @@ public class SQLUserDAOImpl implements UserDAO {
 
     @Override
     public User login(String login, String password) throws UserDAOException {
-        if (connectionPool == null) {
+        if (!connectionPool.isInitialized()) {
             throw new UserDAOException("Failed to init connection pool");
         }
         statement = null;
+        preparedStatement = null;
         resultSet = null;
         try {
             connection = connectionPool.takeConnection();
@@ -75,9 +76,10 @@ public class SQLUserDAOImpl implements UserDAO {
                 throw new PasswordDAOException("Unexpected error");
             }
 
-            String getUserQuery = constructQuery(GET_USER_QUERY, login);
-            statement = connection.createStatement();
-            resultSet = statement.executeQuery(getUserQuery);
+            preparedStatement = connection.prepareStatement(GET_USER_QUERY);
+
+            preparedStatement.setString(1, login);
+            resultSet = preparedStatement.executeQuery();
 
             User user = null;
             if (resultSet.next()) {
@@ -106,27 +108,14 @@ public class SQLUserDAOImpl implements UserDAO {
         return user;
     }
 
-    private String constructQuery(String query, String criteria) {
-        StringBuilder queryConstructor = new StringBuilder(query);
-        queryConstructor.append(criteria);
-        queryConstructor.append("\"");
-        return queryConstructor.toString();
-    }
-
-    private String getPasswordCheckingQuery(String login, String inputPassword) {
-        StringBuilder queryConstructor = new StringBuilder(CHECK_PASSWORD_QUERY);
-        queryConstructor.append(login);
-        queryConstructor.append("\" AND mpb.users.password = MD5(\"");
-        queryConstructor.append(inputPassword);
-        queryConstructor.append("\")");
-        return queryConstructor.toString();
-    }
-
     private boolean isPasswordCorrect(Connection connection, String login, String password) throws SQLException, PasswordDAOException {
 
-        String passwordCheckingQuery = getPasswordCheckingQuery(login, password);
-        statement = connection.createStatement();
-        resultSet = statement.executeQuery(passwordCheckingQuery);
+        preparedStatement = connection.prepareStatement(CHECK_PASSWORD_QUERY);
+
+        preparedStatement.setString(1, login);
+        preparedStatement.setString(2, password);
+
+        resultSet = preparedStatement.executeQuery();
 
         return resultSet.next();
 
@@ -135,18 +124,17 @@ public class SQLUserDAOImpl implements UserDAO {
 
     @Override
     public boolean isUserRegistered(String login) throws UserDAOException {
-        if (connectionPool == null) {
+        if (!connectionPool.isInitialized()) {
             throw new UserDAOException("Failed to init connection pool");
         }
-        statement = null;
         resultSet = null;
-
+        preparedStatement = null;
         try {
             connection = connectionPool.takeConnection();
+            preparedStatement = connection.prepareStatement(CHECK_USER_QUERY);
 
-            String checkUserQuery = constructQuery(CHECK_USER_QUERY, login);
-            statement = connection.createStatement();
-            resultSet = statement.executeQuery(checkUserQuery);
+            preparedStatement.setString(1, login);
+            resultSet = preparedStatement.executeQuery();
 
             return resultSet.next();
         } catch (SQLException e) {

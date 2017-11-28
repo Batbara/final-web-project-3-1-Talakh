@@ -13,6 +13,14 @@ public class ChangeLanguageImpl implements Command {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         request.getSession().setAttribute(Parameter.LOCALE, request.getParameter(Parameter.LOCALE));
-        request.getRequestDispatcher(Path.INDEX).forward(request, response);
+        String address = request.getParameter(Parameter.ADDRESS);
+        String query = request.getParameter("query");
+        StringBuilder addressConstructor = new StringBuilder();
+        addressConstructor.append(address);
+        if(!query.isEmpty()){
+            addressConstructor.append("?");
+            addressConstructor.append(query);
+        }
+        response.sendRedirect(addressConstructor.toString());
     }
 }

@@ -14,55 +14,29 @@
     <fmt:message bundle="${loc}" key="local.error.login.user" var="loginUserError"/>
     <fmt:message bundle="${loc}" key="local.error.login" var="loginError"/>
     <fmt:message bundle="${loc}" key="local.error.login.password" var="loginPasswordError"/>
+    <fmt:message bundle="${loc}" key="local.placeholder.password" var="passwordPlaceholder"/>
+    <fmt:message bundle="${loc}" key="local.placeholder.username" var="userNamePlaceholder"/>
 
     <title><c:out value="${signinButton}"/> - MotionPicture Bank [MPB]</title>
 
-    <script type="text/javascript">
-        function checkForm(form) {
-            if (document.form.login.value === "") {
-                alert("Error: Username cannot be blank!");
-                form.login.focus();
-                return false;
-            }
-            re = /^\w+$/;
-            if (!re.test(form.login.value)) {
-                alert("Error: Username must contain only letters, numbers and underscores!");
-                form.login.focus();
-                return false;
-            }
-
-            if (form.password.value !== "") {
-                if (form.password.value.length < 5 || form.password.value.length > 16) {
-                    alert("Error: Incorrect password length!");
-                    form.password.focus();
-                    return false;
-                }
-
-            } else {
-                alert("Error: Please check that you've entered and confirmed your password!");
-                form.password.focus();
-                return false;
-            }
-
-            return true;
-        }
-    </script>
 </head>
 <body>
 <jsp:include page="/WEB-INF/jsp/header.jsp"/>
 <div class="loginForm">
     <h4 align="center"><c:out value="${signinMessage}"/></h4>
 
-    <form action="${pageContext.request.contextPath}/mpb" method="post" onsubmit="return checkForm(this);">
+    <form action="${pageContext.request.contextPath}/mpb" method="post">
         <input type="hidden" name="command" value="login">
         <p align="right">
             <label for="login"><c:out value="${logout}"/>:</label>
-            <input id="login" type="text" name="login" value="" required>
+            <input id="login" type="text" name="login" value=""
+                   pattern="^[a-zA-Z0-9_]{3,}$" placeholder="${userNamePlaceholder}" required>
 
         </p>
         <p align="right">
             <label for="password"><c:out value="${password}"/>:</label>
-            <input id="password" type="password" name="password" value="" required>
+            <input id="password" type="password" name="password" value=""
+                   pattern="^[a-zA-Z0-9!*_?@#$%^&]{5,}$" placeholder="${passwordPlaceholder}" required>
 
         </p>
         <p id="button" align="center"><input type="submit" value="${signinButton}"></p>
