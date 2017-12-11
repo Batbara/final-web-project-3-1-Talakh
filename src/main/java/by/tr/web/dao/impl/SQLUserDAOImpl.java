@@ -13,11 +13,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class SQLUserDAOImpl implements UserDAO {
+public class SQLUserDAOImpl implements UserDAO {// так как количествоо объектов этого класса будет ровно одна штука - то он будет разделяемым ресурсом
+    // и все его поля экземпляра класса также будут разделяемыми ресурсами
     private ConnectionPool connectionPool = ConnectionPool.getInstance();
-    private Connection connection;
+    private Connection connection;// ты же не собираешься один connection использовать параллельно для обработки нескольких запросов?
 
-    private Statement statement;
+    private Statement statement;// определяй такие поля как локальные в методах
     private ResultSet resultSet;
     private PreparedStatement preparedStatement;
 
@@ -31,7 +32,8 @@ public class SQLUserDAOImpl implements UserDAO {
 
     @Override
     public boolean register(User user) throws UserDAOException {
-        if (!connectionPool.isInitialized()) {
+        if (!connectionPool.isInitialized()) {// по сути дела излишне
+            // по смыслу веб-приложения ты можешь не стартовать приложение если база данных не поднимается
             throw new UserDAOException("Failed to init connection pool");
         }
         preparedStatement = null;
@@ -54,7 +56,7 @@ public class SQLUserDAOImpl implements UserDAO {
 
             return true;
         } catch (SQLException e) {
-            throw new UserDAOException("SQL error", e);
+            throw new UserDAOException("SQL error", e);// более содержательные сообщения должны быть
         } finally {
             connectionPool.closeConnection(connection, preparedStatement);
         }
