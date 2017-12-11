@@ -15,7 +15,7 @@ import by.tr.web.service.validation.impl.LoginValidator;
 import by.tr.web.service.validation.impl.RegisterValidator;
 
 public class UserServiceImpl implements UserService {
-    private RegisterValidator registerValidator = new RegisterValidator();
+    private RegisterValidator registerValidator = new RegisterValidator();// подумай над случаем, если эти валидаторы нужны будут в нескольких реализациях сервисов
     private LoginValidator loginValidator = new LoginValidator();
 
     @Override
@@ -39,7 +39,7 @@ public class UserServiceImpl implements UserService {
                 userDAO.register(user);
             }
         } catch (UserDAOException ex) {
-            throw new UserServiceException(ex);
+            throw new UserServiceException(ex);// не забывай про сообщения
         }
         return user;
     }
