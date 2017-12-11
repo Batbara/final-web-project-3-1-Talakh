@@ -7,7 +7,7 @@ import by.tr.web.service.factory.ServiceFactory;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
-public class AppInitializer implements ServletContextListener {
+public class AppInitializer implements ServletContextListener {// опять беда с названием
 
     public AppInitializer() {
     }
