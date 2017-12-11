@@ -13,7 +13,8 @@ public class DBResourceManager {
         return instance;
     }
 
-    public String getValue(String key) {
+    public String getValue(String key) {// старайся имена определять согласно предметной области, а не техническому назначению
+        // key - чего ключ?
         return bundle.getString(key);
     }
 
