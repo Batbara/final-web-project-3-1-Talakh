@@ -1,6 +1,6 @@
 package by.tr.web.controller;
 
-public final class Path {
+public final class Path {// пути куда?
     public static final String LOGIN_PAGE ="jsp/login.jsp";
     public static final String REGISTER_PAGE ="jsp/register.jsp";
     public static final String INDEX = "/index.jsp";
