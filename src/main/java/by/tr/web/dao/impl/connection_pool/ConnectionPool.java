@@ -105,6 +105,7 @@ public final class ConnectionPool {
                 rs.close();
             }
         } catch (SQLException e) {
+            // если здесь возникнет исключение, то твой проброс ConnectionPoolException не позволит поместить connection в пул
             throw new ConnectionPoolException("Closing result set error", e);
         }
 
