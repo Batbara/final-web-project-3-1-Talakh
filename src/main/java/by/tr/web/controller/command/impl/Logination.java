@@ -1,7 +1,7 @@
 package by.tr.web.controller.command.impl;
 
-import by.tr.web.controller.Parameter;
-import by.tr.web.controller.Path;
+import by.tr.web.controller.InputParameterName;
+import by.tr.web.controller.JSPPagePath;
 import by.tr.web.controller.command.Command;
 import by.tr.web.domain.User;
 import by.tr.web.exception.service.IncorrectPasswordException;
@@ -21,8 +21,8 @@ import java.io.IOException;
 public class Logination implements Command {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        String login = request.getParameter(Parameter.LOGIN);
-        String password = request.getParameter(Parameter.PASSWORD);
+        String login = request.getParameter(InputParameterName.LOGIN);
+        String password = request.getParameter(InputParameterName.PASSWORD);
 
         ServiceFactory serviceFactory = ServiceFactory.getInstance();
         UserService userService = serviceFactory.getUserService();
@@ -33,18 +33,18 @@ public class Logination implements Command {
 
             HttpSession session = request.getSession(true);
 
-            session.setAttribute(Parameter.USER, user);
-            session.setAttribute(Parameter.USER_STATUS, user.getUserStatus());
+            session.setAttribute(InputParameterName.USER, user);
+            session.setAttribute(InputParameterName.USER_STATUS, user.getUserStatus());
 
-            response.sendRedirect(Path.USER_ACCOUNT_PATH);
+            response.sendRedirect(JSPPagePath.USER_ACCOUNT_PATH);
         } catch (InvalidLoginException ex) {
-            showErrorMessage(request, response, Parameter.LOGIN);
+            showErrorMessage(request, response, InputParameterName.LOGIN);
         }catch (NoSuchUserException e) {
-            showErrorMessage(request, response, Parameter.USER);
+            showErrorMessage(request, response, InputParameterName.USER);
         } catch (IncorrectPasswordException e ) {
-            showErrorMessage(request, response, Parameter.PASSWORD);
+            showErrorMessage(request, response, InputParameterName.PASSWORD);
         } catch (UserServiceException ex) {
-            RequestDispatcher dispatcher = request.getRequestDispatcher(Path.INTERNAL_ERROR_PAGE);
+            RequestDispatcher dispatcher = request.getRequestDispatcher(JSPPagePath.INTERNAL_ERROR_PAGE);
             dispatcher.forward(request,response);
         }
 
@@ -52,7 +52,7 @@ public class Logination implements Command {
 
     private void showErrorMessage(HttpServletRequest request, HttpServletResponse response, String errorType)
             throws ServletException, IOException {
-        request.setAttribute(Parameter.LOGIN_ERROR, errorType);
-        request.getRequestDispatcher(Path.LOGIN_PAGE).forward(request, response);
+        request.setAttribute(InputParameterName.LOGIN_ERROR, errorType);
+        request.getRequestDispatcher(JSPPagePath.LOGIN_PAGE).forward(request, response);
     }
 }

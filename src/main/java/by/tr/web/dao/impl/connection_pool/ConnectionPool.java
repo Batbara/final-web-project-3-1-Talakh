@@ -27,7 +27,7 @@ public final class ConnectionPool {
 
     private static volatile ConnectionPool instance = new ConnectionPool();
 
-    public static ConnectionPool getInstance()  {
+    public static ConnectionPool getInstance() {
 
         return instance;
     }
@@ -35,19 +35,17 @@ public final class ConnectionPool {
     private ConnectionPool() {
         DBResourceManager dbResourceManager = DBResourceManager.getInstance();
 
-        this.driverName = dbResourceManager.getValue(DBParameter.DB_DRIVER);
-        this.url = dbResourceManager.getValue(DBParameter.DB_URL);
-        this.user = dbResourceManager.getValue(DBParameter.DB_USER);
-        this.password = dbResourceManager.getValue(DBParameter.DB_PASSWORD);
+        this.driverName = dbResourceManager.getDBParameter(DBParameter.DB_DRIVER);
+        this.url = dbResourceManager.getDBParameter(DBParameter.DB_URL);
+        this.user = dbResourceManager.getDBParameter(DBParameter.DB_USER);
+        this.password = dbResourceManager.getDBParameter(DBParameter.DB_PASSWORD);
 
         setPoolSize(dbResourceManager);
     }
-    public boolean isInitialized(){
-        return connectionQueue != null && givenAwayConQueue != null;
-    }
+
     private void setPoolSize(DBResourceManager dbResourceManager) {
 
-        String poolSize = dbResourceManager.getValue(DBParameter.DB_POOL_SIZE);
+        String poolSize = dbResourceManager.getDBParameter(DBParameter.DB_POOL_SIZE);
         Matcher matcher = isNumberPattern.matcher(poolSize);
         if (matcher.matches()) {
             this.poolSize = Integer.parseInt(poolSize);
@@ -105,6 +103,7 @@ public final class ConnectionPool {
                 rs.close();
             }
         } catch (SQLException e) {
+            closeConnection(connection);
             throw new ConnectionPoolException("Closing result set error", e);
         }
 
@@ -113,10 +112,12 @@ public final class ConnectionPool {
                 st.close();
             }
         } catch (SQLException e) {
+            closeConnection(connection);
             throw new ConnectionPoolException("Closing statement error", e);
         }
         closeConnection(connection);
     }
+
 
     public void closeConnection(Connection connection) throws ConnectionPoolException {
         try {

@@ -1,7 +1,6 @@
 package by.tr.web.controller.command.impl;
 
-import by.tr.web.controller.Parameter;
-import by.tr.web.controller.Path;
+import by.tr.web.controller.InputParameterName;
 import by.tr.web.controller.command.Command;
 
 import javax.servlet.ServletException;
@@ -12,8 +11,8 @@ import java.io.IOException;
 public class ChangeLanguageImpl implements Command {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        request.getSession().setAttribute(Parameter.LOCALE, request.getParameter(Parameter.LOCALE));
-        String address = request.getParameter(Parameter.ADDRESS);
+        request.getSession().setAttribute(InputParameterName.LOCALE, request.getParameter(InputParameterName.LOCALE));
+        String address = request.getParameter(InputParameterName.ADDRESS);
         String query = request.getParameter("query");
         StringBuilder addressConstructor = new StringBuilder();
         addressConstructor.append(address);

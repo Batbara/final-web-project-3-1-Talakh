@@ -9,7 +9,7 @@ import by.tr.web.service.validation.UserValidator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class RegisterValidator implements UserValidator {
+public class RegisterValidatorImpl implements UserValidator {
     private Pattern eMailPattern = Pattern.compile(UserValidator.EMAIL_REGEXP);
     private Pattern loginPattern = Pattern.compile(UserValidator.LOGIN_REGEXP);
     public boolean checkLogin(String login) {
@@ -43,7 +43,6 @@ public class RegisterValidator implements UserValidator {
         if(!checkPassword(password)){
             throw new IncorrectPasswordException("Invalid password");
         }
-
         return true;
     }
 

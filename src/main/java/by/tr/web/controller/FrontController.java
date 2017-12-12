@@ -19,8 +19,8 @@ public class FrontController extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.setContentType(Parameter.TEXT_HTML_CONTENT_TYPE);
-        String commandName = request.getParameter(Parameter.COMMAND);
+        response.setContentType(InputParameterName.TEXT_HTML_CONTENT_TYPE);
+        String commandName = request.getParameter(InputParameterName.COMMAND);
 
         Command command = commandProvider.getCommand(commandName);
         command.execute(request, response);

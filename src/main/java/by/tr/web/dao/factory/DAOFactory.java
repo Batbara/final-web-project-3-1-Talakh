@@ -1,14 +1,14 @@
 package by.tr.web.dao.factory;
 
-import by.tr.web.dao.AppDAO;
+import by.tr.web.dao.impl.connection_pool.ConnectionPoolDAO;
 import by.tr.web.dao.UserDAO;
-import by.tr.web.dao.impl.AppDAOImpl;
+import by.tr.web.dao.impl.connection_pool.ConnectionPoolDAOImpl;
 import by.tr.web.dao.impl.SQLUserDAOImpl;
 
 public class DAOFactory {
     private static final DAOFactory instance = new DAOFactory();
     private UserDAO userDAO = new SQLUserDAOImpl();
-    private AppDAO appDAO = new AppDAOImpl();
+    private ConnectionPoolDAO connectionPoolDAO = new ConnectionPoolDAOImpl();
     private DAOFactory() {
 
     }
@@ -17,8 +17,8 @@ public class DAOFactory {
         return userDAO;
     }
 
-    public AppDAO getAppDAO() {
-        return appDAO;
+    public ConnectionPoolDAO getConnectionPoolDAO() {
+        return connectionPoolDAO;
     }
 
     public static DAOFactory getInstance() {

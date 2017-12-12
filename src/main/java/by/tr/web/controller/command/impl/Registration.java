@@ -1,7 +1,7 @@
 package by.tr.web.controller.command.impl;
 
-import by.tr.web.controller.Parameter;
-import by.tr.web.controller.Path;
+import by.tr.web.controller.InputParameterName;
+import by.tr.web.controller.JSPPagePath;
 import by.tr.web.controller.command.Command;
 import by.tr.web.domain.User;
 import by.tr.web.exception.service.IncorrectPasswordException;
@@ -24,9 +24,9 @@ public class Registration implements Command {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
-        String login = request.getParameter(Parameter.LOGIN);
-        String password = request.getParameter(Parameter.PASSWORD);
-        String eMail = request.getParameter(Parameter.EMAIL);
+        String login = request.getParameter(InputParameterName.LOGIN);
+        String password = request.getParameter(InputParameterName.PASSWORD);
+        String eMail = request.getParameter(InputParameterName.EMAIL);
 
         ServiceFactory serviceFactory = ServiceFactory.getInstance();
         UserService userService = serviceFactory.getUserService();
@@ -36,22 +36,22 @@ public class Registration implements Command {
             newUser = userService.register(login, password, eMail);
 
             HttpSession session = request.getSession(true);
-            session.setAttribute(Parameter.USER, newUser);
-            session.setAttribute(Parameter.USER_STATUS, newUser.getUserStatus());
+            session.setAttribute(InputParameterName.USER, newUser);
+            session.setAttribute(InputParameterName.USER_STATUS, newUser.getUserStatus());
 
-            response.sendRedirect(Path.USER_ACCOUNT_PATH);
+            response.sendRedirect(JSPPagePath.USER_ACCOUNT_PATH);
         } catch (IncorrectPasswordException ex) {
-            showRegisterError(request, response, Parameter.PASSWORD);
+            showRegisterError(request, response, InputParameterName.PASSWORD);
         }
         catch (InvalidLoginException ex) {
-            showRegisterError(request, response, Parameter.LOGIN);
+            showRegisterError(request, response, InputParameterName.LOGIN);
         }
         catch (InvalidEMailException ex) {
-            showRegisterError(request, response, Parameter.EMAIL);
+            showRegisterError(request, response, InputParameterName.EMAIL);
         } catch (UserAlreadyExistsException ex) {
-            showRegisterError(request, response, Parameter.USER);
+            showRegisterError(request, response, InputParameterName.USER);
         }catch (UserServiceException e) {
-            RequestDispatcher dispatcher = request.getRequestDispatcher(Path.INTERNAL_ERROR_PAGE);
+            RequestDispatcher dispatcher = request.getRequestDispatcher(JSPPagePath.INTERNAL_ERROR_PAGE);
             dispatcher.forward(request,response);
         }
 
@@ -59,7 +59,7 @@ public class Registration implements Command {
 
     private void showRegisterError(HttpServletRequest request, HttpServletResponse response, String errorType)
             throws ServletException, IOException {
-        request.setAttribute(Parameter.REGISTER_ERROR, errorType);
-        request.getRequestDispatcher(Path.REGISTER_PAGE).forward(request, response);
+        request.setAttribute(InputParameterName.REGISTER_ERROR, errorType);
+        request.getRequestDispatcher(JSPPagePath.REGISTER_PAGE).forward(request, response);
     }
 }

@@ -1,6 +1,6 @@
 package by.tr.web.controller;
 
-public final class Parameter {
+public final class InputParameterName {// опять неконкретное название
     public static final String COMMAND = "command";
     public static final String LOCALE = "local";
     public static final String LOGIN = "login";

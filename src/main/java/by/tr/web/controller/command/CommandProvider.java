@@ -4,7 +4,7 @@ import by.tr.web.controller.command.impl.ChangeLanguageImpl;
 import by.tr.web.controller.command.impl.Logination;
 import by.tr.web.controller.command.impl.LogoutImpl;
 import by.tr.web.controller.command.impl.Registration;
-import by.tr.web.controller.command.impl.ShowAccountImpl;
+import by.tr.web.controller.command.impl.TakeAccountImpl;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,7 +15,7 @@ public class CommandProvider {
     public CommandProvider() {
         commands.put(CommandName.LOGIN, new Logination());
         commands.put(CommandName.REGISTER, new Registration());
-        commands.put(CommandName.SHOW_ACCOUNT, new ShowAccountImpl());
+        commands.put(CommandName.SHOW_ACCOUNT, new TakeAccountImpl());
         commands.put(CommandName.CHANGE_LANGUAGE,new ChangeLanguageImpl());
         commands.put(CommandName.LOGOUT, new LogoutImpl());
     }

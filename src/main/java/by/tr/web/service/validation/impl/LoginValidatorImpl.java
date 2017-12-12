@@ -8,7 +8,7 @@ import by.tr.web.service.validation.UserValidator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class LoginValidator implements UserValidator {
+public class LoginValidatorImpl implements UserValidator {
     private  Pattern loginPattern = Pattern.compile(UserValidator.LOGIN_REGEXP);
     public boolean checkLogin(String login) {
         if(login.isEmpty()){

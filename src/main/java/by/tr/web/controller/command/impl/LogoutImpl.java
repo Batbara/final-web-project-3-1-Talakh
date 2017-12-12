@@ -1,6 +1,6 @@
 package by.tr.web.controller.command.impl;
 
-import by.tr.web.controller.Path;
+import by.tr.web.controller.JSPPagePath;
 import by.tr.web.controller.command.Command;
 
 import javax.servlet.ServletException;
@@ -13,6 +13,6 @@ public class LogoutImpl implements Command {
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         request.getSession().invalidate();
 
-        response.sendRedirect(Path.INDEX);
+        response.sendRedirect(JSPPagePath.INDEX);
     }
 }

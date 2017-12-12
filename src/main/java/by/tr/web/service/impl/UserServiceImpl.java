@@ -3,7 +3,6 @@ package by.tr.web.service.impl;
 import by.tr.web.dao.UserDAO;
 import by.tr.web.dao.factory.DAOFactory;
 import by.tr.web.domain.User;
-import by.tr.web.domain.UserStatus;
 import by.tr.web.exception.dao.PasswordDAOException;
 import by.tr.web.exception.dao.UserDAOException;
 import by.tr.web.exception.service.IncorrectPasswordException;
@@ -11,18 +10,18 @@ import by.tr.web.exception.service.NoSuchUserException;
 import by.tr.web.exception.service.UserAlreadyExistsException;
 import by.tr.web.exception.service.UserServiceException;
 import by.tr.web.service.UserService;
-import by.tr.web.service.validation.impl.LoginValidator;
-import by.tr.web.service.validation.impl.RegisterValidator;
+import by.tr.web.service.factory.ValidatorFactory;
+import by.tr.web.service.validation.impl.LoginValidatorImpl;
+import by.tr.web.service.validation.impl.RegisterValidatorImpl;
 
 public class UserServiceImpl implements UserService {
-    private RegisterValidator registerValidator = new RegisterValidator();
-    private LoginValidator loginValidator = new LoginValidator();
 
     @Override
     public User register(String login, String password, String eMail) throws UserServiceException {
+        ValidatorFactory validatorFactory = ValidatorFactory.getInstance();
+        RegisterValidatorImpl registerValidator =(RegisterValidatorImpl) validatorFactory.getRegisterValidator();
 
-        boolean isDataValid;
-        isDataValid = registerValidator.validate(login, password, eMail);
+        boolean isDataValid = registerValidator.validate(login, password, eMail);
         if (!isDataValid) {
             throw new UserServiceException("Unexpected error");
         }
@@ -35,20 +34,21 @@ public class UserServiceImpl implements UserService {
             if (isUserRegistered) {
                 throw new UserAlreadyExistsException("User already exists");
             } else {
-                user = new User(login, password, eMail, UserStatus.USER);
+                user = new User(login, password, eMail);
                 userDAO.register(user);
             }
         } catch (UserDAOException ex) {
-            throw new UserServiceException(ex);
+            throw new UserServiceException("Error while registering user", ex);
         }
         return user;
     }
 
     @Override
     public User login(String login, String password) throws UserServiceException {
-        boolean isDataValid;
+        ValidatorFactory validatorFactory = ValidatorFactory.getInstance();
+        LoginValidatorImpl loginValidatorImpl =(LoginValidatorImpl) validatorFactory.getLoginValidator();
 
-        isDataValid = loginValidator.validate(login, password);
+        boolean isDataValid = loginValidatorImpl.validate(login, password);
 
         if (!isDataValid) {
             throw new UserServiceException("Unexpected error");
@@ -67,9 +67,9 @@ public class UserServiceImpl implements UserService {
                 }
             }
         } catch (PasswordDAOException e) {
-            throw new IncorrectPasswordException(e);
+            throw new IncorrectPasswordException("Incorrect password", e);
         } catch (UserDAOException ex) {
-            throw new UserServiceException(ex);
+            throw new UserServiceException("Error while login user", ex);
         }
         return user;
 

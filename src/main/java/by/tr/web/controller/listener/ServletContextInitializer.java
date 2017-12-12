@@ -1,23 +1,23 @@
 package by.tr.web.controller.listener;
 
-import by.tr.web.exception.service.ApplicationServiceException;
-import by.tr.web.service.AppService;
+import by.tr.web.exception.service.ServletServiceException;
+import by.tr.web.service.ServletService;
 import by.tr.web.service.factory.ServiceFactory;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
-public class AppInitializer implements ServletContextListener {
+public class ServletContextInitializer implements ServletContextListener {// опять беда с названием
 
-    public AppInitializer() {
+    public ServletContextInitializer() {
     }
 
     public void contextInitialized(ServletContextEvent sce) {
         ServiceFactory serviceFactory = ServiceFactory.getInstance();
-        AppService appService = serviceFactory.getAppService();
+        ServletService servletService = serviceFactory.getServletService();
         try {
-            appService.initResources();
-        } catch (ApplicationServiceException e) {
+            servletService.initResources();
+        } catch (ServletServiceException e) {
            System.err.println("Failed to get connection pool");
         }
     }

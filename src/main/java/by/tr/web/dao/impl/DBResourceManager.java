@@ -13,8 +13,8 @@ public class DBResourceManager {
         return instance;
     }
 
-    public String getValue(String key) {
-        return bundle.getString(key);
+    public String getDBParameter(String paramName) {
+        return bundle.getString(paramName);
     }
 
 }

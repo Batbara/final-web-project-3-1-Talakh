@@ -13,17 +13,23 @@ public class User implements Serializable {
     private boolean isBanned;
     private int id;
 
+    public enum UserStatus {// не уверена, что этот класс должен находиться в пакете domain
+        // возможно его следует определить вложенным классом
+        ADMIN, USER, GUEST
+    }
+
     public User() {
         userName = "";
         eMail = "";
         password = "";
+        userStatus = UserStatus.USER;
     }
 
-    public User(String userName, String password, String eMail, UserStatus userStatus) {
+    public User(String userName, String password, String eMail) {
         setUserName(userName);
         setPassword(password);
         seteMail(eMail);
-        setStatus(userStatus);
+        setStatus(UserStatus.USER);
     }
 
     public String getUserName() {
