@@ -10,9 +10,9 @@ import java.io.IOException;
 
 public class LogoutImpl implements Command {
     @Override
-    public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        request.getSession().invalidate();
+    public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
+        request.getSession().invalidate();
         response.sendRedirect(JSPPagePath.INDEX);
     }
 }

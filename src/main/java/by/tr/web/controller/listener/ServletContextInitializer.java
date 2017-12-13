@@ -1,5 +1,6 @@
 package by.tr.web.controller.listener;
 
+import by.tr.web.exception.controller.ConnectionPoolSevereError;
 import by.tr.web.exception.service.user.ServletServiceException;
 import by.tr.web.service.ServletService;
 import by.tr.web.service.factory.ServiceFactory;
@@ -18,7 +19,7 @@ public class ServletContextInitializer implements ServletContextListener {// Ð¾Ð
         try {
             servletService.initResources();
         } catch (ServletServiceException e) {
-           System.err.println("Failed to get connection pool");
+            throw new ConnectionPoolSevereError("Failed to init connection pool");
         }
     }
 
