@@ -1,7 +1,8 @@
 package by.tr.web.controller;
 
-public final class InputParameterName {// опять неконкретное название
+public final class FrontControllerParameter {
     public static final String COMMAND = "command";
+    public static final String QUERY = "query";
     public static final String LOCALE = "local";
     public static final String LOGIN = "login";
     public static final String PASSWORD = "password";

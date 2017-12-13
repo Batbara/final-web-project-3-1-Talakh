@@ -20,44 +20,13 @@
     <fmt:message bundle="${loc}" key="local.placeholder.username" var="userNamePlaceholder"/>
 
     <title><c:out value="${signupButton}"/> - MotionPicture Bank [MPB]</title>
-    <script type="text/javascript">
-            function checkForm(form)
-            {
-                if(document.form.login.value === "") {
-                    alert("Error: Username cannot be blank!");
-                    form.login.focus();
-                    return false;
-                }
-                re = /^\w+$/;
-                if(!re.test(form.login.value)) {
-                    alert("Error: Username must contain only letters, numbers and underscores!");
-                    form.login.focus();
-                    return false;
-                }
-
-                if(form.password.value !== "") {
-                    if(form.password.value.length < 5 || form.password.value.length > 16 ) {
-                        alert("Error: Incorrect password length!");
-                        form.password.focus();
-                        return false;
-                    }
-
-                } else {
-                    alert("Error: Please check that you've entered and confirmed your password!");
-                    form.password.focus();
-                    return false;
-                }
-
-                return true;
-            }
-    </script>
 </head>
 <body>
 <jsp:include page="/WEB-INF/jsp/header.jsp"/>
 
 <div class="registerForm">
     <h4><c:out value="${signupMessage}"/></h4>
-    <form action="${pageContext.request.contextPath}/mpb" method="post" onsubmit="checkForm(this);">
+    <form action="${pageContext.request.contextPath}/mpb" method="post">
         <input type="hidden" name="command" value="register">
         <p align="right">
             <label for="login" ><c:out value="${username}"/>:</label>

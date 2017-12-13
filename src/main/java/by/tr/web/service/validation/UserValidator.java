@@ -1,5 +1,7 @@
 package by.tr.web.service.validation;
 
+import by.tr.web.exception.service.user.UserServiceException;
+
 public interface UserValidator {
     String EMAIL_REGEXP = "^[A-Za-z0-9+_.-]+@(.+)$";
     String LOGIN_REGEXP = "^[a-zA-Z0-9_]{3,}$";
@@ -9,5 +11,6 @@ public interface UserValidator {
     boolean checkLogin(String login);
 
     boolean checkPassword(String password);
+    boolean validate(String ... parameters) throws UserServiceException;
 
 }

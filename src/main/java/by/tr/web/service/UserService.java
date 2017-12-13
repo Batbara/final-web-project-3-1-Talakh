@@ -1,7 +1,7 @@
 package by.tr.web.service;
 
 import by.tr.web.domain.User;
-import by.tr.web.exception.service.UserServiceException;
+import by.tr.web.exception.service.user.UserServiceException;
 
 public interface UserService {
 

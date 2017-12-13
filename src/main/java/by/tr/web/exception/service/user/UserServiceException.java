@@ -1,4 +1,4 @@
-package by.tr.web.exception.service;
+package by.tr.web.exception.service.user;
 
 public class UserServiceException extends Exception {
     private static final long serialVersionUID = -911875504649229665L;

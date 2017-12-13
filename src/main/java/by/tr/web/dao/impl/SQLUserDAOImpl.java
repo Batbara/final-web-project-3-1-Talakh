@@ -16,13 +16,14 @@ public class SQLUserDAOImpl implements UserDAO {
     private ConnectionPool connectionPool = ConnectionPool.getInstance();
 
 
-    private String REGISTER_QUERY = "INSERT INTO mpb.users (userName, eMail, password, status) " +
-            "VALUES (?, ?, MD5(CONCAT(?,CURRENT_TIMESTAMP)), ?)";
-    private String GET_USER_QUERY = "SELECT mpb.users.id, mpb.users.eMail, mpb.users.status " +
-            "FROM mpb.users WHERE mpb.users.userName = ?";
-    private String CHECK_USER_QUERY = "SELECT * FROM mpb.users WHERE mpb.users.userName = ?";
-    private String CHECK_PASSWORD_QUERY = "SELECT mpb.users.id FROM mpb.users WHERE mpb.users.userName = ? " +
-            "AND mpb.users.password = MD5(?)";
+    private String REGISTER_QUERY = "INSERT INTO mpb.user (user_name, user_password,user_email) " +
+            "VALUES (?, MD5(CONCAT(?,CURRENT_TIMESTAMP)), ?)";
+    private String GET_USER_QUERY = "SELECT mpb.user.user_id, mpb.user.user_email, mpb.user.user_status " +
+            "FROM mpb.user WHERE mpb.user.user_name = ?";
+    private String CHECK_USER_QUERY = "SELECT * FROM mpb.user WHERE mpb.user.user_name = ?";
+    private String CHECK_PASSWORD_QUERY = "SELECT  mpb.user.user_id FROM mpb.user WHERE mpb.user.user_name = ? " +
+            "AND mpb.user.user_password = MD5(?)";
+    private String CHECK_EMAIL_QUERY = "SELECT mpb.user.user_id FROM mpb.user WHERE mpb.user.user_email = ?";
 
     @Override
     public boolean register(User user) throws UserDAOException {
@@ -35,9 +36,8 @@ public class SQLUserDAOImpl implements UserDAO {
             preparedStatement = connection.prepareStatement(REGISTER_QUERY, Statement.RETURN_GENERATED_KEYS);
 
             preparedStatement.setString(1, user.getUserName());
-            preparedStatement.setString(2, user.geteMail());
-            preparedStatement.setString(3, user.getPassword());
-            preparedStatement.setString(4, user.getUserStatus().name());
+            preparedStatement.setString(2, user.getPassword());
+            preparedStatement.setString(3, user.geteMail());
 
             preparedStatement.executeUpdate();
 
@@ -46,6 +46,7 @@ public class SQLUserDAOImpl implements UserDAO {
             int userID = resultSet.getInt(1);
 
             user.setId(userID);
+           // user.setStatus(User.UserStatus.CASUAL_VIEWER);
 
             return true;
         } catch (SQLException e) {
@@ -116,20 +117,29 @@ public class SQLUserDAOImpl implements UserDAO {
 
     @Override
     public boolean isUserRegistered(String login) throws UserDAOException {
+        return checkForRegistration(CHECK_USER_QUERY, login);
+    }
 
+    @Override
+    public boolean isEmailRegistered(String eMail) throws UserDAOException {
+        return checkForRegistration(CHECK_EMAIL_QUERY, eMail);
+    }
+
+    private boolean checkForRegistration(String query, String parameter) throws UserDAOException {
         ResultSet resultSet = null;
         PreparedStatement preparedStatement = null;
         Connection connection = null;
         try {
             connection = connectionPool.takeConnection();
-            preparedStatement = connection.prepareStatement(CHECK_USER_QUERY);
+            preparedStatement = connection.prepareStatement(query);
 
-            preparedStatement.setString(1, login);
+            preparedStatement.setString(1, parameter);
             resultSet = preparedStatement.executeQuery();
 
             return resultSet.next();
         } catch (SQLException e) {
-            throw new UserDAOException("Can't check user registration", e);
+
+            throw new UserDAOException("Cannot check if \'" + parameter + "\' is registered", e);
         } finally {
             connectionPool.closeConnection(connection, preparedStatement, resultSet);
         }

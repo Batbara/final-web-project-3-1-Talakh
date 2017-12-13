@@ -1,4 +1,4 @@
-package by.tr.web.exception.service;
+package by.tr.web.exception.service.user;
 
 public class ServletServiceException extends Exception {
     private static final long serialVersionUID = -1435654680351679182L;

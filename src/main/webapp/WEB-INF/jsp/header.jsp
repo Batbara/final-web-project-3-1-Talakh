@@ -19,36 +19,45 @@
     <div id="top_bar_black">
         <div id="logo_image"></div>
         <div id="nav_block">
-            <a href="${pageContext.request.contextPath}/index.jsp">
-                <div class="nav_button"><c:out value="${home}" /></div>
-            </a>
-            <c:choose>
-                <c:when test="${sessionScope.userStatus == 'USER' or sessionScope.userStatus == 'ADMIN'}">
-                    <form action="${pageContext.request.contextPath}/mpb" method="get">
-                        <input type="hidden" name="command" value="show_account"/>
-
-                        <input class="nav_button" type="submit" value="<c:out value="${profile}" />"/>
-
-                    </form>
-                    <form action="${pageContext.request.contextPath}/mpb" method="get">
-                        <input type="hidden" name="command" value="logout"/>
-
-
-                        <input class="nav_button" type="submit" value="<c:out value="${logout}" />"/>
-
-                    </form>
-
-                </c:when>
-
-                <c:otherwise>
-                    <a href="${pageContext.request.contextPath}/register">
-                        <div class="nav_button"> <c:out value="${register}" /></div>
+            <ul>
+                <li>
+                    <a href="${pageContext.request.contextPath}/index.jsp">
+                        <div class="nav_button"><c:out value="${home}" /></div>
                     </a>
-                    <a href="${pageContext.request.contextPath}/login">
-                        <div class="nav_button"><c:out value="${login}" /></div>
-                    </a>
-                </c:otherwise>
-            </c:choose>
+                </li>
+                <c:choose>
+                    <c:when test="${not empty sessionScope.userStatus}">
+                       <li> <form id="profile_form" action="${pageContext.request.contextPath}/mpb" method="get">
+                            <input type="hidden" name="command" value="show_account"/>
+
+                           <a href="javascript:{}" onclick="document.getElementById('profile_form').submit(); return false;">
+                               <c:out value="${profile}" /></a>
+
+                       </form></li>
+                       <li> <form id="logout_form" action="${pageContext.request.contextPath}/mpb" method="get">
+                            <input type="hidden" name="command" value="logout"/>
+
+                           <a href="javascript:{}" onclick="document.getElementById('logout_form').submit(); return false;">
+                               <c:out value="${logout}" /></a>
+                        </form></li>
+
+                    </c:when>
+
+                    <c:otherwise>
+                        <li>
+                        <a href="${pageContext.request.contextPath}/register">
+                             <c:out value="${register}" />
+                        </a>
+                        </li>
+                        <li>
+                        <a href="${pageContext.request.contextPath}/login">
+                            <c:out value="${login}" />
+                        </a>
+                        </li>
+                    </c:otherwise>
+                </c:choose>
+            </ul>
+
 
             <div class="lang_button">
             <form action="${pageContext.request.contextPath}/mpb" method="post">
@@ -60,6 +69,8 @@
                 <input id="ruButton" type="submit"  value=""/>
 
             </form>
+                </div>
+                <div class="lang_button">
             <form action="${pageContext.request.contextPath}/mpb" method="post">
                 <input type="hidden" name="command" value="change_language"/>
 
@@ -69,7 +80,7 @@
                 <input  type="submit" id="enButton" value=""/>
 
             </form>
-            </div>
+                    </div>
 
         </div>
     </div>

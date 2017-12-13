@@ -1,4 +1,4 @@
-package by.tr.web.exception.service;
+package by.tr.web.exception.service.user;
 
 public class InvalidLoginException extends UserServiceException {
 

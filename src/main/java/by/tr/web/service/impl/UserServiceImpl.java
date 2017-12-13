@@ -5,21 +5,21 @@ import by.tr.web.dao.factory.DAOFactory;
 import by.tr.web.domain.User;
 import by.tr.web.exception.dao.PasswordDAOException;
 import by.tr.web.exception.dao.UserDAOException;
-import by.tr.web.exception.service.IncorrectPasswordException;
-import by.tr.web.exception.service.NoSuchUserException;
-import by.tr.web.exception.service.UserAlreadyExistsException;
-import by.tr.web.exception.service.UserServiceException;
+import by.tr.web.exception.service.user.EMailAlreadyRegisteredException;
+import by.tr.web.exception.service.user.IncorrectPasswordException;
+import by.tr.web.exception.service.user.NoSuchUserException;
+import by.tr.web.exception.service.user.UserAlreadyExistsException;
+import by.tr.web.exception.service.user.UserServiceException;
 import by.tr.web.service.UserService;
 import by.tr.web.service.factory.ValidatorFactory;
-import by.tr.web.service.validation.impl.LoginValidatorImpl;
-import by.tr.web.service.validation.impl.RegisterValidatorImpl;
+import by.tr.web.service.validation.UserValidator;
 
 public class UserServiceImpl implements UserService {
 
     @Override
     public User register(String login, String password, String eMail) throws UserServiceException {
         ValidatorFactory validatorFactory = ValidatorFactory.getInstance();
-        RegisterValidatorImpl registerValidator =(RegisterValidatorImpl) validatorFactory.getRegisterValidator();
+        UserValidator registerValidator = validatorFactory.getRegisterValidator();
 
         boolean isDataValid = registerValidator.validate(login, password, eMail);
         if (!isDataValid) {
@@ -32,7 +32,11 @@ public class UserServiceImpl implements UserService {
         try {
             boolean isUserRegistered = userDAO.isUserRegistered(login);
             if (isUserRegistered) {
-                throw new UserAlreadyExistsException("User already exists");
+                throw new UserAlreadyExistsException("User " + login + " already exists");
+            }
+            boolean isEmailRegistered = userDAO.isEmailRegistered(eMail);
+            if (isEmailRegistered) {
+                throw new EMailAlreadyRegisteredException("E-mail " + eMail + " is already registered");
             } else {
                 user = new User(login, password, eMail);
                 userDAO.register(user);
@@ -46,7 +50,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User login(String login, String password) throws UserServiceException {
         ValidatorFactory validatorFactory = ValidatorFactory.getInstance();
-        LoginValidatorImpl loginValidatorImpl =(LoginValidatorImpl) validatorFactory.getLoginValidator();
+        UserValidator loginValidatorImpl = validatorFactory.getLoginValidator();
 
         boolean isDataValid = loginValidatorImpl.validate(login, password);
 

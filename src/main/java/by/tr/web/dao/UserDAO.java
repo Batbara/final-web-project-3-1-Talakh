@@ -9,4 +9,5 @@ public interface UserDAO {
     User login(String login, String password) throws UserDAOException;
 
     boolean isUserRegistered(String login) throws UserDAOException;
+    boolean isEmailRegistered(String eMail) throws UserDAOException;
 }

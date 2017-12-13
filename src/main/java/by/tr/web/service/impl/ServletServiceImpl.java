@@ -3,7 +3,7 @@ package by.tr.web.service.impl;
 import by.tr.web.dao.impl.connection_pool.ConnectionPoolDAO;
 import by.tr.web.dao.factory.DAOFactory;
 import by.tr.web.exception.dao.ConnectionPoolException;
-import by.tr.web.exception.service.ServletServiceException;
+import by.tr.web.exception.service.user.ServletServiceException;
 import by.tr.web.service.ServletService;
 
 public class ServletServiceImpl implements ServletService {

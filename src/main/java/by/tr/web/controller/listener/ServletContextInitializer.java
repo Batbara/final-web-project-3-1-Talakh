@@ -1,6 +1,6 @@
 package by.tr.web.controller.listener;
 
-import by.tr.web.exception.service.ServletServiceException;
+import by.tr.web.exception.service.user.ServletServiceException;
 import by.tr.web.service.ServletService;
 import by.tr.web.service.factory.ServiceFactory;
 

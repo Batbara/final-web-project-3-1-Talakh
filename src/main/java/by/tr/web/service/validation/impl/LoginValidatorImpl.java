@@ -1,8 +1,8 @@
 package by.tr.web.service.validation.impl;
 
-import by.tr.web.exception.service.IncorrectPasswordException;
-import by.tr.web.exception.service.InvalidLoginException;
-import by.tr.web.exception.service.UserServiceException;
+import by.tr.web.exception.service.user.IncorrectPasswordException;
+import by.tr.web.exception.service.user.InvalidLoginException;
+import by.tr.web.exception.service.user.UserServiceException;
 import by.tr.web.service.validation.UserValidator;
 
 import java.util.regex.Matcher;
@@ -25,7 +25,11 @@ public class LoginValidatorImpl implements UserValidator {
         }
         return password.length() >= MIN_PASSWORD_LENGTH && password.length() <= MAX_PASSWORD_LENGTH;
     }
-    public boolean validate(String login, String password) throws UserServiceException {
+
+    @Override
+    public boolean validate(String... parameters) throws UserServiceException {
+        String login = parameters[0];
+        String password = parameters[1];
         if(!checkLogin(login)){
             throw new InvalidLoginException("Incorrect login");
         }
@@ -34,4 +38,5 @@ public class LoginValidatorImpl implements UserValidator {
         }
         return true;
     }
+
 }
