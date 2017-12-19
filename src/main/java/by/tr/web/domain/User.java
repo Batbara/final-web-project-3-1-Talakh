@@ -14,7 +14,6 @@ public class User implements Serializable {
     private int id;
 
     public enum UserStatus {
-
         ADMIN, CASUAL_VIEWER, MOVIE_FAN, REVIEWER, CRITIC
     }
 

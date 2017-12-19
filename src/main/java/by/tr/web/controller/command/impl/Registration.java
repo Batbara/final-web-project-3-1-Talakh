@@ -1,7 +1,7 @@
 package by.tr.web.controller.command.impl;
 
-import by.tr.web.controller.FrontControllerParameter;
-import by.tr.web.controller.JSPPagePath;
+import by.tr.web.controller.constant.FrontControllerParameter;
+import by.tr.web.controller.constant.JSPPagePath;
 import by.tr.web.controller.command.Command;
 import by.tr.web.domain.User;
 import by.tr.web.exception.service.user.EMailAlreadyRegisteredException;

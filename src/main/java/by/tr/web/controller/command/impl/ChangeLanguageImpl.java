@@ -1,13 +1,17 @@
 package by.tr.web.controller.command.impl;
 
-import by.tr.web.controller.FrontControllerParameter;
+import by.tr.web.controller.constant.FrontControllerParameter;
 import by.tr.web.controller.command.Command;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.io.IOException;
 
+@XmlRootElement(name = "ChangeLanguageImpl")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class ChangeLanguageImpl implements Command {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException {

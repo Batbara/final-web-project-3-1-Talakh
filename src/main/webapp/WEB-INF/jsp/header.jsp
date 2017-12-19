@@ -28,7 +28,7 @@
                 <c:choose>
                     <c:when test="${not empty sessionScope.userStatus}">
                        <li> <form id="profile_form" action="${pageContext.request.contextPath}/mpb" method="get">
-                            <input type="hidden" name="command" value="show_account"/>
+                            <input type="hidden" name="command" value="take_account"/>
 
                            <a href="javascript:{}" onclick="document.getElementById('profile_form').submit(); return false;">
                                <c:out value="${profile}" /></a>

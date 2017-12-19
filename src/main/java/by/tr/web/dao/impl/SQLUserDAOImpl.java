@@ -65,9 +65,9 @@ public class SQLUserDAOImpl implements UserDAO {
         try {
             connection = connectionPool.takeConnection();
 
-            boolean passwordCorrect = isPasswordCorrect(connection, login, password);
-            if (!passwordCorrect) {
-                throw new PasswordDAOException("Unexpected error");
+            boolean existingPassword = isPasswordExisting(connection, login, password);
+            if (!existingPassword) {
+                throw new PasswordDAOException("No such password in data base");
             }
 
             preparedStatement = connection.prepareStatement(GET_USER_QUERY);
@@ -101,7 +101,7 @@ public class SQLUserDAOImpl implements UserDAO {
         return user;
     }
 
-    private boolean isPasswordCorrect(Connection connection, String login, String password) throws SQLException {
+    private boolean isPasswordExisting(Connection connection, String login, String password) throws SQLException {
 
         PreparedStatement preparedStatement = connection.prepareStatement(CHECK_PASSWORD_QUERY);
 

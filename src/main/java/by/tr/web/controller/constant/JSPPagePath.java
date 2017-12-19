@@ -1,4 +1,4 @@
-package by.tr.web.controller;
+package by.tr.web.controller.constant;
 
 public final class JSPPagePath {
     public static final String LOGIN_PAGE ="jsp/login.jsp";

@@ -1,7 +1,6 @@
 package by.tr.web.dao.impl.connection_pool;
 
 import by.tr.web.dao.impl.DBParameter;
-import by.tr.web.dao.impl.DBResourceManager;
 import by.tr.web.exception.dao.ConnectionPoolException;
 
 import java.sql.Connection;
@@ -9,6 +8,8 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.regex.Matcher;
@@ -33,19 +34,20 @@ public final class ConnectionPool {
     }
 
     private ConnectionPool() {
-        DBResourceManager dbResourceManager = DBResourceManager.getInstance();
+        ResourceBundle dbBundle =
+                ResourceBundle.getBundle(DBParameter.BASE_NAME, Locale.getDefault());
 
-        this.driverName = dbResourceManager.getDBParameter(DBParameter.DB_DRIVER);
-        this.url = dbResourceManager.getDBParameter(DBParameter.DB_URL);
-        this.user = dbResourceManager.getDBParameter(DBParameter.DB_USER);
-        this.password = dbResourceManager.getDBParameter(DBParameter.DB_PASSWORD);
+        this.driverName = dbBundle.getString(DBParameter.DB_DRIVER);
+        this.url = dbBundle.getString(DBParameter.DB_URL);
+        this.user = dbBundle.getString(DBParameter.DB_USER);
+        this.password = dbBundle.getString(DBParameter.DB_PASSWORD);
 
-        setPoolSize(dbResourceManager);
+        setPoolSize(dbBundle);
     }
 
-    private void setPoolSize(DBResourceManager dbResourceManager) {
+    private void setPoolSize(ResourceBundle dbBundle) {
 
-        String poolSize = dbResourceManager.getDBParameter(DBParameter.DB_POOL_SIZE);
+        String poolSize = dbBundle.getString(DBParameter.DB_POOL_SIZE);
         Matcher matcher = isNumberPattern.matcher(poolSize);
         if (matcher.matches()) {
             this.poolSize = Integer.parseInt(poolSize);

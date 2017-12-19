@@ -1,4 +1,4 @@
-package by.tr.web.controller;
+package by.tr.web.controller.constant;
 
 public final class FrontControllerParameter {
     public static final String COMMAND = "command";

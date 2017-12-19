@@ -21,7 +21,7 @@ public class UserServiceImpl implements UserService {
         ValidatorFactory validatorFactory = ValidatorFactory.getInstance();
         UserValidator registerValidator = validatorFactory.getRegisterValidator();
 
-        boolean isDataValid = registerValidator.validate(login, password, eMail);
+        boolean isDataValid = registerValidator.validateCredentials(login, password, eMail);
         if (!isDataValid) {
             throw new UserServiceException("Unexpected error");
         }
@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService {
         try {
             boolean isUserRegistered = userDAO.isUserRegistered(login);
             if (isUserRegistered) {
-                throw new UserAlreadyExistsException("User " + login + " already exists");
+                throw new UserAlreadyExistsException("User "+login+" already exists");
             }
             boolean isEmailRegistered = userDAO.isEmailRegistered(eMail);
             if (isEmailRegistered) {
@@ -52,7 +52,7 @@ public class UserServiceImpl implements UserService {
         ValidatorFactory validatorFactory = ValidatorFactory.getInstance();
         UserValidator loginValidatorImpl = validatorFactory.getLoginValidator();
 
-        boolean isDataValid = loginValidatorImpl.validate(login, password);
+        boolean isDataValid = loginValidatorImpl.validateCredentials(login, password);
 
         if (!isDataValid) {
             throw new UserServiceException("Unexpected error");

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<cp:commandList xmlns:cp="http://www.mpb.web.tr.by/commandProvider" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mpb.web.tr.by/commandProvider commandProvider.xsd">
+    <cp:command>
+        <cp:commandName>change_language</cp:commandName>
+        <cp:className>by.tr.web.controller.command.impl.ChangeLanguageImpl</cp:className>
+    </cp:command>
+    <cp:command>
+        <cp:commandName>login</cp:commandName>
+        <cp:className>by.tr.web.controller.command.impl.Logination</cp:className>
+    </cp:command>
+    <cp:command>
+        <cp:commandName>register</cp:commandName>
+        <cp:className>by.tr.web.controller.command.impl.Registration</cp:className>
+    </cp:command>
+    <cp:command>
+        <cp:commandName>logout</cp:commandName>
+        <cp:className>by.tr.web.controller.command.impl.LogoutImpl</cp:className>
+    </cp:command>
+    <cp:command>
+        <cp:commandName>take_account</cp:commandName>
+        <cp:className>by.tr.web.controller.command.impl.TakeAccountImpl</cp:className>
+    </cp:command>
+</cp:commandList>

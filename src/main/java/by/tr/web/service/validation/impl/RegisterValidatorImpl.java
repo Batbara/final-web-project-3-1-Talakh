@@ -1,9 +1,5 @@
 package by.tr.web.service.validation.impl;
 
-import by.tr.web.exception.service.user.IncorrectPasswordException;
-import by.tr.web.exception.service.user.InvalidEMailException;
-import by.tr.web.exception.service.user.InvalidLoginException;
-import by.tr.web.exception.service.user.UserServiceException;
 import by.tr.web.service.validation.UserValidator;
 
 import java.util.regex.Matcher;
@@ -27,24 +23,7 @@ public class RegisterValidatorImpl implements UserValidator {
         return password.length() >= MIN_PASSWORD_LENGTH && password.length() <= MAX_PASSWORD_LENGTH;
     }
 
-    @Override
-    public boolean validate(String... parameters) throws UserServiceException {
-        String login = parameters[0];
-        String password = parameters[1];
-        String eMail = parameters[2];
-        if(!checkLogin(login)){
-            throw new InvalidLoginException("Incorrect login");
-        }
-        if(!checkEMail(eMail)){
-            throw  new InvalidEMailException("Invalid email");
-        }
-        if(!checkPassword(password)){
-            throw new IncorrectPasswordException("Invalid password");
-        }
-        return true;
-    }
-
-    private boolean checkEMail(String eMail){
+    public boolean checkEMail(String eMail){
         if(eMail.isEmpty()){
             return false;
         }

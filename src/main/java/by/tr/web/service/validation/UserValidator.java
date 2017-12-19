@@ -1,5 +1,8 @@
 package by.tr.web.service.validation;
 
+import by.tr.web.exception.service.user.IncorrectPasswordException;
+import by.tr.web.exception.service.user.InvalidEMailException;
+import by.tr.web.exception.service.user.InvalidLoginException;
 import by.tr.web.exception.service.user.UserServiceException;
 
 public interface UserValidator {
@@ -9,8 +12,28 @@ public interface UserValidator {
     int MAX_PASSWORD_LENGTH = 16;
 
     boolean checkLogin(String login);
-
     boolean checkPassword(String password);
-    boolean validate(String ... parameters) throws UserServiceException;
+    boolean checkEMail(String email);
 
+    default boolean validateCredentials (String login, String password) throws UserServiceException{
+        if(!checkLogin(login)){
+            throw new InvalidLoginException("Incorrect login");
+        }
+        if(!checkPassword(password)){
+            throw new IncorrectPasswordException("Invalid password");
+        }
+        return true;
+    }
+    default boolean validateCredentials (String login, String password, String eMail) throws UserServiceException{
+        if(!checkLogin(login)){
+            throw new InvalidLoginException("Incorrect login");
+        }
+        if(!checkEMail(eMail)){
+            throw  new InvalidEMailException("Invalid email");
+        }
+        if(!checkPassword(password)){
+            throw new IncorrectPasswordException("Invalid password");
+        }
+        return true;
+    }
 }
