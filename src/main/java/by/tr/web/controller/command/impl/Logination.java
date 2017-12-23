@@ -10,6 +10,8 @@ import by.tr.web.exception.service.user.NoSuchUserException;
 import by.tr.web.exception.service.user.UserServiceException;
 import by.tr.web.service.UserService;
 import by.tr.web.service.factory.ServiceFactory;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -19,6 +21,8 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 public class Logination implements Command {
+    private final static Logger logger = Logger.getLogger(Logination.class);
+
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String login = request.getParameter(FrontControllerParameter.LOGIN);
@@ -38,14 +42,18 @@ public class Logination implements Command {
 
             response.sendRedirect(JSPPagePath.USER_ACCOUNT_PATH);
         } catch (InvalidLoginException ex) {
+            logger.error("Invalid login",ex);
             showErrorMessage(request, response, FrontControllerParameter.LOGIN);
-        }catch (NoSuchUserException e) {
+        } catch (NoSuchUserException e) {
+            logger.error("No such user", e);
             showErrorMessage(request, response, FrontControllerParameter.USER);
-        } catch (IncorrectPasswordException e ) {
+        } catch (IncorrectPasswordException e) {
+            logger.error("Incorrect password", e);
             showErrorMessage(request, response, FrontControllerParameter.PASSWORD);
         } catch (UserServiceException ex) {
+            logger.log(Level.FATAL, "Internal error", ex);
             RequestDispatcher dispatcher = request.getRequestDispatcher(JSPPagePath.INTERNAL_ERROR_PAGE);
-            dispatcher.forward(request,response);
+            dispatcher.forward(request, response);
         }
 
     }

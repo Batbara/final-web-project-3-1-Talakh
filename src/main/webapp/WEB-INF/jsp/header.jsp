@@ -12,13 +12,57 @@
     <fmt:message bundle="${loc}" key="local.navButton.register" var="register" />
     <fmt:message bundle="${loc}" key="local.navButton.home" var="home" />
     <fmt:message bundle="${loc}" key="local.navButton.profile" var="profile" />
-
+    <fmt:message bundle="${loc}" key="local.navButton.movies" var="movies" />
+    <fmt:message bundle="${loc}" key="local.navButton.tv" var="tvShows" />
 </head>
 <body>
 <header>
     <div id="top_bar_black">
-        <div id="logo_image"></div>
-        <div id="nav_block">
+        <div class="logo_image">
+            <a href="${pageContext.request.contextPath}/index.jsp">
+                <img src="${pageContext.request.contextPath}/images/icon.png">
+            </a>
+        </div>
+        <div class="movies_nav">
+            <ul>
+                <li class="right_li">
+                    <a href="${pageContext.request.contextPath}/jsp/movies.jsp">
+                        <div class="nav_button"><c:out value="${movies}" /></div>
+                    </a>
+                </li>
+                <li>
+                    <a href="${pageContext.request.contextPath}/jsp/tv.jsp">
+                        <div class="nav_button"><c:out value="${tvShows}" /></div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="left_nav">
+            <div class="lang_buttons">
+                <div class="lang_button">
+                    <form action="${pageContext.request.contextPath}/mpb" method="post">
+                        <input type="hidden" name="command" value="change_language"/>
+
+                        <input type="hidden" name="address" value="${pageContext.request.requestURL}"/>
+                        <input type="hidden" name="query" value="${pageContext.request.queryString}"/>
+                        <input type="hidden" name="local" value="ru"/>
+                        <input id="ruButton" type="submit"  value=""/>
+
+                    </form>
+                </div>
+                <div class="lang_button">
+                    <form action="${pageContext.request.contextPath}/mpb" method="post">
+                        <input type="hidden" name="command" value="change_language"/>
+
+                        <input type="hidden" name="address" value="${pageContext.request.requestURL}"/>
+                        <input type="hidden" name="query" value="${pageContext.request.queryString}"/>
+                        <input type="hidden" name="local" value="en"/>
+                        <input  type="submit" id="enButton" value=""/>
+
+                    </form>
+                </div>
+            </div>
+        <div class="nav_block">
             <ul>
                 <li>
                     <a href="${pageContext.request.contextPath}/index.jsp">
@@ -57,30 +101,8 @@
                     </c:otherwise>
                 </c:choose>
             </ul>
+        </div>
 
-
-            <div class="lang_button">
-            <form action="${pageContext.request.contextPath}/mpb" method="post">
-                <input type="hidden" name="command" value="change_language"/>
-
-                <input type="hidden" name="address" value="${pageContext.request.requestURL}"/>
-                <input type="hidden" name="query" value="${pageContext.request.queryString}"/>
-                <input type="hidden" name="local" value="ru"/>
-                <input id="ruButton" type="submit"  value=""/>
-
-            </form>
-                </div>
-                <div class="lang_button">
-            <form action="${pageContext.request.contextPath}/mpb" method="post">
-                <input type="hidden" name="command" value="change_language"/>
-
-                <input type="hidden" name="address" value="${pageContext.request.requestURL}"/>
-                <input type="hidden" name="query" value="${pageContext.request.queryString}"/>
-                <input type="hidden" name="local" value="en"/>
-                <input  type="submit" id="enButton" value=""/>
-
-            </form>
-                    </div>
 
         </div>
     </div>

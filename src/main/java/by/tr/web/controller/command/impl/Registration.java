@@ -12,6 +12,8 @@ import by.tr.web.exception.service.user.UserAlreadyExistsException;
 import by.tr.web.exception.service.user.UserServiceException;
 import by.tr.web.service.UserService;
 import by.tr.web.service.factory.ServiceFactory;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -21,7 +23,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 public class Registration implements Command {
-
+    private final static Logger logger = Logger.getLogger(Registration.class);
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
@@ -42,14 +44,19 @@ public class Registration implements Command {
 
             response.sendRedirect(JSPPagePath.USER_ACCOUNT_PATH);
         } catch (IncorrectPasswordException ex) {
+            logger.error("Incorrect password", ex);
             showRegisterError(request, response, FrontControllerParameter.PASSWORD);
         } catch (InvalidLoginException ex) {
+            logger.error("Invalid login",ex);
             showRegisterError(request, response, FrontControllerParameter.LOGIN);
         } catch (InvalidEMailException | EMailAlreadyRegisteredException ex) {
+            logger.error("E-mail error", ex);
             showRegisterError(request, response, FrontControllerParameter.EMAIL);
         } catch (UserAlreadyExistsException ex) {
+            logger.error("User already exists", ex);
             showRegisterError(request, response, FrontControllerParameter.USER);
         } catch (UserServiceException e) {
+            logger.log(Level.FATAL, "Internal error", e);
             RequestDispatcher dispatcher = request.getRequestDispatcher(JSPPagePath.INTERNAL_ERROR_PAGE);
             dispatcher.forward(request, response);
         }

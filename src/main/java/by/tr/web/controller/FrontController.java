@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-
 public class FrontController extends HttpServlet {
     private static final long serialVersionUID = 7346647311889363507L;
 

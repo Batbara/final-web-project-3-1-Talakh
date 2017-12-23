@@ -6,29 +6,44 @@ import by.tr.web.exception.controller.CommandProviderError;
 import by.tr.web.exception.controller.CommandProviderException;
 import by.tr.web.exception.controller.ConnectionPoolSevereError;
 import by.tr.web.exception.dao.ConnectionPoolException;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
+import java.io.File;
 
 public class ServletContextInitializer implements ServletContextListener {
 
+    private final static Logger logger = Logger.getLogger(ServletContextInitializer.class);
     public ServletContextInitializer() {
     }
 
-    public void contextInitialized(ServletContextEvent sce) {
+    public void contextInitialized(ServletContextEvent contextEvent) {
 
         initializeConnectionPool();
         initializeCommandProvider();
+        initializeLogger(contextEvent);
     }
 
     public void contextDestroyed(ServletContextEvent sce) {
     }
 
+    private void initializeLogger(ServletContextEvent contextEvent){
+        ServletContext context = contextEvent.getServletContext();
+        String log4jConfigFile = context.getInitParameter("log4j-config-location");
+        String fullPath = context.getRealPath("") + File.separator + log4jConfigFile;
+
+        PropertyConfigurator.configure(fullPath);
+    }
     private void initializeConnectionPool() {
         ConnectionPool connectionPool = ConnectionPool.getInstance();
         try {
             connectionPool.initPoolData();
         } catch (ConnectionPoolException e) {
+            logger.log(Level.FATAL, "Failed to init connection pool", e);
             throw new ConnectionPoolSevereError("Failed to init connection pool", e);
         }
     }
@@ -38,6 +53,7 @@ public class ServletContextInitializer implements ServletContextListener {
         try {
             commandProvider.initCommandProvider();
         } catch (CommandProviderException e) {
+            logger.log(Level.FATAL, "Failed to init command provider", e);
             throw new CommandProviderError("Failed to init command provider", e);
         }
     }

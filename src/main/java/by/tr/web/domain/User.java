@@ -6,12 +6,14 @@ public class User implements Serializable {
 
     private static final long serialVersionUID = -8141596548978008167L;
 
+    private int id;
+
     private String userName;
     private String eMail;
     private String password;
+
     private UserStatus userStatus;
     private boolean isBanned;
-    private int id;
 
     public enum UserStatus {
         ADMIN, CASUAL_VIEWER, MOVIE_FAN, REVIEWER, CRITIC

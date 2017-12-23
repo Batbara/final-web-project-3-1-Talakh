@@ -10,11 +10,19 @@
     <servlet>
         <servlet-name>FrontController</servlet-name>
         <servlet-class>by.tr.web.controller.FrontController</servlet-class>
+
     </servlet>
+
     <servlet-mapping>
         <servlet-name>FrontController</servlet-name>
         <url-pattern>/mpb</url-pattern>
     </servlet-mapping>
+
+    <context-param>
+        <param-name>log4j-config-location</param-name>
+        <param-value>WEB-INF/classes/log4j.properties</param-value>
+    </context-param>
+
     <servlet>
         <servlet-name>LogIn</servlet-name>
         <jsp-file>/jsp/login.jsp</jsp-file>
@@ -23,6 +31,7 @@
         <servlet-name>LogIn</servlet-name>
         <url-pattern>/login</url-pattern>
     </servlet-mapping>
+
     <servlet>
         <servlet-name>Register</servlet-name>
         <jsp-file>/jsp/register.jsp</jsp-file>
@@ -31,6 +40,7 @@
         <servlet-name>Register</servlet-name>
         <url-pattern>/register</url-pattern>
     </servlet-mapping>
+
     <servlet>
         <servlet-name>Account</servlet-name>
         <jsp-file>/jsp/account.jsp</jsp-file>
@@ -39,6 +49,25 @@
         <servlet-name>Account</servlet-name>
         <url-pattern>/account</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>Movies</servlet-name>
+        <jsp-file>/jsp/movies.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Movies</servlet-name>
+        <url-pattern>/movies</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>TV</servlet-name>
+        <jsp-file>/jsp/tv.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>TV</servlet-name>
+        <url-pattern>/tv</url-pattern>
+    </servlet-mapping>
+
     <session-config>
         <session-timeout>30</session-timeout>
     </session-config>

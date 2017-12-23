@@ -5,6 +5,9 @@ import by.tr.web.dao.impl.connection_pool.ConnectionPool;
 import by.tr.web.domain.User;
 import by.tr.web.exception.dao.PasswordDAOException;
 import by.tr.web.exception.dao.UserDAOException;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -14,7 +17,7 @@ import java.sql.Statement;
 
 public class SQLUserDAOImpl implements UserDAO {
     private ConnectionPool connectionPool = ConnectionPool.getInstance();
-
+    private static final Logger logger = Logger.getLogger(SQLUserDAOImpl.class);
 
     private String REGISTER_QUERY = "INSERT INTO mpb.user (user_name, user_password,user_email) " +
             "VALUES (?, MD5(CONCAT(?,CURRENT_TIMESTAMP)), ?)";
@@ -50,6 +53,7 @@ public class SQLUserDAOImpl implements UserDAO {
 
             return true;
         } catch (SQLException e) {
+            logger.error("Failed to register user", e);
             throw new UserDAOException("Failed to register user", e);
         } finally {
             connectionPool.closeConnection(connection, preparedStatement, resultSet);
@@ -58,7 +62,6 @@ public class SQLUserDAOImpl implements UserDAO {
 
     @Override
     public User login(String login, String password) throws UserDAOException {
-
         Connection connection = null;
         ResultSet resultSet = null;
         PreparedStatement preparedStatement = null;
@@ -67,6 +70,7 @@ public class SQLUserDAOImpl implements UserDAO {
 
             boolean existingPassword = isPasswordExisting(connection, login, password);
             if (!existingPassword) {
+                logger.log(Level.WARN, "No such password in data base");
                 throw new PasswordDAOException("No such password in data base");
             }
 
@@ -85,6 +89,7 @@ public class SQLUserDAOImpl implements UserDAO {
 
             return user;
         } catch (SQLException e) {
+            logger.error("Failed to login user", e);
             throw new UserDAOException("Failed to login user", e);
         } finally {
             connectionPool.closeConnection(connection, preparedStatement, resultSet);
@@ -92,6 +97,15 @@ public class SQLUserDAOImpl implements UserDAO {
 
     }
 
+    @Override
+    public boolean isUserRegistered(String login) throws UserDAOException {
+        return checkForRegistration(CHECK_USER_QUERY, login);
+    }
+
+    @Override
+    public boolean isEmailRegistered(String eMail) throws UserDAOException {
+        return checkForRegistration(CHECK_EMAIL_QUERY, eMail);
+    }
     private User formUser(int id, String login, String eMail, String userStatus) {
         User user = new User();
         user.setId(id);
@@ -100,7 +114,6 @@ public class SQLUserDAOImpl implements UserDAO {
         user.setUserStatus(userStatus);
         return user;
     }
-
     private boolean isPasswordExisting(Connection connection, String login, String password) throws SQLException {
 
         PreparedStatement preparedStatement = connection.prepareStatement(CHECK_PASSWORD_QUERY);
@@ -113,18 +126,6 @@ public class SQLUserDAOImpl implements UserDAO {
         return resultSet.next();
 
     }
-
-
-    @Override
-    public boolean isUserRegistered(String login) throws UserDAOException {
-        return checkForRegistration(CHECK_USER_QUERY, login);
-    }
-
-    @Override
-    public boolean isEmailRegistered(String eMail) throws UserDAOException {
-        return checkForRegistration(CHECK_EMAIL_QUERY, eMail);
-    }
-
     private boolean checkForRegistration(String query, String parameter) throws UserDAOException {
         ResultSet resultSet = null;
         PreparedStatement preparedStatement = null;
@@ -138,8 +139,9 @@ public class SQLUserDAOImpl implements UserDAO {
 
             return resultSet.next();
         } catch (SQLException e) {
-
-            throw new UserDAOException("Cannot check if \'" + parameter + "\' is registered", e);
+            String errorMessage = "Cannot check if \'" + parameter + "\' is registered";
+            logger.error(errorMessage, e);
+            throw new UserDAOException(errorMessage, e);
         } finally {
             connectionPool.closeConnection(connection, preparedStatement, resultSet);
         }
