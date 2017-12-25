@@ -1,0 +1,72 @@
+@import 'https://fonts.googleapis.com/css?family=Alegreya+Sans+SC';
+@import 'https://fonts.googleapis.com/css?family=Fredericka+the+Great';
+.movie-table {
+    font-family: 'Alegreya Sans SC', sans-serif;
+    color: #595151;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 500px;
+}
+.movie-table table {
+    border: 10px solid #50434D;
+    background-color: #B8C99D;
+}
+.poster {
+    width: auto;
+    height: 120px;
+}
+.rate {
+    font-family: 'Fredericka the Great', cursive;
+    color: #BF496A;
+    font-size: 20px;
+}
+.rate img {
+    vert-align: middle;
+}
+.movie-table td{
+    width: 150px;
+    text-align: center;
+    vertical-align: middle;
+    border-bottom: 10px solid #50434D;
+}
+.order, .onPage {
+    font-family: 'Alegreya Sans SC', sans-serif;
+    display: flex;
+    margin-left: 50px;
+    font-size: 15px;
+    color: #50434D;
+}
+option {
+    font-family: 'Alegreya Sans SC', sans-serif;
+    font-size: 15px;
+    color: #50434D;
+}
+.navigation ul{
+    display: flex;
+}
+.navigation > li{
+    display: -webkit-flex;
+    display: flex;
+    flex: 0 1 auto;
+}
+.pageButton{
+    border: none;
+    overflow: hidden;
+    display: flex;
+    width: 40px;
+    height: 40px;
+    font-family: 'Amatic SC', cursive;
+    font-size: 30px;
+    background-color: #595151;
+    color: #B8C99D;
+}
+.currButton {
+    width: 40px;
+    height: 40px;
+    color: #595151;
+    font-family: 'Amatic SC', cursive;
+    font-size: 30px;
+    background-color: #B8C99D;
+}

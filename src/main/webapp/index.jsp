@@ -4,16 +4,19 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <html>
 <head>
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/content.css">
     <fmt:setLocale value="${sessionScope.local}"/>
     <fmt:setBundle basename="localization.local" var="loc"/>
 
 </head>
 <body>
-<div class="wrapper">
-    <jsp:include page="/WEB-INF/jsp/header.jsp"/>
-    <footer>
+<jsp:include page="/WEB-INF/jsp/header.jsp"/>
+<div class="main">
+    <nav class="side-nav"></nav>
+    <article></article>
+    <aside></aside>
 
-    </footer>
 </div>
+<jsp:include page="/WEB-INF/jsp/footer.jsp"/>
 </body>
 </html>

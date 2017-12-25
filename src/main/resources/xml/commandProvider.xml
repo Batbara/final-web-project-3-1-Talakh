@@ -20,4 +20,8 @@
         <cp:commandName>take_account</cp:commandName>
         <cp:className>by.tr.web.controller.command.impl.TakeAccountImpl</cp:className>
     </cp:command>
+    <cp:command>
+        <cp:commandName>take_movie_list</cp:commandName>
+        <cp:className>by.tr.web.controller.command.impl.TakeMovieListImpl</cp:className>
+    </cp:command>
 </cp:commandList>

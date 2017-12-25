@@ -1,4 +1,4 @@
-package by.tr.web.exception.dao;
+package by.tr.web.exception.dao.user;
 
 public class PasswordDAOException extends UserDAOException {
     private static final long serialVersionUID = 2156066305953020607L;

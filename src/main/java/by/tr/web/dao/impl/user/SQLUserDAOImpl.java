@@ -1,10 +1,10 @@
-package by.tr.web.dao.impl;
+package by.tr.web.dao.impl.user;
 
 import by.tr.web.dao.UserDAO;
 import by.tr.web.dao.impl.connection_pool.ConnectionPool;
 import by.tr.web.domain.User;
-import by.tr.web.exception.dao.PasswordDAOException;
-import by.tr.web.exception.dao.UserDAOException;
+import by.tr.web.exception.dao.user.PasswordDAOException;
+import by.tr.web.exception.dao.user.UserDAOException;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 

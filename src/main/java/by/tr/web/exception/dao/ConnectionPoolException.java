@@ -1,6 +1,6 @@
 package by.tr.web.exception.dao;
 
-public class ConnectionPoolException extends UserDAOException {
+public class ConnectionPoolException extends RuntimeException {
     private static final long serialVersionUID = 6549626552288340993L;
 
     public ConnectionPoolException() {

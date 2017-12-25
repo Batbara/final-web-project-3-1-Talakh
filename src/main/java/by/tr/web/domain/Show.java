@@ -3,6 +3,8 @@ package by.tr.web.domain;
 import java.io.Serializable;
 import java.sql.Date;
 import java.sql.Time;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.List;
 
 public class Show implements Serializable{
@@ -20,6 +22,8 @@ public class Show implements Serializable{
 
     private List<Genre> genreList;
     private List<Country> countryList;
+
+    private double userRating;
 
     public Show(){}
 
@@ -106,6 +110,15 @@ public class Show implements Serializable{
         this.poster = poster;
     }
 
+    public String getUserRating() {
+        NumberFormat formatter = new DecimalFormat("#0.00");
+        return formatter.format(userRating);
+    }
+
+    public void setUserRating(double userRating) {
+        this.userRating = userRating;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -115,6 +128,7 @@ public class Show implements Serializable{
 
         if (showID != show.showID) return false;
         if (year != show.year) return false;
+        if (userRating != show.userRating) return false;
         if (!title.equals(show.title)) return false;
         if (!synopsis.equals(show.synopsis)) return false;
         if (!poster.equals(show.poster)) return false;
@@ -122,6 +136,7 @@ public class Show implements Serializable{
         if (!runtime.equals(show.runtime)) return false;
         if (!genreList.equals(show.genreList)) return false;
         return countryList.equals(show.countryList);
+
     }
 
     @Override

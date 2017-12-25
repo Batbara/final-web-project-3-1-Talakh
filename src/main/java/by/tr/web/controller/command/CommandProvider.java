@@ -18,12 +18,6 @@ public class CommandProvider {
     private static CommandProvider instance = new CommandProvider();
 
     private CommandProvider() {
-      /*  commands.put(CommandName.LOGIN, new Logination());
-        commands.put(CommandName.REGISTER, new Registration());
-        commands.put(CommandName.SHOW_ACCOUNT, new TakeAccountImpl());
-        commands.put(CommandName.CHANGE_LANGUAGE,new ChangeLanguageImpl());
-        commands.put(CommandName.LOGOUT, new LogoutImpl());*/
-
     }
 
     public static CommandProvider getInstance() {

@@ -5,9 +5,8 @@
 <html>
 <head>
     <title>User profile - MotionPicture Bank [MPB]</title>
-    <style>
-        <jsp:include  page="/WEB-INF/css/stylesheet.css"/>
-    </style>
+
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/header.css">
     <fmt:setLocale value="${sessionScope.local}" />
     <fmt:setBundle basename="localization.local" var="loc" />
     <fmt:message bundle="${loc}" key="local.navButton.logout" var="logout"/>
@@ -16,6 +15,6 @@
 <body>
     <jsp:include page="/WEB-INF/jsp/header.jsp"/>
 <h1>This is your account <c:out value="${sessionScope.user.userName}"/>, welcome!</h1>
-
+    <jsp:include page="/WEB-INF/jsp/footer.jsp"/>
 </body>
 </html>
