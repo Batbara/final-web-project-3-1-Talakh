@@ -35,3 +35,26 @@ var getUrlParameter = function getUrlParameter(sParam) {
         }
     }
 };
+
+$(document).on("submit", "#banForm", function(event) {
+    var form = $(this);
+
+    $.ajax({
+        type: form.attr('method'),
+        url: form.attr('action'),
+        data: form.serialize(),
+        success: function (data) {
+            if(data === 'success') {
+                $('#banSuccessAlert').show();
+            } else {
+                $('#banFailureAlert').show();
+            }
+        },
+        error: function (data) {
+            $('#banFailureAlert').show();
+        }
+    });
+
+    event.preventDefault();
+
+});

@@ -13,8 +13,8 @@ public final class FrontControllerParameter {
     public static final String TEXT_HTML_CONTENT_TYPE = "text/html";
     public static final String USER_STATUS ="userStatus";
     public static final String ADDRESS ="address";
-
-
-
+    public static final String SUCCESS_RESPONSE = "success";
+    public static final String FAILURE_RESPONSE = "failure";
+    private FrontControllerParameter(){}
 
 }

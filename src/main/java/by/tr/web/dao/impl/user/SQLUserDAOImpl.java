@@ -74,6 +74,13 @@ public class SQLUserDAOImpl implements UserDAO {
             "SELECT mpb.user.user_id " +
                     "   FROM mpb.user " +
                     "  WHERE mpb.user.user_email = ?";
+    private String BAN_USER_QUERY =
+            "UPDATE mpb.user" +
+            "   SET user_is_banned = 1," +
+            "       user_ban_time = ?," +
+            "        user_unban_time = ?," +
+            "        user_ban_reason_id = ?" +
+            " WHERE user_id = ?";
 
     @Override
     public boolean register(User user) throws UserDAOException {
@@ -215,8 +222,28 @@ public class SQLUserDAOImpl implements UserDAO {
     }
 
     @Override
-    public void banUser(User user) {
+    public void banUser(User user) throws UserDAOException{
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        try {
+            connection = connectionPool.takeConnection();
+            preparedStatement = connection.prepareStatement(BAN_USER_QUERY);
 
+            BanInfo banInfo = user.getBanInfo();
+            preparedStatement.setTimestamp(1, banInfo.getBanTime());
+            preparedStatement.setTimestamp(2, banInfo.getUnbanTime());
+            preparedStatement.setInt(3, banInfo.getBanReason().getId());
+            preparedStatement.setInt(4, user.getId());
+
+            int rowsAffected = preparedStatement.executeUpdate();
+            if(rowsAffected == 0){
+                throw new UserDAOException("Unexpected result from update query");
+            }
+        } catch (SQLException e) {
+            throw new UserDAOException("SQL error while banning user", e);
+        } finally {
+            connectionPool.closeConnection(connection, preparedStatement);
+        }
     }
 
     @Override

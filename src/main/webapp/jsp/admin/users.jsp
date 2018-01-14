@@ -20,6 +20,10 @@
     <fmt:message bundle="${loc}" key="local.admin.usertable.action" var="actionHeader"/>
     <fmt:message bundle="${loc}" key="local.admin.usertable.name" var="usernameHeader"/>
     <fmt:message bundle="${loc}" key="local.admin.usertable.status" var="statusHeader"/>
+    <fmt:message bundle="${loc}" key="local.message.banFail" var="banFailed"/>
+    <fmt:message bundle="${loc}" key="local.message.banSuccessful" var="banSuccesful"/>
+    <fmt:message bundle="${loc}" key="local.message.success" var="successMessage"/>
+    <fmt:message bundle="${loc}" key="local.message.failure" var="failureMessage"/>
 
     <title>${title} | MotionPicture Bank [MPB]</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -91,7 +95,7 @@
 
                             <tr class="bannedUser" data-toggle="collapse" data-target="#${currentUser.id}">
                                 <td>
-                                    <div class="userID"><b><c:out value="${currentUser.id}"/></b></div>
+                                    <div class="userID"><c:out value="${currentUser.id}"/></div>
                                 </td>
                                 <td><c:out value="${currentUser.userName}"/></td>
                                 <td><c:out value="${currentUser.eMail}"/></td>
@@ -111,7 +115,7 @@
                                     <p>
                                             ${ban}: <c:out value="${currentUser.banInfo.banTime}"/> <br/>
                                             ${unban}: <c:out value="${currentUser.banInfo.unbanTime}"/> <br/>
-                                            ${banReason}: <c:out value="${currentUser.banInfo.banReason}"/>
+                                            ${banReason}: <c:out value="${currentUser.banInfo.banReason.reason}"/>
                                     </p></td>
                             </tr>
 
@@ -120,71 +124,90 @@
 
                             <tr>
                                 <td>
-                                    <div class="userID"><b><c:out value="${currentUser.id}"/></b></div>
+                                    <div class="userID ${currentUser.id}"><c:out value="${currentUser.id}"/></div>
                                 </td>
-                                <td><c:out value="${currentUser.userName}"/></td>
+                                <td class="userName ${currentUser.id}"><c:out value="${currentUser.userName}"/></td>
                                 <td><c:out value="${currentUser.eMail}"/></td>
                                 <td><c:out value="${currentUser.userStatus}"/></td>
                                 <td>
                                     <c:if test="${currentUser.userStatus ne 'ADMIN'}">
-                                        <span data-toggle="modal"  data-target="#banDialog">
-
-                                        <a href="#" data-toggle="tooltip" data-placement="bottom" title="${ban}">
+                                        <span  data-toggle="tooltip" data-placement="bottom" title="${ban}" >
+                                        <a data-toggle="modal" data-target="#banDialog" class="banButton ${currentUser.id}" href="#"
+                                           >
                                             <span class="glyphicon glyphicon-remove"></span>
                                         </a>
                                         </span>
-
-                                    <div class="modal fade" id="banDialog" role="dialog">
-                                        <div class="modal-dialog">
-
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <button type="button" class="close" data-dismiss="modal">&times;
-                                                    </button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <form class="form-horizontal">
-                                                        <div class="form-group">
-                                                            <label class="control-label col-sm-4"
-                                                                   for="banTime">${banTime}:</label>
-                                                            <div class="col-sm-6">
-                                                                <input type="datetime-local" class="form-control" id="banTime">
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="form-group">
-                                                            <label class="control-label col-sm-4"
-                                                                   for="unbanTime">${unbanTime}:</label>
-                                                            <div class="col-sm-6">
-                                                                <input type="datetime-local" class="form-control" id="unbanTime">
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label for="sel1">${banReason}:</label>
-                                                            <select class="form-control" id="sel1">
-                                                                <option>1</option>
-                                                                <option>2</option>
-                                                                <option>3</option>
-                                                                <option>4</option>
-                                                            </select>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <div class="col-sm-offset-5 col-sm-1">
-                                                                <button type="submit" class="btn btn-default">${ban}</button>
-                                                            </div>
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                            <span class="glyphicon glyphicon-trash"></span>
-                                            <span class="glyphicon glyphicon-sunglasses"></span>
-                                            </c:if>
+                                        <span class="glyphicon glyphicon-trash"></span>
+                                        <span class="glyphicon glyphicon-sunglasses"></span>
+                                    </c:if>
                                 </td>
                             </tr>
                         </c:otherwise>
                     </c:choose>
                 </c:forEach>
             </table>
+
+        </div>
+        <div class="modal fade" id="banDialog" role="dialog">
+            <div class="modal-dialog">
+
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;
+                        </button>
+                        <h5 class="modal-title" id="banUserTitle"></h5>
+                    </div>
+                    <div class="modal-body">
+                        <form class="form-horizontal" method="get" action="${pageContext.request.contextPath}/mpb"
+                              id="banForm">
+                            <input type="hidden" name="command" value="ban_user">
+                            <input type="hidden" name="userBanID" value="" id="userBanID">
+                            <c:set var="banReasonList" value="${requestScope.banReasonList}" scope="session"/>
+                            <c:set var="userList" value="${requestScope.userList}" scope="session"/>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4"
+                                       for="banTime">${banTime}:</label>
+                                <div class="col-sm-6">
+                                    <input type="datetime-local" class="form-control" id="banTime" name="banTime">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+
+                                <label class="control-label col-sm-4"
+                                       for="unbanTime">${unbanTime}:</label>
+                                <div class="col-sm-6">
+                                    <input type="datetime-local" class="form-control" id="unbanTime" name="unbanTime">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4" for="sel1">${banReason}:</label>
+                                <div class="col-xs-5">
+                                    <select class="form-control" id="sel1" name="banReason">
+                                        <c:forEach items="${requestScope.banReasonList}" var="currBanReason">
+                                            <option>${currBanReason.reason}</option>
+                                        </c:forEach>
+
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-offset-5 col-sm-1">
+                                    <button type="submit" class="btn btn-default">${ban}</button>
+                                </div>
+                            </div>
+                        </form>
+                        <div class="alert alert-success alert-dismissable" id="banSuccessAlert">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                            <strong>${successMessage}!</strong> ${banSuccesful}
+                        </div>
+                        <div class="alert alert-danger alert-dismissable" id="banFailureAlert">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                            <strong>${failureMessage}!</strong> ${banFailed}
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </article>
     <aside>

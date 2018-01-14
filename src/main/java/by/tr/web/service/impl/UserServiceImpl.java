@@ -30,7 +30,7 @@ public class UserServiceImpl implements UserService {
 
         boolean isDataValid = registerValidator.validateCredentials(login, password, eMail);
         if (!isDataValid) {
-            throw new UserServiceException("Unexpected error while validating user register credentials");
+            throw new ServiceException("Unexpected error while validating user register credentials");
         }
         DAOFactory daoFactory = DAOFactory.getInstance();
         UserDAO userDAO = daoFactory.getUserDAO();
@@ -49,7 +49,7 @@ public class UserServiceImpl implements UserService {
                 userDAO.register(user);
             }
         } catch (UserDAOException ex) {
-            throw new UserServiceException("Error while registering user", ex);
+            throw new ServiceException("Error while registering user", ex);
         }
         return user;
     }
@@ -62,7 +62,7 @@ public class UserServiceImpl implements UserService {
         boolean isDataValid = loginValidatorImpl.validateCredentials(login, password);
 
         if (!isDataValid) {
-            throw new UserServiceException("Unexpected error while validating user login credentials");
+            throw new ServiceException("Unexpected error while validating user login credentials");
         }
         DAOFactory daoFactory = DAOFactory.getInstance();
         UserDAO userDAO = daoFactory.getUserDAO();
@@ -74,13 +74,13 @@ public class UserServiceImpl implements UserService {
             } else {
                 user = userDAO.login(login, password);
                 if (user == null) {
-                    throw new UserServiceException("Unexpected logging error");
+                    throw new ServiceException("Unexpected logging error");
                 }
             }
         } catch (PasswordDAOException e) {
             throw new IncorrectPasswordException("Incorrect password", e);
         } catch (UserDAOException ex) {
-            throw new UserServiceException("Error while login user", ex);
+            throw new ServiceException("Error while login user", ex);
         }
         return user;
 
@@ -91,7 +91,7 @@ public class UserServiceImpl implements UserService {
         DataTypeValidator validator = ValidatorFactory.getInstance().getDataTypeValidator();
         boolean isDataValid = validator.validateInputParameters(startRecordNum, recordsToTake, lang);
         if (!isDataValid) {
-            throw new UserServiceException("Unexpected result from input validation");
+            throw new ServiceException("Unexpected result from input validation");
         }
 
         DAOFactory daoFactory = DAOFactory.getInstance();
@@ -100,7 +100,7 @@ public class UserServiceImpl implements UserService {
         try {
             userList = userDAO.takeUserList(startRecordNum, recordsToTake, lang);
         } catch (UserDAOException e) {
-            throw new UserServiceException("Unable to get users list from data base", e);
+            throw new ServiceException("Unable to get users list from data base", e);
         }
         return userList;
     }
@@ -130,7 +130,20 @@ public class UserServiceImpl implements UserService {
             banReasonList = userDAO.getBanReasonList(lang);
             return banReasonList;
         } catch (UserDAOException e) {
-            throw new UserServiceException("Cannot retrieve ban reason list from data base", e);
+            throw new ServiceException("Cannot retrieve ban reason list from data base", e);
+        }
+    }
+
+    @Override
+    public void banUser(User user) throws ServiceException {
+        if (user == null) {
+            throw new NoSuchUserException("User is null");
+        }
+        UserDAO userDAO = DAOFactory.getInstance().getUserDAO();
+        try {
+            userDAO.banUser(user);
+        } catch (UserDAOException e) {
+            throw new UserServiceException("Unable to ban user " + user.toString(), e);
         }
     }
 }

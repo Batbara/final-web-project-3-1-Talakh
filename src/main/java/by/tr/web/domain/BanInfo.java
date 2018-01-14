@@ -10,6 +10,12 @@ public class BanInfo implements Serializable {
 
     public BanInfo(){banReason = new BanReason();}
 
+    public BanInfo(Timestamp banTime, Timestamp unbanTime, BanReason banReason) {
+        this.banTime = banTime;
+        this.unbanTime = unbanTime;
+        this.banReason = banReason;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -46,8 +52,8 @@ public class BanInfo implements Serializable {
         this.unbanTime = unbanTime;
     }
 
-    public String getBanReason() {
-        return banReason.getReason();
+    public BanReason getBanReason() {
+        return banReason;
     }
 
     public void setBanReason(String banReason) {

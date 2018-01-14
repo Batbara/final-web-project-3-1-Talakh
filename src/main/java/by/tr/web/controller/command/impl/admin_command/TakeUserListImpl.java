@@ -2,9 +2,11 @@ package by.tr.web.controller.command.impl.admin_command;
 
 import by.tr.web.controller.command.Command;
 import by.tr.web.controller.constant.FrontControllerParameter;
+import by.tr.web.controller.constant.JSPAttribute;
 import by.tr.web.controller.constant.JSPPagePath;
 import by.tr.web.controller.constant.TableParameter;
 import by.tr.web.controller.constant.Util;
+import by.tr.web.domain.BanReason;
 import by.tr.web.domain.User;
 import by.tr.web.exception.service.common.ServiceException;
 import by.tr.web.exception.service.user.CountingUserException;
@@ -52,11 +54,14 @@ public class TakeUserListImpl implements Command {
             int recordsToTake = Util.calcTableRecordsToTake(recordsOnPage, currentPage, numberOfRecords);
 
             userList = userService.takeUserList(startRecordNum, recordsToTake, lang);
+            List<BanReason> banReasonList = takeBanReasonList(lang);
 
-            request.setAttribute("userList", userList);
-            request.setAttribute("page", currentPage);
-            request.setAttribute("onPage", recordsOnPage);
-            request.setAttribute("numOfPages", numOfPages);
+            request.setAttribute(JSPAttribute.USER_LIST, userList);
+            request.setAttribute(JSPAttribute.BAN_REASON_LIST, banReasonList);
+
+            request.setAttribute(TableParameter.PAGE, currentPage);
+            request.setAttribute(TableParameter.RECORDS_ON_PAGE, recordsOnPage);
+            request.setAttribute(TableParameter.NUMBER_OF_PAGES, numOfPages);
 
             request.getRequestDispatcher(JSPPagePath.ADMINISTRATION_PAGE_PATH).forward(request, response);
         } catch (CountingUserException e) {
@@ -64,5 +69,11 @@ public class TakeUserListImpl implements Command {
         } catch (ServiceException e) {
             logger.error("Cannot take user list", e);
         }
+    }
+
+    private List<BanReason> takeBanReasonList(String lang) throws ServiceException {
+        UserService userService = ServiceFactory.getInstance().getUserService();
+        List<BanReason> banReasonList = userService.takeBanReasonList(lang);
+        return banReasonList;
     }
 }
