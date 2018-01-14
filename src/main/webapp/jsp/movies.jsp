@@ -5,11 +5,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/content.css">
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/table-style.css">
-
-    <script src="${pageContext.request.contextPath}/js/jquery-3.2.1.min.js"></script>
-    <script src="${pageContext.request.contextPath}/js/toSubmit.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/layout.css">
+    <link rel="stylesheet" type="text/css" href="/css/table-style.css">
+    <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+    <script src="/js/jquery-3.2.1.min.js"></script>
+    <script src="/js/toSubmit.js"></script>
     <fmt:setLocale value="${sessionScope.local}"/>
     <fmt:setBundle basename="localization.local" var="loc"/>
     <fmt:message bundle="${loc}" key="local.movie.order.by" var="orderBy"/>
@@ -18,6 +18,7 @@
     <fmt:message bundle="${loc}" key="local.movie.order.year" var="year"/>
     <fmt:message bundle="${loc}" key="local.movie.order.rating" var="rating"/>
 
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Movie</title>
 </head>
 <body>
@@ -36,22 +37,22 @@
                     <option value="rating"><c:out value="${rating}"/></option>
                 </select>
                 <input type="hidden" name="onPage" value="${requestScope.onPage}">
-                <input type="hidden" name="page" value="${requestScope.page}">
+                <input type="hidden" name="page" value="1">
 
             </form>
         </div>
         <div class="onPage">
             <form action="${pageContext.request.contextPath}/mpb" method="get" id="onPageForm"
-                  onchange="submitMoviesPerPage();">
+                  onchange="submitPerPage();">
                 <input type="hidden" name="command" value="take_movie_list">
                 <input type="hidden" name="order" value="${requestScope.order}">
                 <label for="onPageSelection"><c:out value="${onPage}"/></label>
-                <select name = "onPage" id="onPageSelection">
+                <select name="onPage" id="onPageSelection">
                     <option value="5">5</option>
                     <option value="15">15</option>
                     <option value="25">25</option>
                 </select>
-                <input type="hidden" name="page" value="${requestScope.page}">
+                <input type="hidden" name="page" value="1">
 
             </form>
         </div>
@@ -59,7 +60,7 @@
             <ul>
                 <c:forEach begin="1" end="${requestScope.numOfPages}" var="i">
                     <c:choose>
-                        <c:when test="${requestScope.currentPage eq i}">
+                        <c:when test="${requestScope.page eq i}">
                             <li><input class="currButton" type="submit" name="page" value="${i}"></li>
                         </c:when>
                         <c:otherwise>
@@ -78,21 +79,30 @@
         </nav>
         <div class="movie-table">
             <table cellspacing="0">
-                <c:forEach items="${requestScope.movies}" var="currentMovie">
+                <c:set var="id" value="${requestScope.onPage*(requestScope.page-1)+1}" scope="page"/>
+                <c:forEach items="${requestScope.movies}" var="currentUser">
                     <tr>
-                        <td><img src="/images${currentMovie.poster}.jpg" class="poster"></td>
-                        <td><c:out value="${currentMovie.title}"/></td>
-                        <td><c:out value="${currentMovie.year}"/></td>
+                        <td>
+                            <div class="movieID"><b><c:out value="${id}"/></b></div>
+                            <c:set var="id" value="${id+1}"/>
+                        </td>
+                        <td><img src="/images${currentUser.poster}.jpg" class="poster"></td>
+                        <td><a href="/mpb?command=take_movie&id=${currentUser.showID}"><c:out value="${currentUser.title}"/></a></td>
+                        <td><c:out value="${currentUser.year}"/></td>
                         <td class="rate">
-                            <div><img src="${pageContext.request.contextPath}/images/star.png" class="star"></div>
-                            <div><c:out value="${currentMovie.userRating}"/></div>
+                            <div><img src="/images/star.png" class="star"></div>
+                            <div><c:out value="${currentUser.formattedUserRating}"/></div>
                         </td>
                     </tr>
                 </c:forEach>
             </table>
         </div>
     </article>
-    <aside></aside>
+    <aside>
+
+        <a href="javascript:" id="return-to-top"><i class="icon-chevron-up"></i></a>
+
+    </aside>
 </div>
 <jsp:include page="/WEB-INF/jsp/footer.jsp"/>
 </body>

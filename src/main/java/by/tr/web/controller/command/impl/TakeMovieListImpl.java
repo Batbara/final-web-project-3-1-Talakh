@@ -3,10 +3,11 @@ package by.tr.web.controller.command.impl;
 import by.tr.web.controller.command.Command;
 import by.tr.web.controller.constant.FrontControllerParameter;
 import by.tr.web.controller.constant.JSPPagePath;
-import by.tr.web.controller.constant.MovieParameter;
+import by.tr.web.controller.constant.TableParameter;
+import by.tr.web.controller.constant.Util;
 import by.tr.web.domain.Movie;
+import by.tr.web.exception.service.common.ServiceException;
 import by.tr.web.exception.service.movie.CountingMoviesException;
-import by.tr.web.exception.service.movie.MovieServiceException;
 import by.tr.web.service.MovieService;
 import by.tr.web.service.factory.ServiceFactory;
 import org.apache.log4j.Logger;
@@ -24,27 +25,27 @@ public class TakeMovieListImpl implements Command {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
-        Integer currentPage = Integer.parseInt(request.getParameter(MovieParameter.PAGE));
-        String orderType = request.getParameter(MovieParameter.ORDER);
-        Integer recordsOnPage = Integer.parseInt(request.getParameter(MovieParameter.RECORDS_ON_PAGE));
+        Integer currentPage = Integer.parseInt(request.getParameter(TableParameter.PAGE));
+        String orderType = request.getParameter(TableParameter.ORDER);
+        Integer recordsOnPage = Integer.parseInt(request.getParameter(TableParameter.RECORDS_ON_PAGE));
 
         HttpSession session = request.getSession();
         String lang = request.getLocale().getLanguage();
         if (session.getAttribute(FrontControllerParameter.LOCALE) != null) {
             lang = (String) session.getAttribute(FrontControllerParameter.LOCALE);
         }
-        int startID = (currentPage - 1) * recordsOnPage;
+
+        int startRecordNum = (currentPage - 1) * recordsOnPage;
 
         MovieService movieService = ServiceFactory.getInstance().getMovieService();
-        int numberOfRecords = 0;
+        int numberOfRecords;
         try {
             numberOfRecords = movieService.countMovies();
-            int numOfPages = (int) Math.ceil((double) numberOfRecords / recordsOnPage);
-            if (recordsOnPage*currentPage > startID + recordsOnPage) {
-                recordsOnPage = recordsOnPage*currentPage - startID;
-            }
-            List<Movie> movies = movieService.takeOrderedMovieList(startID, recordsOnPage, orderType, lang);
 
+            int numOfPages = (int) Math.ceil((double) numberOfRecords / recordsOnPage);
+            int recordsToTake = Util.calcTableRecordsToTake(recordsOnPage, currentPage, numberOfRecords);
+
+            List<Movie> movies = movieService.takeOrderedMovieList(startRecordNum, recordsToTake, orderType, lang);
 
             request.setAttribute("order", orderType);
             request.setAttribute("page", currentPage);
@@ -55,9 +56,10 @@ public class TakeMovieListImpl implements Command {
             request.getRequestDispatcher(JSPPagePath.MOVIE_LIST_PAGE).forward(request, response);
         } catch (CountingMoviesException e) {
             logger.error("Error while counting movies in DB", e);
-        } catch (MovieServiceException e) {
+        } catch (ServiceException e) {
             logger.error("Error while getting movie list", e);
         }
 
     }
+
 }

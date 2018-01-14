@@ -5,39 +5,51 @@ import java.io.Serializable;
 public class Movie extends Show implements Serializable {
     private static final long serialVersionUID = -7910806745825801682L;
 
-    private long boxOffice;
-    private long budget;
-    private MPAARating rating;
+    private String boxOffice;
+    private String budget;
+    private MPAARating mpaaRating;
 
     public enum MPAARating {
         G, PG, PG_13, R, NC_17
     }
-    public Movie(){
-        rating = MPAARating.G;
+
+    public Movie() {
+        mpaaRating = MPAARating.G;
     }
 
-    public long getBoxOffice() {
-        return boxOffice;
+    public Movie(int id) {
+        this();
+        this.setShowID(id);
+    }
+
+    public String getBoxOffice() {
+
+        return getFormattedString(boxOffice);
     }
 
     public void setBoxOffice(long boxOffice) {
-        this.boxOffice = boxOffice;
+        this.boxOffice = String.valueOf(boxOffice);
     }
 
-    public long getBudget() {
-        return budget;
+    public String getBudget() {
+
+        return getFormattedString(budget);
     }
 
     public void setBudget(long budget) {
-        this.budget = budget;
+        this.budget = String.valueOf(budget);
     }
 
-    public MPAARating getRating() {
-        return rating;
+    public void setMpaaRating(MPAARating mpaaRating) {
+        this.mpaaRating = mpaaRating;
     }
 
-    public void setRating(MPAARating rating) {
-        this.rating = rating;
+    public MPAARating getMpaaRating() {
+        return mpaaRating;
+    }
+
+    public void setMpaaRating(String rating) {
+        this.mpaaRating = MPAARating.valueOf(transformMPAAString(rating));
     }
 
     @Override
@@ -48,17 +60,17 @@ public class Movie extends Show implements Serializable {
 
         Movie movie = (Movie) o;
 
-        if (boxOffice != movie.boxOffice) return false;
-        if (budget != movie.budget) return false;
-        return rating == movie.rating;
+        if (boxOffice.equals(movie.boxOffice)) return false;
+        if (budget.equals(movie.budget)) return false;
+        return mpaaRating == movie.mpaaRating;
     }
 
     @Override
     public int hashCode() {
         int result = super.hashCode();
-        result = 31 * result + (int) (boxOffice ^ (boxOffice >>> 32));
-        result = 31 * result + (int) (budget ^ (budget >>> 32));
-        result = 31 * result + rating.hashCode();
+        result = 31 * result + boxOffice.hashCode();
+        result = 31 * result + budget.hashCode();
+        result = 31 * result + mpaaRating.hashCode();
         return result;
     }
 
@@ -67,7 +79,28 @@ public class Movie extends Show implements Serializable {
         return "Movie{" +
                 "boxOffice=" + boxOffice +
                 ", budget=" + budget +
-                ", rating=" + rating +
+                ", MPAA rating=" + mpaaRating +
                 "} " + super.toString();
+    }
+
+    private String transformMPAAString(String rating) {
+        return rating.replace("-", "_").toUpperCase();
+    }
+
+    private static String getFormattedString(String input) {
+        if (Long.parseLong(input) == 0) {
+            return "-";
+        }
+        StringBuilder formattedBuilder = new StringBuilder();
+        int lastIndex = input.length() - 1;
+        for (int token = lastIndex, counter = 1; token >= 0; token--, counter++) {
+
+            formattedBuilder.append(input.charAt(token));
+            if (counter % 3 == 0) {
+                formattedBuilder.append(" ");
+            }
+
+        }
+        return formattedBuilder.reverse().toString();
     }
 }

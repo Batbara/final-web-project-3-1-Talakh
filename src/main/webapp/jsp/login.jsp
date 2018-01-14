@@ -5,6 +5,8 @@
 <!DOCTYPE html>
 <html>
 <head>
+
+    <link rel="stylesheet" type="text/css" href="/css/layout.css">
     <fmt:setLocale value="${sessionScope.local}"/>
     <fmt:setBundle basename="localization.local" var="loc"/>
     <fmt:message bundle="${loc}" key="local.message.signin" var="signinMessage"/>
@@ -22,44 +24,52 @@
 </head>
 <body>
 <jsp:include page="/WEB-INF/jsp/header.jsp"/>
-<div class="loginForm">
-    <h4 align="center"><c:out value="${signinMessage}"/></h4>
+<div class="main">
+    <nav class="side-nav"></nav>
+    <article>
+        <div class="loginForm">
+            <h4 align="center"><c:out value="${signinMessage}"/></h4>
 
-    <form action="${pageContext.request.contextPath}/mpb" method="post">
-        <input type="hidden" name="command" value="login">
-        <p align="right">
-            <label for="login"><c:out value="${logout}"/>:</label>
-            <input id="login" type="text" name="login" value=""
-                   pattern="^[a-zA-Z0-9_]{3,}$" placeholder="${userNamePlaceholder}" required>
+            <form action="${pageContext.request.contextPath}/mpb" method="post">
+                <input type="hidden" name="command" value="login">
+                <p align="right">
+                    <label for="login"><c:out value="${logout}"/>:</label>
+                    <input id="login" type="text" name="login" value=""
+                           pattern="^[a-zA-Z0-9_]{3,}$" placeholder="${userNamePlaceholder}" required>
 
-        </p>
-        <p align="right">
-            <label for="password"><c:out value="${password}"/>:</label>
-            <input id="password" type="password" name="password" value=""
-                   pattern="^[a-zA-Z0-9!*_?@#$%^&]{5,}$" placeholder="${passwordPlaceholder}" required>
+                </p>
+                <p align="right">
+                    <label for="password"><c:out value="${password}"/>:</label>
+                    <input id="password" type="password" name="password" value=""
+                           pattern="^[a-zA-Z0-9!*_?@#$%^&]{5,}$" placeholder="${passwordPlaceholder}" required>
 
-        </p>
-        <p id="button" align="center"><input type="submit" value="${signinButton}"></p>
-    </form>
+                </p>
+                <p id="button" align="center"><input type="submit" value="${signinButton}"></p>
+            </form>
 
-    <p id="error">
-        <c:if test="${not empty requestScope.loginError}">
-            <c:choose>
-                <c:when test="${requestScope.loginError == 'user'}">
-                    <c:out value="${loginUserError}"/>
-                </c:when>
-                <c:when test="${requestScope.loginError == 'login'}">
-                    <c:out value="${loginError}"/>
-                </c:when>
-                <c:when test="${requestScope.loginError == 'password'}">
-                    <c:out value="${loginPasswordError}"/>
-                </c:when>
+            <p id="error">
+                <c:if test="${not empty requestScope.loginError}">
+                    <c:choose>
+                        <c:when test="${requestScope.loginError == 'user'}">
+                            <c:out value="${loginUserError}"/>
+                        </c:when>
+                        <c:when test="${requestScope.loginError == 'login'}">
+                            <c:out value="${loginError}"/>
+                        </c:when>
+                        <c:when test="${requestScope.loginError == 'password'}">
+                            <c:out value="${loginPasswordError}"/>
+                        </c:when>
 
-            </c:choose>
+                    </c:choose>
 
-        </c:if>
-    </p>
+                </c:if>
+            </p>
+        </div>
+    </article>
+    <aside></aside>
+
 </div>
 <jsp:include page="/WEB-INF/jsp/footer.jsp"/>
+
 </body>
 </html>

@@ -1,0 +1,99 @@
+@charset "UTF-8";
+@import 'https://fonts.googleapis.com/css?family=Tinos:400,700';
+@import 'https://fonts.googleapis.com/css?family=Amatic+SC';
+
+body {
+    color: black;
+}
+
+h1, h3 {
+    margin-left: 20px;
+    font-family: 'Tinos', serif;
+}
+
+.posterBlock {
+    display: flex;
+    flex-direction: column;
+}
+
+.infoWrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    background-color: #9e8a73;
+    padding: 3%;
+}
+
+.posterBlock > img {
+    width: auto;
+    height: 320px;
+}
+
+.posterBlock {
+    margin-right: 10%;
+
+}
+
+.synopsis {
+    margin-top: 2%;
+    padding: 2%;
+    font-family: 'Tinos', serif;
+
+}
+
+.rating {
+    display: flex;
+    flex-direction: row;
+    margin-top: 5%;
+
+}
+
+.star {
+    margin-left: 2%;
+    display: flex;
+    align-items: center;
+    font-size: 40px;
+    font-family: 'Amatic SC', cursive;
+}
+
+.star img {
+    margin-right: 2%;
+}
+
+.review {
+    margin-right: 10%;
+    margin-left: 5%;
+    padding: 10px;
+    background-color: #cde0af;
+    color: black;
+}
+
+.synopsisContent {
+    margin-right: 10%;
+    margin-left: 5%;
+    padding: 10px;
+    color: black;
+    background-color: #9e8a73;
+}
+
+.reviewContent {
+    padding: 20px;
+    font-family: 'Tinos', serif;
+}
+
+td {
+    padding: 5px;
+}
+
+table {
+    font-family: 'Tinos', serif;
+    font-size: 16px;
+}
+
+@media screen and (max-width: 640px) {
+    .infoWrapper {
+        flex-direction: column;
+        align-items: center;
+    }
+}

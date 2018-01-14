@@ -1,3 +1,15 @@
+@import 'https://fonts.googleapis.com/css?family=Amatic+SC';
 footer {
+    display: block;
     background-color: #50434D;
+
+    min-height: 80px;
+}
+.year {
+    display: flex;
+    color: #B8C99D;
+    font-size: 25px;
+    font-family: 'Amatic SC', cursive;
+    align-content: center;
+    justify-content: center;
 }

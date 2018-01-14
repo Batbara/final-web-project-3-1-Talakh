@@ -60,6 +60,15 @@
     </servlet-mapping>
 
     <servlet>
+        <servlet-name>Movie</servlet-name>
+        <jsp-file>/jsp/movie.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Movie</servlet-name>
+        <url-pattern>/m</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
         <servlet-name>TV</servlet-name>
         <jsp-file>/jsp/tv.jsp</jsp-file>
     </servlet>
@@ -69,6 +78,27 @@
     </servlet-mapping>
 
     <session-config>
-        <session-timeout>30</session-timeout>
+        <session-timeout>25</session-timeout>
     </session-config>
+    
+    <filter>
+        <filter-name>CharsetFilter</filter-name>
+        <filter-class>by.tr.web.controller.filter.CharsetFilter</filter-class>
+        <init-param>
+            <param-name>pageEncoding</param-name>
+            <param-value>utf-8</param-value>
+        </init-param>
+    </filter>
+    <filter>
+        <filter-name>AccessChecker</filter-name>
+        <filter-class>by.tr.web.controller.filter.AccessChecker</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>AccessChecker</filter-name>
+        <url-pattern>/mpb</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>CharsetFilter</filter-name>
+        <url-pattern>/mpb</url-pattern>
+    </filter-mapping>
 </web-app>

@@ -5,13 +5,14 @@ import java.sql.Date;
 import java.sql.Time;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.List;
 
-public class Show implements Serializable{
+public class Show implements Serializable {
     private static final long serialVersionUID = 4088005724983165608L;
 
     private int showID;
-    
+
     private String title;
     private String synopsis;
     private String poster;
@@ -24,8 +25,13 @@ public class Show implements Serializable{
     private List<Country> countryList;
 
     private double userRating;
+    private List<UserReview> reviewList;
 
-    public Show(){}
+    public Show() {
+        genreList = new ArrayList<>();
+        countryList = new ArrayList<>();
+        reviewList = new ArrayList<>();
+    }
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
@@ -79,11 +85,17 @@ public class Show implements Serializable{
         this.countryList = countryList;
     }
 
-    public void addGenre(Genre genre){
+    public void addGenre(Genre genre) {
         this.genreList.add(genre);
     }
-    public void addCountry(Country country){
+
+    public void addCountry(Country country) {
         this.countryList.add(country);
+    }
+
+    public void addReview(UserReview review) {
+        this.reviewList.add(review);
+        userRating = calculateAvgRating();
     }
 
     public String getTitle() {
@@ -110,13 +122,24 @@ public class Show implements Serializable{
         this.poster = poster;
     }
 
-    public String getUserRating() {
+    public String getFormattedUserRating() {
         NumberFormat formatter = new DecimalFormat("#0.00");
         return formatter.format(userRating);
+    }
+    public double getUserRating(){
+        return userRating;
     }
 
     public void setUserRating(double userRating) {
         this.userRating = userRating;
+    }
+
+    public List<UserReview> getReviewList() {
+        return reviewList;
+    }
+
+    public void setReviewList(List<UserReview> reviewList) {
+        this.reviewList = reviewList;
     }
 
     @Override
@@ -151,5 +174,14 @@ public class Show implements Serializable{
         result = 31 * result + genreList.hashCode();
         result = 31 * result + countryList.hashCode();
         return result;
+    }
+
+    private double calculateAvgRating() {
+        double avgRating = 0;
+        for (UserReview review : reviewList) {
+            avgRating += review.getUserRate();
+        }
+        avgRating = avgRating / reviewList.size();
+        return avgRating;
     }
 }

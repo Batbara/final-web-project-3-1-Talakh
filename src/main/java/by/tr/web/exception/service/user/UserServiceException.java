@@ -1,6 +1,8 @@
 package by.tr.web.exception.service.user;
 
-public class UserServiceException extends Exception {
+import by.tr.web.exception.service.common.ServiceException;
+
+public class UserServiceException extends ServiceException {
     private static final long serialVersionUID = -911875504649229665L;
 
     public UserServiceException() {

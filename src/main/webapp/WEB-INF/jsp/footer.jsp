@@ -6,7 +6,7 @@
 </head>
 <body>
     <footer>
-        2017
+        <div class="year">2017</div>
     </footer>
 </body>
 </html>

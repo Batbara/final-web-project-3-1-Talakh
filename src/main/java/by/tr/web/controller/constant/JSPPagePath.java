@@ -8,4 +8,5 @@ public final class JSPPagePath {
     public static final String INTERNAL_ERROR_PAGE = "/WEB-INF/jsp/error.jsp";
     public static final String MOVIE_LIST_PAGE = "/movies";
     public static final String FRONT_CONTROLLER = "/mpb";
+    public static final String ADMINISTRATION_PAGE_PATH = "jsp/admin/users.jsp";
 }

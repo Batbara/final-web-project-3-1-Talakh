@@ -1,6 +1,8 @@
 package by.tr.web.exception.service.user;
 
-public class IncorrectPasswordException extends UserServiceException{
+import by.tr.web.exception.service.common.ServiceException;
+
+public class IncorrectPasswordException extends ServiceException {
     private static final long serialVersionUID = 5159029242095774367L;
 
     public IncorrectPasswordException() {

@@ -1,6 +1,10 @@
 package by.tr.web.exception.service.user;
 
-public class InvalidEMailException extends UserServiceException {
+import by.tr.web.exception.service.common.ServiceException;
+
+public class InvalidEMailException extends ServiceException {
+    private static final long serialVersionUID = 3402242625476892674L;
+
     public InvalidEMailException() {
         super();
     }

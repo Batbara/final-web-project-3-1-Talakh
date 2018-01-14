@@ -13,7 +13,7 @@ import java.util.List;
 public class CommandList {
     @XmlElement(name= XMLParameter.COMMAND, namespace = XMLParameter.NAMESPACE)
     private List<CommandPrototype> commandList;
-
+    public CommandList(){}
     public List<CommandPrototype> getCommandList() {
         return commandList;
     }

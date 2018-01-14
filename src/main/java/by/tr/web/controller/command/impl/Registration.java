@@ -1,15 +1,15 @@
 package by.tr.web.controller.command.impl;
 
+import by.tr.web.controller.command.Command;
 import by.tr.web.controller.constant.FrontControllerParameter;
 import by.tr.web.controller.constant.JSPPagePath;
-import by.tr.web.controller.command.Command;
 import by.tr.web.domain.User;
+import by.tr.web.exception.service.common.ServiceException;
 import by.tr.web.exception.service.user.EMailAlreadyRegisteredException;
 import by.tr.web.exception.service.user.IncorrectPasswordException;
 import by.tr.web.exception.service.user.InvalidEMailException;
 import by.tr.web.exception.service.user.InvalidLoginException;
 import by.tr.web.exception.service.user.UserAlreadyExistsException;
-import by.tr.web.exception.service.user.UserServiceException;
 import by.tr.web.service.UserService;
 import by.tr.web.service.factory.ServiceFactory;
 import org.apache.log4j.Level;
@@ -55,7 +55,7 @@ public class Registration implements Command {
         } catch (UserAlreadyExistsException ex) {
             logger.error("User already exists", ex);
             showRegisterError(request, response, FrontControllerParameter.USER);
-        } catch (UserServiceException e) {
+        } catch (ServiceException e){
             logger.log(Level.FATAL, "Internal error", e);
             RequestDispatcher dispatcher = request.getRequestDispatcher(JSPPagePath.INTERNAL_ERROR_PAGE);
             dispatcher.forward(request, response);

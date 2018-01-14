@@ -8,6 +8,7 @@ import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.File;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +16,7 @@ import java.util.Map;
 @XmlRootElement(name = "commandProvider")
 public class CommandProvider {
     private Map<String, Command> commands = new HashMap<>();
+    private List<String> adminCommands = new ArrayList<>();
     private static CommandProvider instance = new CommandProvider();
 
     private CommandProvider() {
@@ -34,7 +36,9 @@ public class CommandProvider {
             for (CommandPrototype command : commands) {
                 Class commandClass = Class.forName(command.getClassName());
                 Object commandClassInstance = commandClass.newInstance();
-
+                if(command.getScope() != null && command.getScope().equals("admin")) {
+                    adminCommands.add(command.getCommandName());
+                }
                 this.commands.put(command.getCommandName(), (Command) commandClassInstance);
             }
         } catch (JAXBException e) {
@@ -53,6 +57,14 @@ public class CommandProvider {
     public Command getCommand(String name) {
         // CommandName commandName = CommandName.valueOf(name.toUpperCase());
         return commands.get(name);
+    }
+    public boolean isAdminCommand(String name){
+        for(String adminCommand : adminCommands){
+            if(adminCommand.equals(name)){
+                return true;
+            }
+        }
+        return false;
     }
 
     private String getSourcePath(String path) {

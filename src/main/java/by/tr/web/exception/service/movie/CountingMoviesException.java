@@ -1,6 +1,8 @@
 package by.tr.web.exception.service.movie;
 
-public class CountingMoviesException extends MovieServiceException {
+import by.tr.web.exception.service.common.ServiceException;
+
+public class CountingMoviesException extends ServiceException {
     private static final long serialVersionUID = 659235161159424442L;
 
     public CountingMoviesException() {

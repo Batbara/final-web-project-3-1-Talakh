@@ -1,17 +1,25 @@
 @import 'https://fonts.googleapis.com/css?family=Alegreya+Sans+SC';
 @import 'https://fonts.googleapis.com/css?family=Fredericka+the+Great';
-.movie-table {
-    font-family: 'Alegreya Sans SC', sans-serif;
+@import 'https://fonts.googleapis.com/css?family=Tinos:400,700';
+.movie-table, .user-table {
+
     color: #595151;
     font-size: 18px;
     display: flex;
     align-items: center;
     justify-content: center;
     min-width: 500px;
+    margin-bottom: 50px;
 }
-.movie-table table {
+ table {
     border: 10px solid #50434D;
     background-color: #B8C99D;
+}
+tbody {
+     font-family: 'Tinos', serif;
+ }
+.user-table table{
+    border: 5px solid #50434D;
 }
 .poster {
     width: auto;
@@ -25,16 +33,22 @@
 .rate img {
     vert-align: middle;
 }
-.movie-table td{
+ td{
     width: 150px;
     text-align: center;
     vertical-align: middle;
-    border-bottom: 10px solid #50434D;
 }
+ .user-table td {
+     border-bottom: 5px solid #50434D;
+ }
+ .movie-table td {
+
+     border-bottom: 10px solid #50434D;
+ }
 .order, .onPage {
     font-family: 'Alegreya Sans SC', sans-serif;
     display: flex;
-    margin-left: 50px;
+    margin: 20px;
     font-size: 15px;
     color: #50434D;
 }
@@ -45,6 +59,7 @@ option {
 }
 .navigation ul{
     display: flex;
+    margin: 20px;
 }
 .navigation > li{
     display: -webkit-flex;
@@ -54,13 +69,14 @@ option {
 .pageButton{
     border: none;
     overflow: hidden;
-    display: flex;
+   /* display: flex;
     width: 40px;
     height: 40px;
     font-family: 'Amatic SC', cursive;
     font-size: 30px;
     background-color: #595151;
     color: #B8C99D;
+    margin-right: 1%;*/
 }
 .currButton {
     width: 40px;
@@ -69,4 +85,24 @@ option {
     font-family: 'Amatic SC', cursive;
     font-size: 30px;
     background-color: #B8C99D;
+}
+tr > td:first-child {
+    width: 25px;
+    align-content: center;
+    horiz-align: center;
+    vertical-align: center;
+}
+th {
+    text-align: center;
+}
+
+tr.bannedUser{
+    background-color: rgba(216,82,122,0.71);
+}
+tr.bannedUser:hover {
+    cursor: pointer;
+}
+tr.banContent{
+    border: none;
+    background-color: rgba(191,73,106,0.25);
 }

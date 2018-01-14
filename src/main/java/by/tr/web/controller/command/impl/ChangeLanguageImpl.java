@@ -1,7 +1,7 @@
 package by.tr.web.controller.command.impl;
 
-import by.tr.web.controller.constant.FrontControllerParameter;
 import by.tr.web.controller.command.Command;
+import by.tr.web.controller.constant.FrontControllerParameter;
 import by.tr.web.controller.constant.JSPPagePath;
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,10 +25,12 @@ public class ChangeLanguageImpl implements Command {
         String address = request.getParameter(FrontControllerParameter.ADDRESS);
         String query = request.getParameter(FrontControllerParameter.QUERY);
         StringBuilder addressConstructor = new StringBuilder();
-        addressConstructor.append(JSPPagePath.FRONT_CONTROLLER);
         if(!query.isEmpty()){
+            addressConstructor.append(JSPPagePath.FRONT_CONTROLLER);
             addressConstructor.append("?");
             addressConstructor.append(query);
+        } else {
+            addressConstructor.append(address);
         }
         return addressConstructor.toString();
     }

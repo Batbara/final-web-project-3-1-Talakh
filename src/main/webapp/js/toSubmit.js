@@ -4,10 +4,11 @@ function submitMoviesOrder() {
 
     $("#orderForm").submit();
 }
-function submitMoviesPerPage() {
+function submitPerPage() {
     var atrrVal = $('#onPageSelection').val();
     $('#onPage').attr('value',atrrVal);
     $("#onPageForm").submit();
+
 }
 $( document ).ready(setSelectedOptions);
 function setSelectedOptions(){

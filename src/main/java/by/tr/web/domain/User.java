@@ -14,6 +14,7 @@ public class User implements Serializable {
 
     private UserStatus userStatus;
     private boolean isBanned;
+    private BanInfo banInfo;
 
     public enum UserStatus {
         ADMIN, CASUAL_VIEWER, MOVIE_FAN, REVIEWER, CRITIC
@@ -23,6 +24,7 @@ public class User implements Serializable {
         userName = "";
         eMail = "";
         password = "";
+        banInfo = new BanInfo();
         userStatus = UserStatus.CASUAL_VIEWER;
     }
 
@@ -31,6 +33,22 @@ public class User implements Serializable {
         setPassword(password);
         seteMail(eMail);
         setStatus(UserStatus.CASUAL_VIEWER);
+    }
+
+    public User(int userID, String userName, String eMail, String userStatus,  boolean isBanned) {
+        setId(userID);
+        setUserName(userName);
+        seteMail(eMail);
+        setUserStatus(userStatus);
+        setIsBanned(isBanned);
+    }
+
+    public BanInfo getBanInfo() {
+        return banInfo;
+    }
+
+    public void setBanInfo(BanInfo banInfo) {
+        this.banInfo = banInfo;
     }
 
     public String getUserName() {
@@ -69,11 +87,11 @@ public class User implements Serializable {
         this.userStatus = userStatus;
     }
 
-    public boolean isBanned() {
+    public boolean getIsBanned() {
         return isBanned;
     }
 
-    public void setBanned(boolean banned) {
+    public void setIsBanned(boolean banned) {
         isBanned = banned;
     }
 
@@ -97,6 +115,7 @@ public class User implements Serializable {
         if (!userName.equals(user.userName)) return false;
         if (!eMail.equals(user.eMail)) return false;
         if (!password.equals(user.password)) return false;
+        if (!banInfo.equals(user.banInfo)) return false;
         return userStatus == user.userStatus;
     }
 
@@ -108,6 +127,7 @@ public class User implements Serializable {
         result = 31 * result + userStatus.hashCode();
         result = 31 * result + (isBanned ? 1 : 0);
         result = 31 * result + id;
+        result = 31 * result + banInfo.hashCode();
         return result;
     }
 }

@@ -1,6 +1,8 @@
 package by.tr.web.exception.service.user;
 
-public class UserAlreadyExistsException extends UserServiceException {
+import by.tr.web.exception.service.common.ServiceException;
+
+public class UserAlreadyExistsException extends ServiceException {
     private static final long serialVersionUID = 6811922042048164788L;
 
     public UserAlreadyExistsException() {

@@ -1,6 +1,10 @@
 package by.tr.web.exception.service.user;
 
-public class EMailAlreadyRegisteredException extends UserServiceException{
+import by.tr.web.exception.service.common.ServiceException;
+
+public class EMailAlreadyRegisteredException extends ServiceException {
+    private static final long serialVersionUID = 8925138408397571077L;
+
     public EMailAlreadyRegisteredException() {
         super();
     }

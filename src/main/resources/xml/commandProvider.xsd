@@ -12,10 +12,12 @@
             </xs:sequence>
         </xs:complexType>
     </xs:element>
+
     <xs:complexType name="Command">
         <xs:sequence>
             <xs:element name="commandName" type="xs:string" />
             <xs:element name="className" type="xs:string" />
         </xs:sequence>
+        <xs:attribute name="scope" use="optional" type="xs:string"/>
     </xs:complexType>
 </xs:schema>

@@ -2,7 +2,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <head>
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/header.css">
+    <link rel="stylesheet" type="text/css" href="/css/header.css">
+
     <fmt:setLocale value="${sessionScope.local}"/>
     <fmt:setBundle basename="localization.local" var="loc"/>
     <fmt:message bundle="${loc}" key="local.navButton.login" var="login"/>
@@ -14,6 +15,9 @@
     <fmt:message bundle="${loc}" key="local.navButton.tv" var="tvShows"/>
     <fmt:message bundle="${loc}" key="local.navButton.rus" var="rus"/>
     <fmt:message bundle="${loc}" key="local.navButton.eng" var="eng"/>
+    <fmt:message bundle="${loc}" key="local.navButton.admin" var="admin"/>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
 <header>
@@ -30,7 +34,7 @@
 
                 <form id="movies-form" action="${pageContext.request.contextPath}/mpb" method="get">
                     <input type="hidden" name="command" value="take_movie_list"/>
-                    <input type="hidden"  name="order" value="title">
+                    <input type="hidden" name="order" value="title">
                     <input type="hidden" name="onPage" value="5">
                     <input type="hidden" name="page" value="1">
                     <a href="javascript:{}"
@@ -76,51 +80,74 @@
             </li>
             <li>
                 <a href="${pageContext.request.contextPath}/index.jsp">
-                    <div class="nav_button"><c:out value="${home}"/></div>
+                    <c:out value="${home}"/>
                 </a>
             </li>
 
             <c:choose>
-            <c:when test="${not empty sessionScope.userStatus}">
-            <li>
-                <form id="profile_form" action="${pageContext.request.contextPath}/mpb" method="get">
-                    <input type="hidden" name="command" value="take_account"/>
+                <c:when test="${not empty sessionScope.userStatus}">
+                    <li>
+                        <div class="dropdown">
 
-                    <a href="javascript:{}"
-                       onclick="document.getElementById('profile_form').submit(); return false;">
-                        <c:out value="${profile}"/></a>
+                            <button class="profile-button" onclick="showProfileMenu(); return false">
+                                <c:out value="${sessionScope.user.userName}"/></button>
 
-                </form>
-            </li>
-            <li>
-                <form id="logout_form" action="${pageContext.request.contextPath}/mpb" method="get">
-                    <input type="hidden" name="command" value="logout"/>
+                            <div class="profile-content" id="profileDropdown">
+                                <ul class="profile-nav">
+                                    <li>
+                                        <form id="profile_form" action="${pageContext.request.contextPath}/mpb"
+                                              method="get">
+                                            <input type="hidden" name="command" value="take_account"/>
+                                            <a href="javascript:{}"
+                                               onclick="document.getElementById('profile_form').submit(); return false;">
+                                                <c:out value="${profile}"/></a>
+                                        </form>
+                                    </li>
+                                    <c:if test="${sessionScope.userStatus eq 'ADMIN'}">
+                                    <li>
 
-                    <a href="javascript:{}"
-                       onclick="document.getElementById('logout_form').submit(); return false;">
-                        <c:out value="${logout}"/></a>
-                </form>
-            </li>
+                                        <a href="${pageContext.request.contextPath}/mpb?command=take_user_list">
+                                            <c:out value="${admin}"/></a>
+                                    </li>
+                                    </c:if>
+                                    <li>
+                                        <form id="logout_form" action="${pageContext.request.contextPath}/mpb"
+                                              method="get">
+                                            <input type="hidden" name="command" value="logout"/>
 
-            </c:when>
+                                            <a href="javascript:{}"
+                                               onclick="document.getElementById('logout_form').submit(); return false;">
+                                                <c:out value="${logout}"/></a>
+                                        </form>
+                                    </li>
+                                </ul>
 
-            <c:otherwise>
-            <li>
-                <a href="${pageContext.request.contextPath}/register">
-                    <c:out value="${register}"/>
-                </a>
-            </li>
-            <li>
-                <a href="${pageContext.request.contextPath}/login">
-                    <c:out value="${login}"/>
-                </a>
-            </li>
-            </c:otherwise>
+                            </div>
+                        </div>
+
+                    </li>
+
+
+                </c:when>
+
+                <c:otherwise>
+                    <li>
+                        <a href="${pageContext.request.contextPath}/register">
+                            <c:out value="${register}"/>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="${pageContext.request.contextPath}/login">
+                            <c:out value="${login}"/>
+                        </a>
+                    </li>
+                </c:otherwise>
             </c:choose>
 
 
-            </ul>
+        </ul>
 
     </nav>
 </header>
+<script src="/js/header.js"></script>
 </body>

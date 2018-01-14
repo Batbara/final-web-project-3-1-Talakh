@@ -4,7 +4,7 @@ body {
 	margin:0;
 	padding:0;
 	background-size: 100%;
-	background-color: #9ecaff;
+	background-color: #F0D399;
 }
 
 .loginForm, .registerForm{
@@ -16,11 +16,16 @@ body {
 ul {
 	list-style-type: none;
 	margin-top: 0;
-	/*padding: 0;
-	overflow: hidden;
+	width: 100%;
+	padding: 0;
+	/*overflow: hidden;
 	background-color: #333;
 	float: right;*/
 }
+.profile-nav {
+	padding: 0;
+}
+
 .main-nav > li {
 	margin-top: 35px;
 }
@@ -28,15 +33,22 @@ ul {
 	margin-top: 0;
 }
 
-.main-nav {
+.main-nav, .profile-nav {
 	display: -webkit-flex;
 	display: flex;
+	margin-right: 15%;
+}
+.main-nav {
+	flex-direction: row;
+}
+.profile-nav {
+	flex-direction: column;
 }
 .right_li {
 	margin-right: auto;
 }
-.main-nav a {
-	display: block;
+.main-nav a, .profile-button {
+	display: flex;
 	color: #B8C99D;
 	text-align: center;
 	padding: 12px 16px;
@@ -44,9 +56,26 @@ ul {
 	font-size: 35px;
 	font-family: 'Amatic SC', cursive;
 }
+.profile-button {
+	border: none;
+	overflow: hidden;
+	cursor: pointer;
+	background-color: #595151;
+	text-decoration: underline;
+	outline:none;
+}
+.profile-nav a {
+	display: flex;
+	color: #B8C99D;
+	text-align: center;
+	padding: 12px 16px;
+	text-decoration: none;
+	font-size: 25px;
+	font-family: 'Amatic SC', cursive;
+}
 
 /* Change the link color to #111 (black) on hover */
-.main-nav a:hover {
+.main-nav a:hover,.profile-nav a:hover {
 	color: #BF496A;
 }
 .main-nav > li:first-child a:hover{
@@ -78,6 +107,7 @@ ul {
 	font-size: 26px;
 	background-color: #595151;
 	color: #B8C99D;
+	outline:none;
 	/*background: url("/images/ru.gif") no-repeat;*/
 }
 #ruButton:hover, #enButton:hover {
@@ -95,17 +125,49 @@ ul {
 	display: inline-block;
 }
 
+.profile-content {
+	display: none;
+	position: absolute;
+	background-color: #50434D;
+
+	border-radius: 5px;
+	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+	z-index: 1;
+}
 .dropdown-content {
 	display: none;
 	position: absolute;
 	background-color: #595151;
 	min-width: 45px;
-	border-radius: 10px;
+	border-radius: 5px;
 	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-	/*padding: 12px 16px;
-	z-index: 1;*/
+	z-index: 1;
 }
 
+
 .dropdown:hover .dropdown-content {
-	display: block;
+	display: flex;
+	flex-direction: column;
 }
+.show {
+	display: flex;
+	flex-direction: column;
+	background-color: #595151;
+	transition: .15s cubic-bezier(0.75, -0.55, 0.25, 1.55);
+}
+.profile-button:hover {
+	background-color: #494141;
+}
+header{
+	display: block;
+	min-height: 80px;
+}
+@media all and (max-width: 640px){
+	.main-nav a, .main-nav {
+		flex-direction: column;
+		flex-wrap: wrap;
+		padding: 0;
+	}
+
+}
+

@@ -5,9 +5,14 @@ import by.tr.web.dao.factory.DAOFactory;
 import by.tr.web.domain.Movie;
 import by.tr.web.exception.dao.movie.MovieCounterDAOException;
 import by.tr.web.exception.dao.movie.MovieDAOException;
+import by.tr.web.exception.service.common.ServiceException;
 import by.tr.web.exception.service.movie.CountingMoviesException;
+import by.tr.web.exception.service.movie.InvalidOrderTypeException;
 import by.tr.web.exception.service.movie.MovieServiceException;
 import by.tr.web.service.MovieService;
+import by.tr.web.service.factory.ValidatorFactory;
+import by.tr.web.service.validation.DataTypeValidator;
+import by.tr.web.service.validation.MovieValidator;
 import org.apache.log4j.Logger;
 
 import java.util.List;
@@ -16,23 +21,62 @@ public class MovieServiceImpl implements MovieService {
     private static final Logger logger = Logger.getLogger(MovieServiceImpl.class);
 
     @Override
-    public List<Movie> takeOrderedMovieList(int startID, int moviesNumber, String orderType, String lang) throws MovieServiceException {
+    public List<Movie> takeOrderedMovieList(int startRecordNum, int moviesNumber, String orderType, String lang) throws ServiceException {
+
+        validate(startRecordNum, moviesNumber, orderType, lang);
+
         MovieDAO movieDAO = DAOFactory.getInstance().getMovieDAO();
         try {
-            return movieDAO.takeOrderedMovieList(startID, moviesNumber, orderType, lang);
+            return movieDAO.takeOrderedMovieList(startRecordNum, moviesNumber, orderType, lang);
         } catch (MovieDAOException e) {
+            logger.error("Error while getting movies list", e);
             throw new MovieServiceException("Error while getting movies list", e);
         }
     }
 
     @Override
-    public int countMovies() throws MovieServiceException {
+    public int countMovies() throws ServiceException {
         MovieDAO movieDAO = DAOFactory.getInstance().getMovieDAO();
         try {
             return movieDAO.countMovies();
         } catch (MovieCounterDAOException e) {
             logger.error("Can't get number of movies", e);
             throw new CountingMoviesException("Can't get number of movies", e);
+        }
+    }
+
+    @Override
+    public Movie takeMovie(int id, String lang) throws ServiceException {
+        validate(id, lang);
+        MovieDAO movieDAO = DAOFactory.getInstance().getMovieDAO();
+        try {
+            return movieDAO.takeMovie(id, lang);
+        } catch (MovieDAOException e) {
+            logger.error("Error while taking movie", e);
+            throw new MovieServiceException("Error while taking movie", e);
+        }
+    }
+
+    private void validate(int startRecordNum, int moviesNumber, String orderType, String lang) throws ServiceException {
+        ValidatorFactory validatorFactory = ValidatorFactory.getInstance();
+        MovieValidator movieValidator = validatorFactory.getMovieValidator();
+        DataTypeValidator dataTypeValidator = validatorFactory.getDataTypeValidator();
+
+        if (!movieValidator.checkOrderType(orderType)) {
+            throw new InvalidOrderTypeException("Invalid order type parameter");
+        }
+
+        boolean isInputValid = dataTypeValidator.validateInputParameters(startRecordNum, moviesNumber, lang);
+        if (!isInputValid) {
+            throw new MovieServiceException("Unexpected error while validating ordered movie list parameters");
+        }
+    }
+
+    private void validate(int id, String lang) throws ServiceException {
+        ValidatorFactory validatorFactory = ValidatorFactory.getInstance();
+        DataTypeValidator dataTypeValidator = validatorFactory.getDataTypeValidator();
+        if (!dataTypeValidator.checkLanguage(lang) && id <= 0) {
+            throw new MovieServiceException("Invalid input parameters");
         }
     }
 }

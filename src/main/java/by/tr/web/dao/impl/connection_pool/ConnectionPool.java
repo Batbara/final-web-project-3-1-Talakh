@@ -2,6 +2,8 @@ package by.tr.web.dao.impl.connection_pool;
 
 import by.tr.web.dao.impl.DBParameter;
 import by.tr.web.exception.dao.ConnectionPoolException;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -16,6 +18,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public final class ConnectionPool {
+    private static final Logger logger = Logger.getLogger(ConnectionPool.class);
+
     private BlockingQueue<Connection> connectionQueue;
     private BlockingQueue<Connection> givenAwayConQueue;
 
@@ -69,8 +73,10 @@ public final class ConnectionPool {
                 connectionQueue.add(connection);
             }
         } catch (SQLException e) {
+            logger.error("Error while getting connection from Driver Manager", e);
             throw new ConnectionPoolException("Error while getting connection from Driver Manager", e);
         } catch (ClassNotFoundException e) {
+            logger.error("Can't find database driver class", e);
             throw new ConnectionPoolException("Can't find database driver class", e);
         }
     }
@@ -84,6 +90,7 @@ public final class ConnectionPool {
             closeConnectionsQueue(givenAwayConQueue);
             closeConnectionsQueue(connectionQueue);
         } catch (SQLException e) {
+            logger.error("Closing connection error", e);
             throw new ConnectionPoolException("Closing connection error", e);
         }
     }
@@ -94,6 +101,7 @@ public final class ConnectionPool {
             connection = connectionQueue.take();
             givenAwayConQueue.add(connection);
         } catch (InterruptedException e) {
+            logger.error("Error connecting to the data source", e);
             throw new ConnectionPoolException("Error connecting to the data source", e);
         }
         return connection;
@@ -106,6 +114,7 @@ public final class ConnectionPool {
             }
         } catch (SQLException e) {
             closeConnection(connection);
+            logger.error("Closing result set error", e);
             throw new ConnectionPoolException("Closing result set error", e);
         }
 
@@ -115,25 +124,47 @@ public final class ConnectionPool {
             }
         } catch (SQLException e) {
             closeConnection(connection);
+            logger.error("Closing statement error", e);
             throw new ConnectionPoolException("Closing statement error", e);
         }
         closeConnection(connection);
     }
+    public void closeResources (Statement st, ResultSet rs){
+        try {
+            if (rs != null) {
+                rs.close();
+            }
+        } catch (SQLException e) {
+            logger.error("Closing result set error", e);
+            throw new ConnectionPoolException("Closing result set error", e);
+        }
 
+        try {
+            if (st != null) {
+                st.close();
+            }
+        } catch (SQLException e) {
+            logger.error("Closing statement error", e);
+            throw new ConnectionPoolException("Closing statement error", e);
+        }
+    }
 
     public void closeConnection(Connection connection) throws ConnectionPoolException {
         try {
             if (connection.isClosed()) {
+                logger.log(Level.ERROR, "Trying to close closed connection");
                 throw new ConnectionPoolException("Trying to close closed connection");
             }
             if (connection.isReadOnly()) {
                 connection.setReadOnly(false);
             }
         } catch (SQLException e) {
+            logger.error("Can't access connection", e);
             throw new ConnectionPoolException("Can't access connection", e);
         }
 
         if (!givenAwayConQueue.remove(connection)) {
+            logger.log(Level.ERROR, "Error deleting connection from the given away connections pool");
             throw new ConnectionPoolException("Error deleting connection from the given away connections pool");
         }
 
@@ -146,6 +177,7 @@ public final class ConnectionPool {
         try {
             st.close();
         } catch (SQLException e) {
+            logger.error("Closing statement error", e);
             throw new ConnectionPoolException("Closing statement error", e);
         }
         closeConnection(con);

@@ -1,11 +1,11 @@
 package by.tr.web.service.validation;
 
+import by.tr.web.exception.service.common.ServiceException;
 import by.tr.web.exception.service.user.IncorrectPasswordException;
 import by.tr.web.exception.service.user.InvalidEMailException;
 import by.tr.web.exception.service.user.InvalidLoginException;
-import by.tr.web.exception.service.user.UserServiceException;
 
-public interface UserValidator {
+public interface UserValidator{
     String EMAIL_REGEXP = "^[A-Za-z0-9+_.-]+@(.+)$";
     String LOGIN_REGEXP = "^[a-zA-Z0-9_]{3,}$";
     int MIN_PASSWORD_LENGTH = 5;
@@ -15,7 +15,7 @@ public interface UserValidator {
     boolean checkPassword(String password);
     boolean checkEMail(String email);
 
-    default boolean validateCredentials (String login, String password) throws UserServiceException{
+    default boolean validateCredentials (String login, String password) throws ServiceException {
         if(!checkLogin(login)){
             throw new InvalidLoginException("Incorrect login");
         }
@@ -24,7 +24,7 @@ public interface UserValidator {
         }
         return true;
     }
-    default boolean validateCredentials (String login, String password, String eMail) throws UserServiceException{
+    default boolean validateCredentials (String login, String password, String eMail) throws ServiceException{
         if(!checkLogin(login)){
             throw new InvalidLoginException("Incorrect login");
         }

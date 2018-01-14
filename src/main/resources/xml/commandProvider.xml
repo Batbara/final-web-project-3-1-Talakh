@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<cp:commandList xmlns:cp="http://www.mpb.web.tr.by/commandProvider" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mpb.web.tr.by/commandProvider commandProvider.xsd">
-    <cp:command>
+<cp:commandList xmlns:cp="http://www.mpb.web.tr.by/commandProvider"
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:schemaLocation="http://www.mpb.web.tr.by/commandProvider commandProvider.xsd">
+
+    <cp:command scope="admin">
+        <cp:commandName>take_user_list</cp:commandName>
+        <cp:className>by.tr.web.controller.command.impl.admin_command.TakeUserListImpl</cp:className>
+    </cp:command>
+    <cp:command scope="admin">
+        <cp:commandName>ban_user</cp:commandName>
+        <cp:className>by.tr.web.controller.command.impl.admin_command.BanUserImpl</cp:className>
+    </cp:command>
+    <cp:command >
         <cp:commandName>change_language</cp:commandName>
         <cp:className>by.tr.web.controller.command.impl.ChangeLanguageImpl</cp:className>
     </cp:command>
@@ -23,5 +34,9 @@
     <cp:command>
         <cp:commandName>take_movie_list</cp:commandName>
         <cp:className>by.tr.web.controller.command.impl.TakeMovieListImpl</cp:className>
+    </cp:command>
+    <cp:command>
+        <cp:commandName>take_movie</cp:commandName>
+        <cp:className>by.tr.web.controller.command.impl.TakeMovieImpl</cp:className>
     </cp:command>
 </cp:commandList>

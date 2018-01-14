@@ -1,6 +1,8 @@
 package by.tr.web.exception.service.movie;
 
-public class MovieServiceException extends Exception {
+import by.tr.web.exception.service.common.ServiceException;
+
+public class MovieServiceException extends ServiceException {
     private static final long serialVersionUID = -8358041243221981494L;
 
     public MovieServiceException() {
