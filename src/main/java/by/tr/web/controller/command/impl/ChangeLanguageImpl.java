@@ -21,11 +21,12 @@ public class ChangeLanguageImpl implements Command {
         String address = formRedirectAddress(request);
         response.sendRedirect(address);
     }
-    private String formRedirectAddress(HttpServletRequest request){
+
+    private String formRedirectAddress(HttpServletRequest request) {
         String address = request.getParameter(FrontControllerParameter.ADDRESS);
         String query = request.getParameter(FrontControllerParameter.QUERY);
         StringBuilder addressConstructor = new StringBuilder();
-        if(!query.isEmpty()){
+        if (!query.isEmpty()) {
             addressConstructor.append(JSPPagePath.FRONT_CONTROLLER);
             addressConstructor.append("?");
             addressConstructor.append(query);

@@ -35,7 +35,7 @@ public class User implements Serializable {
         setStatus(UserStatus.CASUAL_VIEWER);
     }
 
-    public User(int userID, String userName, String eMail, String userStatus,  boolean isBanned) {
+    public User(int userID, String userName, String eMail, String userStatus, boolean isBanned) {
         setId(userID);
         setUserName(userName);
         seteMail(eMail);

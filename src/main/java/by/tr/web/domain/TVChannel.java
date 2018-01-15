@@ -5,7 +5,9 @@ import java.io.Serializable;
 public class TVChannel implements Serializable {
     private static final long serialVersionUID = 4876774209996102703L;
     private String channelName;
-    public TVChannel(){}
+
+    public TVChannel() {
+    }
 
     public String getChannelName() {
         return channelName;

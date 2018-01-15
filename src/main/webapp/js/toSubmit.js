@@ -36,7 +36,7 @@ var getUrlParameter = function getUrlParameter(sParam) {
     }
 };
 
-$(document).on("submit", "#banForm", function(event) {
+$("#banForm").on("submit", function(event) {
     var form = $(this);
 
     $.ajax({
@@ -52,6 +52,28 @@ $(document).on("submit", "#banForm", function(event) {
         },
         error: function (data) {
             $('#banFailureAlert').show();
+        }
+    });
+
+    event.preventDefault();
+
+});
+$("#unbanForm").on("submit", function(event) {
+    var form = $(this);
+
+    $.ajax({
+        type: form.attr('method'),
+        url: form.attr('action'),
+        data: form.serialize(),
+        success: function (data) {
+            if(data === 'success') {
+                $('#unbanDialog').modal('hide');
+            } else {
+                $('#unbanFailureAlert').show();
+            }
+        },
+        error: function (data) {
+            $('#unbanFailureAlert').show();
         }
     });
 

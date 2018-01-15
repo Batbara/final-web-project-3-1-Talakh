@@ -2,7 +2,7 @@ package by.tr.web.domain;
 
 import java.io.Serializable;
 
-public class BanReason implements Serializable{
+public class BanReason implements Serializable {
 
     private static final long serialVersionUID = 4272170207416911228L;
     private int id;

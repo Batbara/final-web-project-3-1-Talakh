@@ -8,5 +8,6 @@ public final class JSPAttribute {
 
     public final static String USER_LIST = "userList";
     public final static String USER_BAN_ID = "userBanID";
+    public final static String USER_UNBAN_ID = "userUnbanID";
     private JSPAttribute(){}
 }

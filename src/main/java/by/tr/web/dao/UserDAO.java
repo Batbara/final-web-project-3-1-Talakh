@@ -17,4 +17,5 @@ public interface UserDAO {
     int countUsers() throws UserDAOException;
     void banUser (User user) throws UserDAOException;
     List<BanReason> getBanReasonList(String lang) throws UserDAOException;
+    void unbanUser(int userID) throws UserDAOException;
 }

@@ -13,7 +13,7 @@ $(".bannedUser").on("click", function () {
 $(document).ready(function(){
     $('[data-toggle="tooltip"]').tooltip();
     $('.alert').hide();
-    $('#banDialog').on('hidden.bs.modal', function () {
+    $('#banDialog, #unbanDialog').on('hidden.bs.modal', function () {
        location.reload(true);
     })
 });
@@ -23,8 +23,16 @@ $("#banTime").attr("min", new Date().toJSON().slice(0,19));
 $("#unbanTime").attr("min", new Date().toJSON().slice(0,19));
 
 $(".banButton").on("click", function () {
-    $('.modal').modal('show');
-    var buttonClasses = $(this).attr("class").split(" ");
+    return retrieveUserNameAndID("#banDialog", this, "#userBanID", "#banUserTitle");
+
+});
+$(".unbanButton").on("click", function () {
+    return retrieveUserNameAndID("#unbanDialog", this, "#userUnbanID", "#unbanUserName");
+});
+
+function retrieveUserNameAndID(dialogID, button, idToSet, userNameToSet) {
+    $(dialogID).modal('show');
+    var buttonClasses = $(button).attr("class").split(" ");
     var idToMatch = buttonClasses[buttonClasses.length-1];
 
     var userIDs = document.getElementsByClassName("userID");
@@ -33,7 +41,7 @@ $(".banButton").on("click", function () {
         var currID = userIDs[idElement];
         if (currID.classList.contains(idToMatch)) {
             var idValue = $(currID).text();
-            $("#userBanID").attr("value", idValue);
+            $(idToSet).attr("value", idValue);
         }
     }
 
@@ -42,8 +50,8 @@ $(".banButton").on("click", function () {
         var currUserName = userNames[nameElement];
         if (currUserName.classList.contains(idToMatch)) {
             var userName = $(currUserName).text();
-            $("#banUserTitle").text(userName);
+            $(userNameToSet).text(userName);
         }
     }
     return false;
-});
+}

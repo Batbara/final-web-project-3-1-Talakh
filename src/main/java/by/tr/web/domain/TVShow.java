@@ -2,7 +2,7 @@ package by.tr.web.domain;
 
 import java.io.Serializable;
 
-public class TVShow extends Show implements Serializable{
+public class TVShow extends Show implements Serializable {
 
     private static final long serialVersionUID = -5308976621430127666L;
 
@@ -12,11 +12,11 @@ public class TVShow extends Show implements Serializable{
     private int finishedYear;
     private TVChannel channel;
 
-    public enum ShowStatus{
+    public enum ShowStatus {
         FINISHED, RETURNING, PAUSE
     }
 
-    public TVShow(){
+    public TVShow() {
         showStatus = ShowStatus.RETURNING;
         channel = new TVChannel();
     }
@@ -28,7 +28,8 @@ public class TVShow extends Show implements Serializable{
     public void setShowStatus(ShowStatus showStatus) {
         this.showStatus = showStatus;
     }
-    public void setShowStatus (String status){
+
+    public void setShowStatus(String status) {
         this.showStatus = ShowStatus.valueOf(status.toUpperCase());
     }
 

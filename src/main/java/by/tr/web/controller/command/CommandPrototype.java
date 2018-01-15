@@ -22,7 +22,9 @@ public class CommandPrototype {
     @XmlAttribute(namespace = XMLParameter.NAMESPACE, required = false, name = "scope")
     private String scope;
 
-    public CommandPrototype(){}
+    public CommandPrototype() {
+    }
+
     public String getCommandName() {
         return commandName;
     }
@@ -30,6 +32,7 @@ public class CommandPrototype {
     public String getClassName() {
         return className;
     }
+
     public String getScope() {
         return scope;
     }

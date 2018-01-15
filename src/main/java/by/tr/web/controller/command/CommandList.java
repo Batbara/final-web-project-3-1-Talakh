@@ -11,9 +11,12 @@ import java.util.List;
 @XmlRootElement(name = XMLParameter.COMMAND_LIST, namespace = XMLParameter.NAMESPACE)
 @XmlAccessorType(XmlAccessType.FIELD)
 public class CommandList {
-    @XmlElement(name= XMLParameter.COMMAND, namespace = XMLParameter.NAMESPACE)
+    @XmlElement(name = XMLParameter.COMMAND, namespace = XMLParameter.NAMESPACE)
     private List<CommandPrototype> commandList;
-    public CommandList(){}
+
+    public CommandList() {
+    }
+
     public List<CommandPrototype> getCommandList() {
         return commandList;
     }

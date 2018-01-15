@@ -8,7 +8,9 @@ public class BanInfo implements Serializable {
     private Timestamp unbanTime;
     private BanReason banReason;
 
-    public BanInfo(){banReason = new BanReason();}
+    public BanInfo() {
+        banReason = new BanReason();
+    }
 
     public BanInfo(Timestamp banTime, Timestamp unbanTime, BanReason banReason) {
         this.banTime = banTime;

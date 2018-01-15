@@ -8,17 +8,14 @@ import by.tr.web.exception.dao.movie.MovieDAOException;
 import by.tr.web.exception.service.common.ServiceException;
 import by.tr.web.exception.service.movie.CountingMoviesException;
 import by.tr.web.exception.service.movie.InvalidOrderTypeException;
-import by.tr.web.exception.service.movie.MovieServiceException;
 import by.tr.web.service.MovieService;
 import by.tr.web.service.factory.ValidatorFactory;
 import by.tr.web.service.validation.DataTypeValidator;
 import by.tr.web.service.validation.MovieValidator;
-import org.apache.log4j.Logger;
 
 import java.util.List;
 
 public class MovieServiceImpl implements MovieService {
-    private static final Logger logger = Logger.getLogger(MovieServiceImpl.class);
 
     @Override
     public List<Movie> takeOrderedMovieList(int startRecordNum, int moviesNumber, String orderType, String lang) throws ServiceException {
@@ -29,8 +26,7 @@ public class MovieServiceImpl implements MovieService {
         try {
             return movieDAO.takeOrderedMovieList(startRecordNum, moviesNumber, orderType, lang);
         } catch (MovieDAOException e) {
-            logger.error("Error while getting movies list", e);
-            throw new MovieServiceException("Error while getting movies list", e);
+            throw new ServiceException("Error while getting movies list", e);
         }
     }
 
@@ -40,7 +36,6 @@ public class MovieServiceImpl implements MovieService {
         try {
             return movieDAO.countMovies();
         } catch (MovieCounterDAOException e) {
-            logger.error("Can't get number of movies", e);
             throw new CountingMoviesException("Can't get number of movies", e);
         }
     }
@@ -52,8 +47,7 @@ public class MovieServiceImpl implements MovieService {
         try {
             return movieDAO.takeMovie(id, lang);
         } catch (MovieDAOException e) {
-            logger.error("Error while taking movie", e);
-            throw new MovieServiceException("Error while taking movie", e);
+            throw new ServiceException("Error while taking movie", e);
         }
     }
 
@@ -68,7 +62,7 @@ public class MovieServiceImpl implements MovieService {
 
         boolean isInputValid = dataTypeValidator.validateInputParameters(startRecordNum, moviesNumber, lang);
         if (!isInputValid) {
-            throw new MovieServiceException("Unexpected error while validating ordered movie list parameters");
+            throw new ServiceException("Unexpected error while validating ordered movie list parameters");
         }
     }
 
@@ -76,7 +70,7 @@ public class MovieServiceImpl implements MovieService {
         ValidatorFactory validatorFactory = ValidatorFactory.getInstance();
         DataTypeValidator dataTypeValidator = validatorFactory.getDataTypeValidator();
         if (!dataTypeValidator.checkLanguage(lang) && id <= 0) {
-            throw new MovieServiceException("Invalid input parameters");
+            throw new ServiceException("Invalid input parameters");
         }
     }
 }

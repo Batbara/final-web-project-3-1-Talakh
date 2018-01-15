@@ -17,6 +17,6 @@ public interface UserService {
     int countUsers() throws ServiceException;
 
     List<BanReason> takeBanReasonList(String lang) throws ServiceException;
-
+    void unbanUser(int userID) throws ServiceException;
     void banUser(User user) throws ServiceException;
 }

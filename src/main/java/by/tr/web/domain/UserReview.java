@@ -3,7 +3,7 @@ package by.tr.web.domain;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
-public class UserReview implements Serializable{
+public class UserReview implements Serializable {
     private static final long serialVersionUID = 766802755595181444L;
 
     private int userID;
@@ -12,7 +12,7 @@ public class UserReview implements Serializable{
     private String reviewContent;
     private Timestamp postDate;
 
-    public UserReview(){
+    public UserReview() {
     }
 
     public int getUserID() {

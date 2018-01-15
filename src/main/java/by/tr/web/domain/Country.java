@@ -5,7 +5,8 @@ import java.io.Serializable;
 public class Country implements Serializable {
     private static final long serialVersionUID = 6987578084084822484L;
     private String countryName;
-    public Country(){
+
+    public Country() {
         countryName = "";
     }
 

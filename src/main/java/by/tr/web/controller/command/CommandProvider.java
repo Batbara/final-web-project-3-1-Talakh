@@ -36,7 +36,7 @@ public class CommandProvider {
             for (CommandPrototype command : commands) {
                 Class commandClass = Class.forName(command.getClassName());
                 Object commandClassInstance = commandClass.newInstance();
-                if(command.getScope() != null && command.getScope().equals("admin")) {
+                if (command.getScope() != null && command.getScope().equals("admin")) {
                     adminCommands.add(command.getCommandName());
                 }
                 this.commands.put(command.getCommandName(), (Command) commandClassInstance);
@@ -58,9 +58,10 @@ public class CommandProvider {
         // CommandName commandName = CommandName.valueOf(name.toUpperCase());
         return commands.get(name);
     }
-    public boolean isAdminCommand(String name){
-        for(String adminCommand : adminCommands){
-            if(adminCommand.equals(name)){
+
+    public boolean isAdminCommand(String name) {
+        for (String adminCommand : adminCommands) {
+            if (adminCommand.equals(name)) {
                 return true;
             }
         }

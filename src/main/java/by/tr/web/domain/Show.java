@@ -126,7 +126,8 @@ public class Show implements Serializable {
         NumberFormat formatter = new DecimalFormat("#0.00");
         return formatter.format(userRating);
     }
-    public double getUserRating(){
+
+    public double getUserRating() {
         return userRating;
     }
 

@@ -9,14 +9,14 @@ public interface DataTypeValidator {
         RU, EN
     }
     boolean checkLanguage(String lang);
-    boolean checkStartValue(int startRecordNum);
-    boolean checkSize (int size);
+    boolean checkForNotNegative(int number);
+    boolean checkForPositive(int number);
 
     default boolean validateInputParameters (int start, int size, String lang) throws ServiceException{
         if (!checkLanguage(lang)) {
             throw new LangNotSupportedException(lang + " language is not supported");
         }
-        if (!checkStartValue(start) || !checkSize(size)) {
+        if (!checkForNotNegative(start) || !checkForPositive(size)) {
             throw new InvalidNumericalInput("Invalid numerical number");
         }
         return true;

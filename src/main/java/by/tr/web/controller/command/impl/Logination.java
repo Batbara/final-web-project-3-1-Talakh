@@ -42,7 +42,7 @@ public class Logination implements Command {
 
             response.sendRedirect(JSPPagePath.USER_ACCOUNT_PATH);
         } catch (InvalidLoginException ex) {
-            logger.error("Invalid login",ex);
+            logger.error("Invalid login", ex);
             showErrorMessage(request, response, FrontControllerParameter.LOGIN);
         } catch (NoSuchUserException e) {
             logger.error("No such user", e);

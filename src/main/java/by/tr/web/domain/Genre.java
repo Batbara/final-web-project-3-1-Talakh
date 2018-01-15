@@ -6,7 +6,7 @@ public class Genre implements Serializable {
     private static final long serialVersionUID = -6433748996330506545L;
     private String genreName;
 
-    public Genre(){
+    public Genre() {
         genreName = "";
     }
 

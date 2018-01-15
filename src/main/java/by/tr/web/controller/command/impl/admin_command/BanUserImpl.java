@@ -27,6 +27,7 @@ public class BanUserImpl implements Command {
 
     private static final Logger logger = Logger.getLogger(BanUserImpl.class);
     private String TIME_PATTERN = "yyyy-MM-dd'T'hh:mm:ss";
+
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
@@ -47,16 +48,16 @@ public class BanUserImpl implements Command {
 
             userService.banUser(userToBan);
 
-            out.println(FrontControllerParameter.SUCCESS_RESPONSE);
+            out.print(FrontControllerParameter.SUCCESS_RESPONSE);
         } catch (ParseException e) {
             logger.error("Cannot parse input time", e);
-            out.println(FrontControllerParameter.FAILURE_RESPONSE);
-        } catch (NoSuchUserException e){
+            out.print(FrontControllerParameter.FAILURE_RESPONSE);
+        } catch (NoSuchUserException e) {
             logger.error("Cannot find user", e);
-            out.println(FrontControllerParameter.FAILURE_RESPONSE);
-        } catch (ServiceException e){
+            out.print(FrontControllerParameter.FAILURE_RESPONSE);
+        } catch (ServiceException e) {
             logger.error("An error occurred", e);
-            out.println(FrontControllerParameter.FAILURE_RESPONSE);
+            out.print(FrontControllerParameter.FAILURE_RESPONSE);
         }
 
     }

@@ -1,28 +1,27 @@
 package by.tr.web.controller.command.impl;
 
 import by.tr.web.controller.command.Command;
-import by.tr.web.controller.constant.FrontControllerParameter;
+import by.tr.web.controller.constant.JSPPagePath;
+import by.tr.web.controller.constant.Util;
 import by.tr.web.domain.Movie;
 import by.tr.web.exception.service.common.ServiceException;
 import by.tr.web.service.MovieService;
 import by.tr.web.service.factory.ServiceFactory;
+import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 public class TakeMovieImpl implements Command {
+
+    private final static Logger logger = Logger.getLogger(TakeMovieImpl.class);
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         int movieID = Integer.parseInt(request.getParameter("id"));
 
-        HttpSession session = request.getSession();
-        String lang = request.getLocale().getLanguage();
-        if (session.getAttribute(FrontControllerParameter.LOCALE) != null) {
-            lang = (String) session.getAttribute(FrontControllerParameter.LOCALE);
-        }
+        String lang = Util.getLanguage(request);
 
         ServiceFactory serviceFactory = ServiceFactory.getInstance();
         MovieService movieService = serviceFactory.getMovieService();
@@ -33,7 +32,8 @@ public class TakeMovieImpl implements Command {
             request.setAttribute("movie", movie);
             request.getRequestDispatcher("/m").forward(request, response);
         } catch (ServiceException e) {
-            //TODO: error page
+            logger.error("Error while taking movie", e);
+            request.getRequestDispatcher(JSPPagePath.INTERNAL_ERROR_PAGE).forward(request, response);
         }
 
     }

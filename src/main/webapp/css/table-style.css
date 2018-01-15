@@ -11,7 +11,7 @@
     min-width: 500px;
     margin-bottom: 50px;
 }
- table {
+table {
     border: 10px solid #50434D;
     background-color: #B8C99D;
 }
@@ -69,14 +69,6 @@ option {
 .pageButton{
     border: none;
     overflow: hidden;
-   /* display: flex;
-    width: 40px;
-    height: 40px;
-    font-family: 'Amatic SC', cursive;
-    font-size: 30px;
-    background-color: #595151;
-    color: #B8C99D;
-    margin-right: 1%;*/
 }
 .currButton {
     width: 40px;
@@ -97,12 +89,25 @@ th {
 }
 
 tr.bannedUser{
-    background-color: rgba(216,82,122,0.71);
+    background-color: rgba(220,64,51,0.52);
 }
 tr.bannedUser:hover {
     cursor: pointer;
 }
 tr.banContent{
     border: none;
-    background-color: rgba(191,73,106,0.25);
+    background-color: rgba(236,146,133,0.66);
+}
+a.banButton > span{
+    color: rgba(220,64,51,0.62);
+}
+a.banButton:hover >span {
+    color: rgba(154,46,35,0.7);
+}
+a.unbanButton > span{
+    color: #B8C99D;
+
+}
+a.unbanButton:hover >span{
+    color: rgba(114,123,100,0.97);
 }

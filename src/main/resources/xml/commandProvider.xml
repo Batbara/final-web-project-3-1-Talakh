@@ -11,6 +11,10 @@
         <cp:commandName>ban_user</cp:commandName>
         <cp:className>by.tr.web.controller.command.impl.admin_command.BanUserImpl</cp:className>
     </cp:command>
+    <cp:command scope="admin">
+        <cp:commandName>unban_user</cp:commandName>
+        <cp:className>by.tr.web.controller.command.impl.admin_command.UnbanUserImpl</cp:className>
+    </cp:command>
     <cp:command >
         <cp:commandName>change_language</cp:commandName>
         <cp:className>by.tr.web.controller.command.impl.ChangeLanguageImpl</cp:className>

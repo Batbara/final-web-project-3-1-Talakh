@@ -17,12 +17,12 @@ public class DataTypeValidatorImpl implements DataTypeValidator {
     }
 
     @Override
-    public boolean checkStartValue(int start) {
+    public boolean checkForNotNegative(int start) {
         return start >= 0;
     }
 
     @Override
-    public boolean checkSize(int size) {
+    public boolean checkForPositive(int size) {
         return size > 0;
     }
 }

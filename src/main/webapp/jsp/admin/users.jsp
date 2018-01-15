@@ -20,10 +20,13 @@
     <fmt:message bundle="${loc}" key="local.admin.usertable.action" var="actionHeader"/>
     <fmt:message bundle="${loc}" key="local.admin.usertable.name" var="usernameHeader"/>
     <fmt:message bundle="${loc}" key="local.admin.usertable.status" var="statusHeader"/>
-    <fmt:message bundle="${loc}" key="local.message.banFail" var="banFailed"/>
+    <fmt:message bundle="${loc}" key="local.message.errorMessage" var="errorMessage"/>
     <fmt:message bundle="${loc}" key="local.message.banSuccessful" var="banSuccesful"/>
     <fmt:message bundle="${loc}" key="local.message.success" var="successMessage"/>
     <fmt:message bundle="${loc}" key="local.message.failure" var="failureMessage"/>
+    <fmt:message bundle="${loc}" key="local.message.confirm" var="confirm"/>
+    <fmt:message bundle="${loc}" key="local.message.unbanConfirmation" var="unbanConfirmation"/>
+    <fmt:message bundle="${loc}" key="local.message.cancel" var="cancel"/>
 
     <title>${title} | MotionPicture Bank [MPB]</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -95,20 +98,22 @@
 
                             <tr class="bannedUser" data-toggle="collapse" data-target="#${currentUser.id}">
                                 <td>
-                                    <div class="userID"><c:out value="${currentUser.id}"/></div>
+                                    <div class="userID ${currentUser.id}"><c:out value="${currentUser.id}"/></div>
                                 </td>
-                                <td><c:out value="${currentUser.userName}"/></td>
+                                <td class="userName ${currentUser.id}"><c:out value="${currentUser.userName}"/></td>
                                 <td><c:out value="${currentUser.eMail}"/></td>
                                 <td><c:out value="${currentUser.userStatus}"/></td>
                                 <td>
-
-                                    <span class="glyphicon glyphicon-ok"></span>
+                                <span  data-toggle="tooltip" data-placement="bottom" title="${unban}" >
+                                     <a data-toggle="modal" data-target="#unbanDialog" class="unbanButton ${currentUser.id}" href="#">
+                                         <span class="glyphicon glyphicon-ok"></span>
+                                        </a>
+                                </span>
                                     <span class="glyphicon glyphicon-trash"></span>
                                     <span class="glyphicon glyphicon-sunglasses"></span>
                                 </td>
 
                             </tr>
-
 
                             <tr class="banContent collapse" id="${currentUser.id}">
                                 <td colspan="5">
@@ -132,8 +137,7 @@
                                 <td>
                                     <c:if test="${currentUser.userStatus ne 'ADMIN'}">
                                         <span  data-toggle="tooltip" data-placement="bottom" title="${ban}" >
-                                        <a data-toggle="modal" data-target="#banDialog" class="banButton ${currentUser.id}" href="#"
-                                           >
+                                        <a data-toggle="modal" data-target="#banDialog" class="banButton ${currentUser.id}" href="#">
                                             <span class="glyphicon glyphicon-remove"></span>
                                         </a>
                                         </span>
@@ -203,8 +207,38 @@
                         </div>
                         <div class="alert alert-danger alert-dismissable" id="banFailureAlert">
                             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                            <strong>${failureMessage}!</strong> ${banFailed}
+                            <strong>${failureMessage}!</strong> ${errorMessage}
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="unbanDialog" role="dialog">
+            <div class="modal-dialog modal-sm">
+
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;
+                        </button>
+                        <h3 class="modal-title">${confirm}</h3>
+                    </div>
+                    <div class="modal-body">
+                        <div class="col-sm-12">${unbanConfirmation} <span id="unbanUserName"></span>?</div>
+                        <form class="form-horizontal" method="get" action="${pageContext.request.contextPath}/mpb"
+                              id="unbanForm">
+                            <input type="hidden" name="command" value="unban_user">
+                            <input type="hidden" name="userUnbanID" value="" id="userUnbanID">
+                            <div class="alert alert-danger alert-dismissable" id="unbanFailureAlert">
+                                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                <strong>${failureMessage}!</strong> ${errorMessage}
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-offset-5 col-sm-7">
+                                    <button type="submit" class="btn btn-default" data-dismiss="modal">${cancel}</button>
+                                    <button type="submit" class="btn btn-primary">${unban}</button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>

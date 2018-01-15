@@ -11,6 +11,7 @@ import by.tr.web.exception.service.common.ServiceException;
 import by.tr.web.exception.service.user.CountingUserException;
 import by.tr.web.exception.service.user.EMailAlreadyRegisteredException;
 import by.tr.web.exception.service.user.IncorrectPasswordException;
+import by.tr.web.exception.service.user.InvalidUserIDException;
 import by.tr.web.exception.service.user.NoSuchUserException;
 import by.tr.web.exception.service.user.UserAlreadyExistsException;
 import by.tr.web.exception.service.user.UserServiceException;
@@ -131,6 +132,21 @@ public class UserServiceImpl implements UserService {
             return banReasonList;
         } catch (UserDAOException e) {
             throw new ServiceException("Cannot retrieve ban reason list from data base", e);
+        }
+    }
+
+    @Override
+    public void unbanUser(int userID) throws ServiceException {
+        DataTypeValidator validator = ValidatorFactory.getInstance().getDataTypeValidator();
+        boolean isIDValid = validator.checkForPositive(userID);
+        if (!isIDValid) {
+            throw new InvalidUserIDException("Incorrect user ID input");
+        }
+        UserDAO userDAO = DAOFactory.getInstance().getUserDAO();
+        try {
+            userDAO.unbanUser(userID);
+        } catch (UserDAOException e) {
+            throw new ServiceException("Error while unbanning user", e);
         }
     }
 
