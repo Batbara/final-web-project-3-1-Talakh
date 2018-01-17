@@ -33,7 +33,7 @@
     <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="/css/layout.css">
     <link rel="stylesheet" type="text/css" href="/css/table-style.css">
-    <script src="../../js/jquery-3.2.1.min.js"></script>
+    <script src="../../../js/jquery-3.2.1.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 
@@ -250,8 +250,8 @@
     </aside>
 </div>
 <c:import url="/WEB-INF/jsp/footer.jsp"/>
-<script src="../../js/content.js"></script>
-<script src="../../js/table.js" async></script>
-<script src="../../js/toSubmit.js" async></script>
+<script src="../../../js/content.js"></script>
+<script src="../../../js/table.js" async></script>
+<script src="../../../js/toSubmit.js" async></script>
 </body>
 </html>

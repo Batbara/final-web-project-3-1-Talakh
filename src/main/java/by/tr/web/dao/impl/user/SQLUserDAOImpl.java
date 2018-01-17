@@ -7,7 +7,6 @@ import by.tr.web.domain.BanReason;
 import by.tr.web.domain.User;
 import by.tr.web.exception.dao.user.PasswordDAOException;
 import by.tr.web.exception.dao.user.UserDAOException;
-import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 import java.sql.Connection;
@@ -33,10 +32,10 @@ public class SQLUserDAOImpl implements UserDAO {
                     "VALUES (?, MD5(?), ?)";
 
     private String GET_USER_QUERY =
-            "SELECT mpb.user.user_id, mpb.user.user_email," +
-                    "       mpb.user.user_status " +
+            "SELECT user.user_id, user.user_email," +
+                    "       user.user_status, user.user_is_banned " +
                     "  FROM mpb.user " +
-                    " WHERE mpb.user.user_name = ?";
+                    " WHERE user.user_name = ?";
 
     private String GET_USERS_INFO_QUERY =
             "SELECT user_id, user_name," +
@@ -122,16 +121,14 @@ public class SQLUserDAOImpl implements UserDAO {
     }
 
     @Override
-    public User login(String login, String password) throws UserDAOException {
+    public User login(String login, String password, String lang) throws UserDAOException {
         Connection connection = null;
         ResultSet resultSet = null;
         PreparedStatement preparedStatement = null;
         try {
             connection = connectionPool.takeConnection();
-
             boolean existingPassword = isPasswordExisting(connection, login, password);
             if (!existingPassword) {
-                logger.log(Level.WARN, "No such password in data base");
                 throw new PasswordDAOException("No such password in data base");
             }
 
@@ -139,18 +136,25 @@ public class SQLUserDAOImpl implements UserDAO {
 
             preparedStatement.setString(1, login);
             resultSet = preparedStatement.executeQuery();
+            resultSet.next();
 
-            User user = null;
-            if (resultSet.next()) {
-                int userID = resultSet.getInt(1);
-                String eMail = resultSet.getString(2);
-                String status = resultSet.getString(3);
-                user = formUser(userID, login, eMail, status);
+            User user = formUser(resultSet);
+
+            boolean isBanned = user.getIsBanned();
+            if (isBanned) {
+                preparedStatement = connection.prepareStatement(GET_BAN_INFO);
+
+                preparedStatement.setInt(1, user.getId());
+                preparedStatement.setString(2, lang);
+
+                resultSet = preparedStatement.executeQuery();
+                resultSet.next();
+
+                BanInfo banInfo = formBanInfo(resultSet);
+                user.setBanInfo(banInfo);
             }
-
             return user;
         } catch (SQLException e) {
-            logger.error("Failed to login user", e);
             throw new UserDAOException("Failed to login user", e);
         } finally {
             connectionPool.closeConnection(connection, preparedStatement, resultSet);
@@ -182,17 +186,11 @@ public class SQLUserDAOImpl implements UserDAO {
 
             resultSet = preparedStatement.executeQuery();
 
-
             List<User> userList = new ArrayList<>();
             User user;
             while (resultSet.next()) {
-                int userID = resultSet.getInt(1);
-                String userName = resultSet.getString(2);
-                String userEmail = resultSet.getString(3);
-                String userStatus = resultSet.getString(4);
-                boolean isBanned = resultSet.getShort(5) == 1;
-
-                user = new User(userID, userName, userEmail, userStatus, isBanned);
+                user = formUser(resultSet);
+                boolean isBanned = user.getIsBanned();
                 if (isBanned) {
                     setBanInfo(connection, user, lang);
                 }
@@ -303,13 +301,40 @@ public class SQLUserDAOImpl implements UserDAO {
         }
     }
 
-    private User formUser(int id, String login, String eMail, String userStatus) {
+
+    private User formUser(ResultSet resultSet) throws UserDAOException {
         User user = new User();
-        user.setId(id);
-        user.setUserName(login);
-        user.seteMail(eMail);
-        user.setUserStatus(userStatus);
-        return user;
+        try {
+            int userID = resultSet.getInt(1);
+            String eMail = resultSet.getString(2);
+            String status = resultSet.getString(3);
+            boolean isBanned = resultSet.getShort(4) == 1;
+
+            user.setId(userID);
+            user.seteMail(eMail);
+            user.setUserStatus(status);
+            user.setIsBanned(isBanned);
+            return user;
+        } catch (SQLException e) {
+            throw new UserDAOException("Cannot take user from data base", e);
+        }
+
+    }
+
+    private BanInfo formBanInfo(ResultSet resultSet) throws UserDAOException {
+        BanInfo banInfo = new BanInfo();
+        try {
+            Timestamp banTime = resultSet.getTimestamp(1);
+            Timestamp unbanTime = resultSet.getTimestamp(2);
+            String banReason = resultSet.getString(3);
+
+            banInfo.setBanTime(banTime);
+            banInfo.setUnbanTime(unbanTime);
+            banInfo.setBanReason(banReason);
+        } catch (SQLException e) {
+            throw new UserDAOException("Cannot retrieve user ban info", e);
+        }
+        return banInfo;
     }
 
     private void setBanInfo(Connection connection, User user, String lang) throws UserDAOException {
@@ -323,16 +348,8 @@ public class SQLUserDAOImpl implements UserDAO {
             preparedStatement.setString(2, lang);
 
             resultSet = preparedStatement.executeQuery();
-            BanInfo banInfo = new BanInfo();
-            while (resultSet.next()) {
-                Timestamp banTime = resultSet.getTimestamp(1);
-                Timestamp unbanTime = resultSet.getTimestamp(2);
-                String banReason = resultSet.getString(3);
+            BanInfo banInfo = formBanInfo(resultSet);
 
-                banInfo.setBanTime(banTime);
-                banInfo.setUnbanTime(unbanTime);
-                banInfo.setBanReason(banReason);
-            }
             user.setBanInfo(banInfo);
         } catch (SQLException e) {
             throw new UserDAOException("Cannot get ban info", e);

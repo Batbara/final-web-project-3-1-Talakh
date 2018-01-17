@@ -3,6 +3,7 @@ package by.tr.web.controller.command.impl;
 import by.tr.web.controller.command.Command;
 import by.tr.web.controller.constant.FrontControllerParameter;
 import by.tr.web.controller.constant.JSPPagePath;
+import by.tr.web.controller.constant.Util;
 import by.tr.web.domain.User;
 import by.tr.web.exception.service.common.ServiceException;
 import by.tr.web.exception.service.user.IncorrectPasswordException;
@@ -27,13 +28,14 @@ public class Logination implements Command {
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String login = request.getParameter(FrontControllerParameter.LOGIN);
         String password = request.getParameter(FrontControllerParameter.PASSWORD);
+        String lang = Util.getLanguage(request);
 
         ServiceFactory serviceFactory = ServiceFactory.getInstance();
         UserService userService = serviceFactory.getUserService();
 
         User user;
         try {
-            user = userService.login(login, password);
+            user = userService.login(login, password, lang);
 
             HttpSession session = request.getSession(true);
 

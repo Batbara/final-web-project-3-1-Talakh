@@ -6,7 +6,6 @@ import by.tr.web.domain.BanReason;
 import by.tr.web.domain.User;
 import by.tr.web.exception.dao.user.PasswordDAOException;
 import by.tr.web.exception.dao.user.UserDAOException;
-import by.tr.web.exception.service.common.LangNotSupportedException;
 import by.tr.web.exception.service.common.ServiceException;
 import by.tr.web.exception.service.user.CountingUserException;
 import by.tr.web.exception.service.user.EMailAlreadyRegisteredException;
@@ -56,24 +55,25 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User login(String login, String password) throws ServiceException {
+    public User login(String login, String password, String lang) throws ServiceException {
         ValidatorFactory validatorFactory = ValidatorFactory.getInstance();
-        UserValidator loginValidatorImpl = validatorFactory.getLoginValidator();
 
-        boolean isDataValid = loginValidatorImpl.validateCredentials(login, password);
+        UserValidator loginValidator = validatorFactory.getLoginValidator();
+        loginValidator.validateCredentials(login, password);
 
-        if (!isDataValid) {
-            throw new ServiceException("Unexpected error while validating user login credentials");
-        }
+        DataTypeValidator dataTypeValidator = validatorFactory.getDataTypeValidator();
+        dataTypeValidator.checkLanguage(lang);
+
         DAOFactory daoFactory = DAOFactory.getInstance();
         UserDAO userDAO = daoFactory.getUserDAO();
+
         User user;
         try {
             boolean isUserRegistered = userDAO.isUserRegistered(login);
             if (!isUserRegistered) {
                 throw new NoSuchUserException("No such user as " + login);
             } else {
-                user = userDAO.login(login, password);
+                user = userDAO.login(login, password, lang);
                 if (user == null) {
                     throw new ServiceException("Unexpected logging error");
                 }
@@ -90,10 +90,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> takeUserList(int startRecordNum, int recordsToTake, String lang) throws ServiceException {
         DataTypeValidator validator = ValidatorFactory.getInstance().getDataTypeValidator();
-        boolean isDataValid = validator.validateInputParameters(startRecordNum, recordsToTake, lang);
-        if (!isDataValid) {
-            throw new ServiceException("Unexpected result from input validation");
-        }
+        validator.validateInputParameters(startRecordNum, recordsToTake, lang);
 
         DAOFactory daoFactory = DAOFactory.getInstance();
         UserDAO userDAO = daoFactory.getUserDAO();
@@ -121,9 +118,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<BanReason> takeBanReasonList(String lang) throws ServiceException {
         DataTypeValidator validator = ValidatorFactory.getInstance().getDataTypeValidator();
-        if (!validator.checkLanguage(lang)) {
-            throw new LangNotSupportedException("Language " + lang + " is not supported");
-        }
+        validator.checkLanguage(lang);
 
         UserDAO userDAO = DAOFactory.getInstance().getUserDAO();
         List<BanReason> banReasonList;

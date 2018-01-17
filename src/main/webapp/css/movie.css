@@ -26,8 +26,8 @@ h1, h3 {
 }
 
 .posterBlock > img {
-    width: auto;
-    height: 320px;
+    width: 320px;
+    height: auto;
 }
 
 .posterBlock {

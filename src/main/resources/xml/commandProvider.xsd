@@ -18,6 +18,12 @@
             <xs:element name="commandName" type="xs:string" />
             <xs:element name="className" type="xs:string" />
         </xs:sequence>
-        <xs:attribute name="scope" use="optional" type="xs:string"/>
+        <xs:attribute name="scope" use="optional">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="admin"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
     </xs:complexType>
 </xs:schema>

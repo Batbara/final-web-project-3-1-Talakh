@@ -77,6 +77,14 @@
         <url-pattern>/tv</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>Forbidden</servlet-name>
+        <jsp-file>/WEB-INF/jsp/error/forbidden.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Forbidden</servlet-name>
+        <url-pattern>/forbidden</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>25</session-timeout>
     </session-config>
@@ -101,4 +109,8 @@
         <filter-name>CharsetFilter</filter-name>
         <url-pattern>/mpb</url-pattern>
     </filter-mapping>
+    <error-page>
+        <error-code>403</error-code>
+        <location>/forbidden</location>
+    </error-page>
 </web-app>

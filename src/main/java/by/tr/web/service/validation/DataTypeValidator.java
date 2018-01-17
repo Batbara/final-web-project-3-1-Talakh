@@ -8,7 +8,7 @@ public interface DataTypeValidator {
     enum Language {
         RU, EN
     }
-    boolean checkLanguage(String lang);
+    boolean checkLanguage(String lang) throws LangNotSupportedException;
     boolean checkForNotNegative(int number);
     boolean checkForPositive(int number);
 

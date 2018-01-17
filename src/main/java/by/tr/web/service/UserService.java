@@ -10,7 +10,7 @@ public interface UserService {
 
     User register(String login, String password, String eMail) throws ServiceException;
 
-    User login(String login, String password) throws ServiceException;
+    User login(String login, String password, String lang) throws ServiceException;
 
     List<User> takeUserList(int startRecordNum, int recordsToTake, String lang) throws ServiceException;
 

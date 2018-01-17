@@ -141,8 +141,8 @@
 
             </div>
             <div class="reviews">
+                <h3 id="reviews"><c:out value="${reviewsNav}"/></h3>
                 <c:forEach var="review" items="${movie.reviewList}">
-                    <h3 id="reviews"><c:out value="${reviewsNav}"/></h3>
                     <c:if test="${review.reviewContent != null}">
                     <div class="review">
                         <div class="author">

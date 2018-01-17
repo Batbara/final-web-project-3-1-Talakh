@@ -4,14 +4,17 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <html>
 <head>
-    <title>User profile - MotionPicture Bank [MPB]</title>
 
     <link rel="stylesheet" type="text/css" href="/css/layout.css">
     <fmt:setLocale value="${sessionScope.local}" />
     <fmt:setBundle basename="localization.local" var="loc" />
     <fmt:message bundle="${loc}" key="local.navButton.logout" var="logout"/>
     <fmt:message bundle="${loc}" key="local.navButton.register" var="register" />
-    <fmt:message bundle="${loc}" key="local.navButton.home" var="home" /></head>
+    <fmt:message bundle="${loc}" key="local.navButton.home" var="home" />
+    <fmt:message bundle="${loc}" key="local.title.profile" var="profile" />
+
+    <title> ${profile} | ${sessionScope.user.userName} | MotionPicture Bank [MPB]</title>
+</head>
 <body>
     <jsp:include page="/WEB-INF/jsp/header.jsp"/>
 

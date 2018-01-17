@@ -19,7 +19,7 @@
     <fmt:message bundle="${loc}" key="local.placeholder.password" var="passwordPlaceholder"/>
     <fmt:message bundle="${loc}" key="local.placeholder.username" var="userNamePlaceholder"/>
 
-    <title><c:out value="${signinButton}"/> - MotionPicture Bank [MPB]</title>
+    <title><c:out value="${signinButton}"/> | MotionPicture Bank [MPB]</title>
 
 </head>
 <body>
