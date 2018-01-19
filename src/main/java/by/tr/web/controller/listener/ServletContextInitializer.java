@@ -29,6 +29,7 @@ public class ServletContextInitializer implements ServletContextListener {
     }
 
     public void contextDestroyed(ServletContextEvent sce) {
+      //  destroyConnectionPool();
     }
 
     private void initializeLogger(ServletContextEvent contextEvent){
@@ -56,6 +57,10 @@ public class ServletContextInitializer implements ServletContextListener {
             logger.log(Level.FATAL, "Failed to init command provider", e);
             throw new CommandProviderError("Failed to init command provider", e);
         }
+    }
+    private void destroyConnectionPool(){
+        ConnectionPool connectionPool = ConnectionPool.getInstance();
+        connectionPool.dispose();
     }
 
 }

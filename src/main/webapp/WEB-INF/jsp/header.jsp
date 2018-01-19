@@ -106,8 +106,12 @@
                                     <c:if test="${sessionScope.userStatus eq 'ADMIN'}">
                                     <li>
 
-                                        <a href="${pageContext.request.contextPath}/mpb?command=take_user_list">
-                                            <c:out value="${admin}"/></a>
+                                        <form id="administration_form" action="${pageContext.request.contextPath}/mpb" method="get">
+                                            <input type="hidden" name="command" value="take_user_list"/>
+                                            <a href="javascript:{}"
+                                               onclick="document.getElementById('administration_form').submit(); return false;">
+                                                <c:out value="${profile}"/></a>
+                                        </form>
                                     </li>
                                     </c:if>
                                     <li>

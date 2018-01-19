@@ -1,6 +1,6 @@
 package by.tr.web.dao.impl.connection_pool;
 
-import by.tr.web.dao.impl.DBParameter;
+import by.tr.web.dao.configuration.DBParameter;
 import by.tr.web.exception.dao.ConnectionPoolException;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -10,7 +10,6 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
@@ -39,7 +38,7 @@ public final class ConnectionPool {
 
     private ConnectionPool() {
         ResourceBundle dbBundle =
-                ResourceBundle.getBundle(DBParameter.BASE_NAME, Locale.getDefault());
+                ResourceBundle.getBundle(DBParameter.BASE_NAME);
 
         this.driverName = dbBundle.getString(DBParameter.DB_DRIVER);
         this.url = dbBundle.getString(DBParameter.DB_URL);
@@ -151,6 +150,16 @@ public final class ConnectionPool {
 
     public void closeConnection(Connection connection) throws ConnectionPoolException {
         try {
+            for(Connection c : connectionQueue){
+                logger.debug("in connectionQueue");
+                String connectionState = c.isClosed() ? "is closed" : "isn't closed";
+                logger.debug("connection "+ connectionState);
+            }
+            for(Connection c : givenAwayConQueue){
+                logger.debug("in givenAwayConQueue");
+                String connectionState = c.isClosed() ? "is closed" : "isn't closed";
+                logger.debug("connection "+ connectionState);
+            }
             if (connection.isClosed()) {
                 logger.log(Level.ERROR, "Trying to close closed connection");
                 throw new ConnectionPoolException("Trying to close closed connection");
@@ -158,6 +167,7 @@ public final class ConnectionPool {
             if (connection.isReadOnly()) {
                 connection.setReadOnly(false);
             }
+
         } catch (SQLException e) {
             logger.error("Can't access connection", e);
             throw new ConnectionPoolException("Can't access connection", e);
