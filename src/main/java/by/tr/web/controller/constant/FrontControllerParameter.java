@@ -15,6 +15,8 @@ public final class FrontControllerParameter {
     public static final String ADDRESS ="address";
     public static final String SUCCESS_RESPONSE = "success";
     public static final String FAILURE_RESPONSE = "failure";
+    public static final String USER_IS_BANNED = "userIsBanned";
+    public static final String LOCALISATION_BUNDLE_NAME = "localization.local";
     private FrontControllerParameter(){}
 
 }

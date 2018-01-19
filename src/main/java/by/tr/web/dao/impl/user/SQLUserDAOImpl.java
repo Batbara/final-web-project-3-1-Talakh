@@ -144,12 +144,10 @@ public class SQLUserDAOImpl implements UserDAO {
                 String eMail = resultSet.getString(2);
                 String status = resultSet.getString(3);
                 isBanned = resultSet.getShort(4) == 1;
-                user = formUser(userID, login, eMail, status, isBanned);
+                user = new User(userID, login, eMail, status, isBanned);
             } 
             if(isBanned){
-                preparedStatement = connection.prepareStatement(GET_BAN_INFO);
-                preparedStatement.setInt(1, user.getId());
-                preparedStatement.setString(2, lang);
+               setBanInfo(connection, user, lang);
             }
             return user;
         } catch (SQLException e) {

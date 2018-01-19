@@ -37,21 +37,26 @@ public class Logination implements Command {
         try {
             user = userService.login(login, password, lang);
 
-            HttpSession session = request.getSession(true);
 
-            session.setAttribute(FrontControllerParameter.USER, user);
-            session.setAttribute(FrontControllerParameter.USER_STATUS, user.getUserStatus());
+            if (isBanned(user)) {
+                request.setAttribute(FrontControllerParameter.USER, user);
+                sendErrorMessage(request, response, FrontControllerParameter.USER_IS_BANNED);
+            } else {
+                HttpSession session = request.getSession(true);
 
-            response.sendRedirect(JSPPagePath.USER_ACCOUNT_PATH);
+                session.setAttribute(FrontControllerParameter.USER, user);
+                session.setAttribute(FrontControllerParameter.USER_STATUS, user.getUserStatus());
+                response.sendRedirect(JSPPagePath.USER_ACCOUNT_PATH);
+            }
         } catch (InvalidLoginException ex) {
             logger.error("Invalid login", ex);
-            showErrorMessage(request, response, FrontControllerParameter.LOGIN);
+            sendErrorMessage(request, response, FrontControllerParameter.LOGIN);
         } catch (NoSuchUserException e) {
             logger.error("No such user", e);
-            showErrorMessage(request, response, FrontControllerParameter.USER);
+            sendErrorMessage(request, response, FrontControllerParameter.USER);
         } catch (IncorrectPasswordException e) {
             logger.error("Incorrect password", e);
-            showErrorMessage(request, response, FrontControllerParameter.PASSWORD);
+            sendErrorMessage(request, response, FrontControllerParameter.PASSWORD);
         } catch (ServiceException ex) {
             logger.log(Level.FATAL, "Internal error", ex);
             RequestDispatcher dispatcher = request.getRequestDispatcher(JSPPagePath.INTERNAL_ERROR_PAGE);
@@ -60,7 +65,11 @@ public class Logination implements Command {
 
     }
 
-    private void showErrorMessage(HttpServletRequest request, HttpServletResponse response, String errorType)
+    private boolean isBanned(User user) {
+        return user.getIsBanned();
+    }
+
+    private void sendErrorMessage(HttpServletRequest request, HttpServletResponse response, String errorType)
             throws ServletException, IOException {
         request.setAttribute(FrontControllerParameter.LOGIN_ERROR, errorType);
         request.getRequestDispatcher(JSPPagePath.LOGIN_PAGE).forward(request, response);

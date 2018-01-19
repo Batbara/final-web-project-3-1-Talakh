@@ -35,7 +35,10 @@ var getUrlParameter = function getUrlParameter(sParam) {
         }
     }
 };
+$("#form-login").on("submit", function (event) {
 
+    event.preventDefault();
+});
 $("#banForm").on("submit", function(event) {
     var form = $(this);
 

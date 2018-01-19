@@ -2,8 +2,10 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <head>
+
     <link rel="stylesheet" type="text/css" href="/css/header.css">
 
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/footer.css">
     <fmt:setLocale value="${sessionScope.local}"/>
     <fmt:setBundle basename="localization.local" var="loc"/>
     <fmt:message bundle="${loc}" key="local.navButton.login" var="login"/>
@@ -15,7 +17,7 @@
     <fmt:message bundle="${loc}" key="local.navButton.tv" var="tvShows"/>
     <fmt:message bundle="${loc}" key="local.navButton.rus" var="rus"/>
     <fmt:message bundle="${loc}" key="local.navButton.eng" var="eng"/>
-    <fmt:message bundle="${loc}" key="local.navButton.admin" var="admin"/>
+    <fmt:message bundle="${loc}" key="local.navButton.admin" var="administration"/>
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
@@ -110,7 +112,7 @@
                                             <input type="hidden" name="command" value="take_user_list"/>
                                             <a href="javascript:{}"
                                                onclick="document.getElementById('administration_form').submit(); return false;">
-                                                <c:out value="${profile}"/></a>
+                                                <c:out value="${administration}"/></a>
                                         </form>
                                     </li>
                                     </c:if>
@@ -153,5 +155,4 @@
 
     </nav>
 </header>
-<script src="/js/header.js"></script>
 </body>

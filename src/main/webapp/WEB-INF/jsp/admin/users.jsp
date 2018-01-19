@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-
+<%@ taglib prefix="mpb" uri="mpbtaglib" %>
 
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
@@ -39,9 +39,6 @@
     <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
     <link rel="stylesheet" type="text/css" href="/css/layout.css">
     <link rel="stylesheet" type="text/css" href="/css/table-style.css">
-
-
-
 
 </head>
 <body>
@@ -123,11 +120,8 @@
 
                             <tr class="banContent collapse" id="${currentUser.id}">
                                 <td colspan="5">
-                                    <p>
-                                            ${ban}: <c:out value="${currentUser.banInfo.banTime}"/> <br/>
-                                            ${unban}: <c:out value="${currentUser.banInfo.unbanTime}"/> <br/>
-                                            ${banReason}: <c:out value="${currentUser.banInfo.banReason.reason}"/>
-                                    </p></td>
+                                    <mpb:ban-info user="${currentUser}"/>
+                                </td>
                             </tr>
 
                         </c:when>

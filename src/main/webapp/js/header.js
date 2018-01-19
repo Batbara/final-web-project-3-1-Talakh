@@ -32,7 +32,7 @@ function showProfileMenu() {
     };
     return false;
 }
-window.onload =
+$(document).ready(
     function (ev) {
 
         var profileButton = document.getElementsByClassName("profile-button");
@@ -50,5 +50,6 @@ window.onload =
                 event.relatedTarget.style.background = "#595151"
             }
         };
-    };
+    }
+);
 // Close the dropdown if the user clicks outside of it

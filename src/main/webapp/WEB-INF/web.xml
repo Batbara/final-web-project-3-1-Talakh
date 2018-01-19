@@ -3,9 +3,19 @@
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
 		 http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
          version="3.1">
+    <jsp-config>
+        <taglib>
+            <taglib-uri>mpbtaglib</taglib-uri>
+            <taglib-location>/WEB-INF/tld/mpbTagLib.tld</taglib-location>
+        </taglib>
+    </jsp-config>
     <listener>
         <listener-class>by.tr.web.controller.listener.ServletContextInitializer</listener-class>
     </listener>
+    <error-page>
+        <error-code>403</error-code>
+        <location>/forbidden</location>
+    </error-page>
 
     <servlet>
         <servlet-name>FrontController</servlet-name>
@@ -77,6 +87,14 @@
         <url-pattern>/tv</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>Forbidden</servlet-name>
+        <jsp-file>/WEB-INF/jsp/error/forbidden.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Forbidden</servlet-name>
+        <url-pattern>/forbidden</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>25</session-timeout>
     </session-config>
@@ -101,4 +119,5 @@
         <filter-name>CharsetFilter</filter-name>
         <url-pattern>/mpb</url-pattern>
     </filter-mapping>
+
 </web-app>
