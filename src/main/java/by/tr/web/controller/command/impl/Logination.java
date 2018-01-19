@@ -45,7 +45,6 @@ public class Logination implements Command {
                 HttpSession session = request.getSession(true);
 
                 session.setAttribute(FrontControllerParameter.USER, user);
-                session.setAttribute(FrontControllerParameter.USER_STATUS, user.getUserStatus());
                 response.sendRedirect(JSPPagePath.USER_ACCOUNT_PATH);
             }
         } catch (InvalidLoginException ex) {

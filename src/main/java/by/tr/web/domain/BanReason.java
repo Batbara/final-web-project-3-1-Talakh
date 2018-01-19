@@ -29,6 +29,13 @@ public class BanReason implements Serializable {
         return result;
     }
 
+    @Override
+    public String toString() {
+        return "BanReason{" +
+                "id=" + id +
+                ", reason='" + reason + '\'' +
+                '}';
+    }
 
     public int getId() {
         return id;

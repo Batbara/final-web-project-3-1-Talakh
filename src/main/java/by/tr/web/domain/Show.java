@@ -33,10 +33,6 @@ public class Show implements Serializable {
         reviewList = new ArrayList<>();
     }
 
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
-    }
-
     public int getShowID() {
         return showID;
     }
@@ -175,6 +171,23 @@ public class Show implements Serializable {
         result = 31 * result + genreList.hashCode();
         result = 31 * result + countryList.hashCode();
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Show{" +
+                "showID=" + showID +
+                ", title='" + title + '\'' +
+                ", synopsis='" + synopsis + '\'' +
+                ", poster='" + poster + '\'' +
+                ", year=" + year +
+                ", premiereDate=" + premiereDate +
+                ", runtime=" + runtime +
+                ", genreList=" + genreList +
+                ", countryList=" + countryList +
+                ", userRating=" + userRating +
+                ", reviewList=" + reviewList +
+                '}';
     }
 
     private double calculateAvgRating() {

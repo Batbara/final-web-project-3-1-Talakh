@@ -31,4 +31,11 @@ public class TVChannel implements Serializable {
     public int hashCode() {
         return channelName.hashCode();
     }
+
+    @Override
+    public String toString() {
+        return "TVChannel{" +
+                "channelName='" + channelName + '\'' +
+                '}';
+    }
 }

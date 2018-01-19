@@ -32,4 +32,11 @@ public class Country implements Serializable {
     public int hashCode() {
         return countryName.hashCode();
     }
+
+    @Override
+    public String toString() {
+        return "Country{" +
+                "countryName='" + countryName + '\'' +
+                '}';
+    }
 }

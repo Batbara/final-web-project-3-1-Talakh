@@ -40,7 +40,6 @@ public class Registration implements Command {
 
             HttpSession session = request.getSession(true);
             session.setAttribute(FrontControllerParameter.USER, newUser);
-            session.setAttribute(FrontControllerParameter.USER_STATUS, newUser.getUserStatus());
 
             response.sendRedirect(JSPPagePath.USER_ACCOUNT_PATH);
         } catch (IncorrectPasswordException ex) {

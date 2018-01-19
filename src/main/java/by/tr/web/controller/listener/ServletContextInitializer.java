@@ -29,7 +29,7 @@ public class ServletContextInitializer implements ServletContextListener {
     }
 
     public void contextDestroyed(ServletContextEvent sce) {
-      //  destroyConnectionPool();
+        destroyConnectionPool();
     }
 
     private void initializeLogger(ServletContextEvent contextEvent){

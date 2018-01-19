@@ -149,6 +149,10 @@ public final class ConnectionPool {
     }
 
     public void closeConnection(Connection connection) throws ConnectionPoolException {
+        if (!givenAwayConQueue.remove(connection)) {
+            logger.log(Level.ERROR, "Error deleting connection from the given away connections pool");
+            throw new ConnectionPoolException("Error deleting connection from the given away connections pool");
+        }
         try {
             for(Connection c : connectionQueue){
                 logger.debug("in connectionQueue");
@@ -161,8 +165,7 @@ public final class ConnectionPool {
                 logger.debug("connection "+ connectionState);
             }
             if (connection.isClosed()) {
-                logger.log(Level.ERROR, "Trying to close closed connection");
-                throw new ConnectionPoolException("Trying to close closed connection");
+               reopenConnection(connection);
             }
             if (connection.isReadOnly()) {
                 connection.setReadOnly(false);
@@ -171,11 +174,6 @@ public final class ConnectionPool {
         } catch (SQLException e) {
             logger.error("Can't access connection", e);
             throw new ConnectionPoolException("Can't access connection", e);
-        }
-
-        if (!givenAwayConQueue.remove(connection)) {
-            logger.log(Level.ERROR, "Error deleting connection from the given away connections pool");
-            throw new ConnectionPoolException("Error deleting connection from the given away connections pool");
         }
 
         if (!connectionQueue.offer(connection)) {
@@ -203,5 +201,8 @@ public final class ConnectionPool {
         }
     }
 
+    private void reopenConnection(Connection connection) throws SQLException {
+        connection = DriverManager.getConnection(url, user, password);
+    }
 
 }

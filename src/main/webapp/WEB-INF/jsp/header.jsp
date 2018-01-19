@@ -87,7 +87,7 @@
             </li>
 
             <c:choose>
-                <c:when test="${not empty sessionScope.userStatus}">
+                <c:when test="${not empty sessionScope.user}">
                     <li>
                         <div class="dropdown">
 
@@ -105,7 +105,7 @@
                                                 <c:out value="${profile}"/></a>
                                         </form>
                                     </li>
-                                    <c:if test="${sessionScope.userStatus eq 'ADMIN'}">
+                                    <c:if test="${sessionScope.user.userStatus eq 'ADMIN'}">
                                     <li>
 
                                         <form id="administration_form" action="${pageContext.request.contextPath}/mpb" method="get">

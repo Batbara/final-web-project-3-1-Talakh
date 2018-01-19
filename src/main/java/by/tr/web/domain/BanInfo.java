@@ -38,6 +38,15 @@ public class BanInfo implements Serializable {
         return result;
     }
 
+    @Override
+    public String toString() {
+        return "BanInfo{" +
+                "banTime=" + banTime +
+                ", unbanTime=" + unbanTime +
+                ", banReason=" + banReason +
+                '}';
+    }
+
     public Timestamp getBanTime() {
         return banTime;
     }

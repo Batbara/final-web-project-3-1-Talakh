@@ -6,6 +6,7 @@ import by.tr.web.dao.impl.show.ShowQuery;
 import by.tr.web.domain.Country;
 import by.tr.web.domain.Genre;
 import by.tr.web.domain.Movie;
+import by.tr.web.domain.User;
 import by.tr.web.domain.UserReview;
 import by.tr.web.exception.dao.movie.MovieCounterDAOException;
 import by.tr.web.exception.dao.movie.MovieDAOException;
@@ -256,6 +257,7 @@ public class MovieDAOImpl implements MovieDAO {
             preparedStatement.setInt(1, movie.getShowID());
             resultSet = preparedStatement.executeQuery();
             UserReview review;
+            User user;
             while (resultSet.next()){
                 int userID = resultSet.getInt(1);
                 String userName = resultSet.getString(2);
@@ -264,11 +266,15 @@ public class MovieDAOImpl implements MovieDAO {
                 Timestamp postDate = resultSet.getTimestamp(5);
 
                 review = new UserReview();
-                review.setUserID(userID);
-                review.setUserName(userName);
+                user = new User();
+                user.setId(userID);
+                user.setUserName(userName);
+                review.setUser(user);
+
                 review.setUserRate(userRate);
                 review.setReviewContent(reviewContent);
                 review.setPostDate(postDate);
+                review.setShow(movie);
 
                 movie.addReview(review);
             }

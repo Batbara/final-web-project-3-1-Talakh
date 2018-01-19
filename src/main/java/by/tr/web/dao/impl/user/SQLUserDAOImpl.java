@@ -4,7 +4,9 @@ import by.tr.web.dao.UserDAO;
 import by.tr.web.dao.impl.connection_pool.ConnectionPool;
 import by.tr.web.domain.BanInfo;
 import by.tr.web.domain.BanReason;
+import by.tr.web.domain.Show;
 import by.tr.web.domain.User;
+import by.tr.web.domain.UserReview;
 import by.tr.web.exception.dao.user.PasswordDAOException;
 import by.tr.web.exception.dao.user.UserDAOException;
 import org.apache.log4j.Logger;
@@ -33,14 +35,15 @@ public class SQLUserDAOImpl implements UserDAO {
 
     private String GET_USER_QUERY =
             "SELECT user.user_id, user.user_email," +
-            "       user.user_status, user.user_is_banned " +
+            "       user.user_status, user.user_is_banned, " +
+            "       user.user_reg_date " +
             "  FROM mpb.user " +
             " WHERE user.user_name = ?";
 
     private String GET_USERS_INFO_QUERY =
             "SELECT user_id, user_name," +
                     "       user_email, user_status," +
-                    "       user_is_banned" +
+                    "       user_is_banned, user_reg_date" +
                     "  FROM mpb.user" +
                     " LIMIT ?, ?";
 
@@ -87,7 +90,11 @@ public class SQLUserDAOImpl implements UserDAO {
                     "        user_unban_time = NULL," +
                     "        user_ban_reason_id = NULL" +
                     " WHERE user_id = ?";
-
+    private String GET_USER_REVIEWS =
+            "SELECT show_id, review_rate," +
+            "   review_content, review_date" +
+            " FROM mpb.review" +
+            "   WHERE user_id = ?";
     @Override
     public boolean register(User user) throws UserDAOException {
 
@@ -144,7 +151,9 @@ public class SQLUserDAOImpl implements UserDAO {
                 String eMail = resultSet.getString(2);
                 String status = resultSet.getString(3);
                 isBanned = resultSet.getShort(4) == 1;
-                user = new User(userID, login, eMail, status, isBanned);
+                Timestamp regDate = resultSet.getTimestamp(5);
+
+                user = new User(userID, login, eMail, status, isBanned, regDate);
             } 
             if(isBanned){
                setBanInfo(connection, user, lang);
@@ -190,11 +199,13 @@ public class SQLUserDAOImpl implements UserDAO {
                 String userEmail = resultSet.getString(3);
                 String userStatus = resultSet.getString(4);
                 boolean isBanned = resultSet.getShort(5) == 1;
+                Timestamp regDate = resultSet.getTimestamp(6);
 
-                user = new User(userID, userName, userEmail, userStatus, isBanned);
+                user = new User(userID, userName, userEmail, userStatus, isBanned, regDate);
                 if (isBanned) {
                     setBanInfo(connection, user, lang);
                 }
+                setUserReviews(connection, user);
                 userList.add(user);
             }
             return userList;
@@ -302,16 +313,6 @@ public class SQLUserDAOImpl implements UserDAO {
         }
     }
 
-    private User formUser(int id, String login, String eMail, String userStatus, boolean isBanned) {
-        User user = new User();
-        user.setId(id);
-        user.setUserName(login);
-        user.seteMail(eMail);
-        user.setUserStatus(userStatus);
-        user.setIsBanned(isBanned);
-        return user;
-    }
-
     private void setBanInfo(Connection connection, User user, String lang) throws UserDAOException {
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
@@ -339,10 +340,46 @@ public class SQLUserDAOImpl implements UserDAO {
         } finally {
             connectionPool.closeResources(preparedStatement, resultSet);
         }
-
-
     }
+    private void setUserReviews(Connection connection, User user) throws UserDAOException{
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        try {
+            preparedStatement = connection.prepareStatement(GET_USER_REVIEWS);
 
+            int userID = user.getId();
+            preparedStatement.setInt(1, userID);
+
+            resultSet = preparedStatement.executeQuery();
+
+            List<UserReview> reviewList = new ArrayList<>();
+            UserReview review;
+            while (resultSet.next()) {
+                int showId = resultSet.getInt(1);
+                int userRate = resultSet.getInt(2);
+                String reviewContent = resultSet.getString(3);
+                Timestamp reviewPostDate = resultSet.getTimestamp(4);
+
+                review = new UserReview();
+                Show show = new Show();
+                show.setShowID(showId);
+
+                review.setShow(show);
+                review.setUser(user);
+                review.setUserRate(userRate);
+                if(reviewContent != null) {
+                    review.setReviewContent(reviewContent);
+                    review.setPostDate(reviewPostDate);
+                }
+                reviewList.add(review);
+            }
+            user.setUserReviews(reviewList);
+        } catch (SQLException e) {
+            throw new UserDAOException("Cannot get list of user reviews", e);
+        } finally {
+            connectionPool.closeResources(preparedStatement, resultSet);
+        }
+    }
     private boolean isPasswordExisting(Connection connection, String login, String password) throws UserDAOException {
 
         PreparedStatement preparedStatement = null;

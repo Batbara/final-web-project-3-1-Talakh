@@ -14,7 +14,6 @@ public class LogoutImpl implements Command {
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession();
         session.removeAttribute(FrontControllerParameter.USER);
-        session.removeAttribute(FrontControllerParameter.USER_STATUS);
         response.sendRedirect(JSPPagePath.INDEX);
     }
 }

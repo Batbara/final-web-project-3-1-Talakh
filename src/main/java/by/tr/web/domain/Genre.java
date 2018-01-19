@@ -32,4 +32,11 @@ public class Genre implements Serializable {
     public int hashCode() {
         return genreName.hashCode();
     }
+
+    @Override
+    public String toString() {
+        return "Genre{" +
+                "genreName='" + genreName + '\'' +
+                '}';
+    }
 }

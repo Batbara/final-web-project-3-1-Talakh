@@ -1,7 +1,6 @@
 @import 'https://fonts.googleapis.com/css?family=Tinos:400,700';
 body{
     font-family: 'Tinos', serif;
-    background-color: rgba(220,64,51,0.71);
 }
 .message{
     font-size: 24px;

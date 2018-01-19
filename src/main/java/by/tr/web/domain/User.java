@@ -1,6 +1,9 @@
 package by.tr.web.domain;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 public class User implements Serializable {
 
@@ -16,6 +19,8 @@ public class User implements Serializable {
     private boolean isBanned;
     private BanInfo banInfo;
 
+    private Timestamp registrationDate;
+    private List<UserReview> userReviews;
     public enum UserStatus {
         ADMIN, CASUAL_VIEWER, MOVIE_FAN, REVIEWER, CRITIC
     }
@@ -26,6 +31,7 @@ public class User implements Serializable {
         password = "";
         banInfo = new BanInfo();
         userStatus = UserStatus.CASUAL_VIEWER;
+        userReviews = new ArrayList<>();
     }
 
     public User(String userName, String password, String eMail) {
@@ -35,12 +41,13 @@ public class User implements Serializable {
         setStatus(UserStatus.CASUAL_VIEWER);
     }
 
-    public User(int userID, String userName, String eMail, String userStatus, boolean isBanned) {
+    public User(int userID, String userName, String eMail, String userStatus, boolean isBanned, Timestamp registrationDate) {
         setId(userID);
         setUserName(userName);
         seteMail(eMail);
         setUserStatus(userStatus);
         setIsBanned(isBanned);
+        setRegistrationDate(registrationDate);
     }
 
     public BanInfo getBanInfo() {
@@ -101,6 +108,25 @@ public class User implements Serializable {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public Timestamp getRegistrationDate() {
+        return registrationDate;
+    }
+
+    public void setRegistrationDate(Timestamp registrationDate) {
+        this.registrationDate = registrationDate;
+    }
+
+    public List<UserReview> getUserReviews() {
+        return userReviews;
+    }
+
+    public void setUserReviews(List<UserReview> userReviews) {
+        this.userReviews = userReviews;
+    }
+    public void addUserReview (UserReview review){
+        userReviews.add(review);
     }
 
     @Override

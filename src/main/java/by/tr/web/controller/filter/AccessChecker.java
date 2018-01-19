@@ -24,7 +24,7 @@ public class AccessChecker implements Filter {
         String command = req.getParameter(FrontControllerParameter.COMMAND);
         boolean isAccessGranted = true;
         if (isAdminCommand(command)) {
-            isAccessGranted = checkAccess((HttpServletRequest)req);
+            isAccessGranted = checkAccess((HttpServletRequest) req);
         }
         if (isAccessGranted) {
             chain.doFilter(req, resp);
@@ -45,7 +45,11 @@ public class AccessChecker implements Filter {
 
     private boolean checkAccess(HttpServletRequest request) {
         HttpSession session = request.getSession();
-        User.UserStatus userStatus = (User.UserStatus) session.getAttribute(FrontControllerParameter.USER_STATUS);
+        User user = (User) session.getAttribute(FrontControllerParameter.USER);
+        if (user == null) {
+            return false;
+        }
+        User.UserStatus userStatus = user.getUserStatus();
 
         return userStatus != null && userStatus == User.UserStatus.ADMIN;
     }
