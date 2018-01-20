@@ -1,15 +1,19 @@
 package by.tr.web.dao.impl.user;
 
+import by.tr.web.dao.Configuration;
 import by.tr.web.dao.UserDAO;
+import by.tr.web.dao.factory.ConfigurationFactory;
 import by.tr.web.dao.impl.connection_pool.ConnectionPool;
+import by.tr.web.dao.parameter.SqlQueryName;
 import by.tr.web.domain.BanInfo;
 import by.tr.web.domain.BanReason;
 import by.tr.web.domain.Show;
 import by.tr.web.domain.User;
 import by.tr.web.domain.UserReview;
+import by.tr.web.exception.dao.common.DAOException;
 import by.tr.web.exception.dao.user.PasswordDAOException;
-import by.tr.web.exception.dao.user.UserDAOException;
-import org.apache.log4j.Logger;
+import by.tr.web.exception.dao.user.RegistrationDAOException;
+import by.tr.web.exception.dao.user.UserInitializaionException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -21,89 +25,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SQLUserDAOImpl implements UserDAO {
-    private ConnectionPool connectionPool = ConnectionPool.getInstance();
-    private static final Logger logger = Logger.getLogger(SQLUserDAOImpl.class);
 
-    private String USER_COUNTER_QUERY =
-            "SELECT DISTINCT COUNT(*)" +
-                    "  FROM mpb.user";
+    private final ConnectionPool connectionPool = ConnectionPool.getInstance();
 
-    private String REGISTER_QUERY =
-            "INSERT INTO mpb.user (user_name, " +
-                    "user_password, user_email) " +
-                    "VALUES (?, MD5(?), ?)";
 
-    private String GET_USER_QUERY =
-            "SELECT user.user_id, user.user_email," +
-            "       user.user_status, user.user_is_banned, " +
-            "       user.user_reg_date " +
-            "  FROM mpb.user " +
-            " WHERE user.user_name = ?";
-
-    private String GET_USERS_INFO_QUERY =
-            "SELECT user_id, user_name," +
-                    "       user_email, user_status," +
-                    "       user_is_banned, user_reg_date" +
-                    "  FROM mpb.user" +
-                    " LIMIT ?, ?";
-
-    private String GET_BAN_INFO =
-            "SELECT user_ban_time, user_unban_time," +
-                    "       banned_user_ban_reason" +
-                    "   FROM mpb.user" +
-                    "    INNER JOIN mpb.ban_reason" +
-                    "   ON (ban_reason.ban_reason_id = user.user_ban_reason_id)" +
-                    " WHERE user_id = ?" +
-                    "  AND ban_reason.lang = ?";
-
-    private String GET_BAN_REASONS_QUERY =
-            "SELECT ban_reason_id, banned_user_ban_reason" +
-                    "   FROM mpb.ban_reason" +
-                    " WHERE lang = ?";
-
-    private String CHECK_USER_QUERY =
-            "SELECT user_id" +
-                    "   FROM mpb.user" +
-                    "  WHERE mpb.user.user_name = ?";
-
-    private String CHECK_PASSWORD_QUERY =
-            "SELECT  mpb.user.user_id" +
-                    "   FROM mpb.user" +
-                    " WHERE mpb.user.user_name = ? " +
-                    "  AND mpb.user.user_password = MD5(?)";
-
-    private String CHECK_EMAIL_QUERY =
-            "SELECT mpb.user.user_id " +
-                    "   FROM mpb.user " +
-                    "  WHERE mpb.user.user_email = ?";
-    private String BAN_USER_QUERY =
-            "UPDATE mpb.user" +
-                    "   SET user_is_banned = 1," +
-                    "       user_ban_time = ?," +
-                    "        user_unban_time = ?," +
-                    "        user_ban_reason_id = ?" +
-                    " WHERE user_id = ?";
-    private String UNBAN_USER_QUERY =
-            "UPDATE mpb.user" +
-                    "   SET user_is_banned = 0," +
-                    "       user_ban_time = NULL," +
-                    "        user_unban_time = NULL," +
-                    "        user_ban_reason_id = NULL" +
-                    " WHERE user_id = ?";
-    private String GET_USER_REVIEWS =
-            "SELECT show_id, review_rate," +
-            "   review_content, review_date" +
-            " FROM mpb.review" +
-            "   WHERE user_id = ?";
     @Override
-    public boolean register(User user) throws UserDAOException {
+    public boolean register(User user) throws DAOException {
 
         Connection connection = null;
         ResultSet resultSet = null;
         PreparedStatement preparedStatement = null;
         try {
             connection = connectionPool.takeConnection();
-            preparedStatement = connection.prepareStatement(REGISTER_QUERY, Statement.RETURN_GENERATED_KEYS);
+
+            Configuration queryConfig = ConfigurationFactory.getInstance().getUserQueryConfig();
+            String registerQuery = queryConfig.getSqlQuery(SqlQueryName.REGISTER_QUERY);
+
+            preparedStatement = connection.prepareStatement(registerQuery, Statement.RETURN_GENERATED_KEYS);
 
             preparedStatement.setString(1, user.getUserName());
             preparedStatement.setString(2, user.getPassword());
@@ -116,19 +54,17 @@ public class SQLUserDAOImpl implements UserDAO {
             int userID = resultSet.getInt(1);
 
             user.setId(userID);
-            // user.setStatus(User.UserStatus.CASUAL_VIEWER);
 
             return true;
         } catch (SQLException e) {
-            logger.error("Failed to register user", e);
-            throw new UserDAOException("Failed to register user", e);
+            throw new RegistrationDAOException("Failed to register user", e);
         } finally {
             connectionPool.closeConnection(connection, preparedStatement, resultSet);
         }
     }
 
     @Override
-    public User login(String login, String password, String lang) throws UserDAOException {
+    public User login(String login, String password, String lang) throws DAOException {
         Connection connection = null;
         ResultSet resultSet = null;
         PreparedStatement preparedStatement = null;
@@ -139,7 +75,10 @@ public class SQLUserDAOImpl implements UserDAO {
                 throw new PasswordDAOException("No such password in data base");
             }
 
-            preparedStatement = connection.prepareStatement(GET_USER_QUERY);
+            Configuration queryConfig = ConfigurationFactory.getInstance().getUserQueryConfig();
+            String takeUserQuery = queryConfig.getSqlQuery(SqlQueryName.TAKE_USER_QUERY);
+
+            preparedStatement = connection.prepareStatement(takeUserQuery);
 
             preparedStatement.setString(1, login);
             resultSet = preparedStatement.executeQuery();
@@ -154,13 +93,13 @@ public class SQLUserDAOImpl implements UserDAO {
                 Timestamp regDate = resultSet.getTimestamp(5);
 
                 user = new User(userID, login, eMail, status, isBanned, regDate);
-            } 
-            if(isBanned){
-               setBanInfo(connection, user, lang);
+            }
+            if (isBanned) {
+                setBanInfo(connection, user, lang);
             }
             return user;
         } catch (SQLException e) {
-            throw new UserDAOException("Failed to login user", e);
+            throw new DAOException("Failed to login user", e);
         } finally {
             connectionPool.closeConnection(connection, preparedStatement, resultSet);
         }
@@ -168,23 +107,33 @@ public class SQLUserDAOImpl implements UserDAO {
     }
 
     @Override
-    public boolean isUserRegistered(String login) throws UserDAOException {
-        return checkForRegistration(CHECK_USER_QUERY, login);
+    public boolean isUserRegistered(String login) throws DAOException {
+        Configuration queryConfig = ConfigurationFactory.getInstance().getUserQueryConfig();
+        String checkUserExistQuery = queryConfig.getSqlQuery(SqlQueryName.CHECK_USER_EXIST_QUERY);
+
+        return checkForRegistration(checkUserExistQuery, login);
     }
 
     @Override
-    public boolean isEmailRegistered(String eMail) throws UserDAOException {
-        return checkForRegistration(CHECK_EMAIL_QUERY, eMail);
+    public boolean isEmailRegistered(String eMail) throws DAOException {
+        Configuration queryConfig = ConfigurationFactory.getInstance().getUserQueryConfig();
+        String checkEmailQuery = queryConfig.getSqlQuery(SqlQueryName.CHECK_EMAIL_QUERY);
+
+        return checkForRegistration(checkEmailQuery, eMail);
     }
 
     @Override
-    public List<User> takeUserList(int startPosition, int usersNum, String lang) throws UserDAOException {
+    public List<User> takeUserList(int startPosition, int usersNum, String lang) throws DAOException {
         Connection connection = null;
         ResultSet resultSet = null;
         PreparedStatement preparedStatement = null;
         try {
             connection = connectionPool.takeConnection();
-            preparedStatement = connection.prepareStatement(GET_USERS_INFO_QUERY);
+
+            Configuration queryConfig = ConfigurationFactory.getInstance().getUserQueryConfig();
+            String takeUserList = queryConfig.getSqlQuery(SqlQueryName.TAKE_USER_LIST);
+
+            preparedStatement = connection.prepareStatement(takeUserList);
 
             preparedStatement.setInt(1, startPosition);
             preparedStatement.setInt(2, usersNum);
@@ -210,21 +159,25 @@ public class SQLUserDAOImpl implements UserDAO {
             }
             return userList;
         } catch (SQLException e) {
-            throw new UserDAOException("Error while retrieving users list", e);
+            throw new DAOException("Error while retrieving users list", e);
         } finally {
             connectionPool.closeConnection(connection, preparedStatement, resultSet);
         }
     }
 
     @Override
-    public int countUsers() throws UserDAOException {
+    public int countUsers() throws DAOException {
         Connection connection = null;
         ResultSet resultSet = null;
         Statement statement = null;
         try {
             connection = connectionPool.takeConnection();
             statement = connection.createStatement();
-            resultSet = statement.executeQuery(USER_COUNTER_QUERY);
+
+            Configuration queryConfig = ConfigurationFactory.getInstance().getUserQueryConfig();
+            String userCounterQuery = queryConfig.getSqlQuery(SqlQueryName.USER_COUNTER_QUERY);
+
+            resultSet = statement.executeQuery(userCounterQuery);
 
             int userCounter = 0;
             if (resultSet.next()) {
@@ -232,19 +185,23 @@ public class SQLUserDAOImpl implements UserDAO {
             }
             return userCounter;
         } catch (SQLException e) {
-            throw new UserDAOException("Error while executing user counter query", e);
+            throw new DAOException("Error while executing user counter query", e);
         } finally {
             connectionPool.closeConnection(connection, statement, resultSet);
         }
     }
 
     @Override
-    public void banUser(User user) throws UserDAOException {
+    public void banUser(User user) throws DAOException {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         try {
             connection = connectionPool.takeConnection();
-            preparedStatement = connection.prepareStatement(BAN_USER_QUERY);
+
+            Configuration queryConfig = ConfigurationFactory.getInstance().getUserQueryConfig();
+            String banUserQuery = queryConfig.getSqlQuery(SqlQueryName.BAN_USER_QUERY);
+
+            preparedStatement = connection.prepareStatement(banUserQuery);
 
             BanInfo banInfo = user.getBanInfo();
             preparedStatement.setTimestamp(1, banInfo.getBanTime());
@@ -254,23 +211,27 @@ public class SQLUserDAOImpl implements UserDAO {
 
             int rowsAffected = preparedStatement.executeUpdate();
             if (rowsAffected == 0) {
-                throw new UserDAOException("Unexpected result from update query");
+                throw new DAOException("Unexpected result from update query");
             }
         } catch (SQLException e) {
-            throw new UserDAOException("SQL error while banning user", e);
+            throw new DAOException("SQL error while banning user", e);
         } finally {
             connectionPool.closeConnection(connection, preparedStatement);
         }
     }
 
     @Override
-    public List<BanReason> getBanReasonList(String lang) throws UserDAOException {
+    public List<BanReason> getBanReasonList(String lang) throws DAOException {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         try {
             connection = connectionPool.takeConnection();
-            preparedStatement = connection.prepareStatement(GET_BAN_REASONS_QUERY);
+
+            Configuration queryConfig = ConfigurationFactory.getInstance().getUserQueryConfig();
+            String takeBanReasonsQuery = queryConfig.getSqlQuery(SqlQueryName.TAKE_BAN_REASONS_QUERY);
+
+            preparedStatement = connection.prepareStatement(takeBanReasonsQuery);
 
             preparedStatement.setString(1, lang);
 
@@ -288,36 +249,45 @@ public class SQLUserDAOImpl implements UserDAO {
             }
             return banReasonList;
         } catch (SQLException e) {
-            throw new UserDAOException("SQL error while taking ban reasons", e);
+            throw new DAOException("SQL error while taking ban reasons", e);
         } finally {
             connectionPool.closeConnection(connection, preparedStatement, resultSet);
         }
     }
 
     @Override
-    public void unbanUser(int userID) throws UserDAOException {
+    public void unbanUser(int userID) throws DAOException {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         try {
             connection = connectionPool.takeConnection();
-            preparedStatement = connection.prepareStatement(UNBAN_USER_QUERY);
+
+            Configuration queryConfig = ConfigurationFactory.getInstance().getUserQueryConfig();
+            String unbanUserQuery = queryConfig.getSqlQuery(SqlQueryName.UNBAN_USER_QUERY);
+
+            preparedStatement = connection.prepareStatement(unbanUserQuery);
             preparedStatement.setInt(1, userID);
+
             int rowsAffected = preparedStatement.executeUpdate();
             if (rowsAffected == 0) {
-                throw new UserDAOException("Error while executing update to unban user");
+                throw new DAOException("Unexpected result from update query");
             }
         } catch (SQLException e) {
-            throw new UserDAOException("Error while trying to execute user unban query", e);
+            throw new DAOException("Error while trying to execute user unban query", e);
         } finally {
             connectionPool.closeConnection(connection, preparedStatement);
         }
     }
 
-    private void setBanInfo(Connection connection, User user, String lang) throws UserDAOException {
+    private void setBanInfo(Connection connection, User user, String lang) throws DAOException {
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         try {
-            preparedStatement = connection.prepareStatement(GET_BAN_INFO);
+
+            Configuration queryConfig = ConfigurationFactory.getInstance().getUserQueryConfig();
+            String takeBanInfo = queryConfig.getSqlQuery(SqlQueryName.TAKE_BAN_INFO);
+
+            preparedStatement = connection.prepareStatement(takeBanInfo);
 
             int userID = user.getId();
             preparedStatement.setInt(1, userID);
@@ -336,16 +306,21 @@ public class SQLUserDAOImpl implements UserDAO {
             }
             user.setBanInfo(banInfo);
         } catch (SQLException e) {
-            throw new UserDAOException("Cannot get ban info", e);
+            throw new UserInitializaionException("Cannot get ban info", e);
         } finally {
             connectionPool.closeResources(preparedStatement, resultSet);
         }
     }
-    private void setUserReviews(Connection connection, User user) throws UserDAOException{
+
+    private void setUserReviews(Connection connection, User user) throws DAOException {
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         try {
-            preparedStatement = connection.prepareStatement(GET_USER_REVIEWS);
+
+            Configuration queryConfig = ConfigurationFactory.getInstance().getUserQueryConfig();
+            String takeUserReviewsQuery = queryConfig.getSqlQuery(SqlQueryName.TAKE_USER_REVIEWS_QUERY);
+
+            preparedStatement = connection.prepareStatement(takeUserReviewsQuery);
 
             int userID = user.getId();
             preparedStatement.setInt(1, userID);
@@ -367,7 +342,7 @@ public class SQLUserDAOImpl implements UserDAO {
                 review.setShow(show);
                 review.setUser(user);
                 review.setUserRate(userRate);
-                if(reviewContent != null) {
+                if (reviewContent != null) {
                     review.setReviewContent(reviewContent);
                     review.setPostDate(reviewPostDate);
                 }
@@ -375,17 +350,22 @@ public class SQLUserDAOImpl implements UserDAO {
             }
             user.setUserReviews(reviewList);
         } catch (SQLException e) {
-            throw new UserDAOException("Cannot get list of user reviews", e);
+            throw new UserInitializaionException("Cannot get list of user reviews", e);
         } finally {
             connectionPool.closeResources(preparedStatement, resultSet);
         }
     }
-    private boolean isPasswordExisting(Connection connection, String login, String password) throws UserDAOException {
+
+    private boolean isPasswordExisting(Connection connection, String login, String password) throws DAOException {
 
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         try {
-            preparedStatement = connection.prepareStatement(CHECK_PASSWORD_QUERY);
+            Configuration queryConfig = ConfigurationFactory.getInstance().getUserQueryConfig();
+            String checkPasswordQuery = queryConfig.getSqlQuery(SqlQueryName.CHECK_PASSWORD_QUERY);
+
+            preparedStatement = connection.prepareStatement(checkPasswordQuery);
+
             preparedStatement.setString(1, login);
             preparedStatement.setString(2, password);
 
@@ -393,13 +373,13 @@ public class SQLUserDAOImpl implements UserDAO {
 
             return resultSet.next();
         } catch (SQLException e) {
-            throw new UserDAOException("Cannot check password existence", e);
+            throw new PasswordDAOException("Cannot check password existence", e);
         } finally {
             connectionPool.closeResources(preparedStatement, resultSet);
         }
     }
 
-    private boolean checkForRegistration(String query, String parameter) throws UserDAOException {
+    private boolean checkForRegistration(String query, String userName) throws DAOException {
         ResultSet resultSet = null;
         PreparedStatement preparedStatement = null;
         Connection connection = null;
@@ -407,14 +387,13 @@ public class SQLUserDAOImpl implements UserDAO {
             connection = connectionPool.takeConnection();
             preparedStatement = connection.prepareStatement(query);
 
-            preparedStatement.setString(1, parameter);
+            preparedStatement.setString(1, userName);
             resultSet = preparedStatement.executeQuery();
 
             return resultSet.next();
         } catch (SQLException e) {
-            String errorMessage = "Cannot check if \'" + parameter + "\' is registered";
-            logger.error(errorMessage, e);
-            throw new UserDAOException(errorMessage, e);
+            String errorMessage = "Cannot check if \'" + userName + "\' is registered";
+            throw new RegistrationDAOException(errorMessage, e);
         } finally {
             connectionPool.closeConnection(connection, preparedStatement, resultSet);
         }

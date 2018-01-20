@@ -1,6 +1,8 @@
 package by.tr.web.exception.dao.movie;
 
-public class MovieCounterDAOException extends MovieDAOException {
+import by.tr.web.exception.dao.common.DAOException;
+
+public class MovieCounterDAOException extends DAOException {
     private static final long serialVersionUID = 2732172368294469994L;
 
     public MovieCounterDAOException() {

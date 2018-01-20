@@ -2,26 +2,26 @@ package by.tr.web.dao;
 
 import by.tr.web.domain.BanReason;
 import by.tr.web.domain.User;
-import by.tr.web.exception.dao.user.UserDAOException;
+import by.tr.web.exception.dao.common.DAOException;
 
 import java.util.List;
 
 public interface UserDAO {
-    boolean register(User user) throws UserDAOException;
+    boolean register(User user) throws DAOException;
 
-    User login(String login, String password, String lang) throws UserDAOException;
+    User login(String login, String password, String lang) throws DAOException;
 
-    boolean isUserRegistered(String login) throws UserDAOException;
+    boolean isUserRegistered(String login) throws DAOException;
 
-    boolean isEmailRegistered(String eMail) throws UserDAOException;
+    boolean isEmailRegistered(String eMail) throws DAOException;
 
-    List<User> takeUserList(int startRecordNum, int recordsToTake, String lang) throws UserDAOException;
+    List<User> takeUserList(int startRecordNum, int recordsToTake, String lang) throws DAOException;
 
-    int countUsers() throws UserDAOException;
+    int countUsers() throws DAOException;
 
-    void banUser(User user) throws UserDAOException;
+    void banUser(User user) throws DAOException;
 
-    List<BanReason> getBanReasonList(String lang) throws UserDAOException;
+    List<BanReason> getBanReasonList(String lang) throws DAOException;
 
-    void unbanUser(int userID) throws UserDAOException;
+    void unbanUser(int userID) throws DAOException;
 }

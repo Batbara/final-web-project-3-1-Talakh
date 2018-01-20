@@ -1,6 +1,8 @@
 package by.tr.web.exception.dao.movie;
 
-public class MovieInitializationException extends MovieDAOException {
+import by.tr.web.exception.dao.common.DAOException;
+
+public class MovieInitializationException extends DAOException {
     private static final long serialVersionUID = 6135724393141831935L;
 
     public MovieInitializationException() {

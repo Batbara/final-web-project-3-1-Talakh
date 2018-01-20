@@ -5,7 +5,7 @@ import by.tr.web.dao.impl.connection_pool.ConnectionPool;
 import by.tr.web.exception.controller.CommandProviderError;
 import by.tr.web.exception.controller.CommandProviderException;
 import by.tr.web.exception.controller.ConnectionPoolSevereError;
-import by.tr.web.exception.dao.ConnectionPoolException;
+import by.tr.web.exception.dao.common.ConnectionPoolException;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;

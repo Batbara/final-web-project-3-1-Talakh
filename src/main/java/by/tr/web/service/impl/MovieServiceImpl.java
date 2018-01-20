@@ -3,8 +3,8 @@ package by.tr.web.service.impl;
 import by.tr.web.dao.MovieDAO;
 import by.tr.web.dao.factory.DAOFactory;
 import by.tr.web.domain.Movie;
+import by.tr.web.exception.dao.common.DAOException;
 import by.tr.web.exception.dao.movie.MovieCounterDAOException;
-import by.tr.web.exception.dao.movie.MovieDAOException;
 import by.tr.web.exception.service.common.ServiceException;
 import by.tr.web.exception.service.movie.CountingMoviesException;
 import by.tr.web.exception.service.movie.InvalidOrderTypeException;
@@ -25,7 +25,7 @@ public class MovieServiceImpl implements MovieService {
         MovieDAO movieDAO = DAOFactory.getInstance().getMovieDAO();
         try {
             return movieDAO.takeOrderedMovieList(startRecordNum, moviesNumber, orderType, lang);
-        } catch (MovieDAOException e) {
+        } catch (DAOException e) {
             throw new ServiceException("Error while getting movies list", e);
         }
     }
@@ -46,7 +46,7 @@ public class MovieServiceImpl implements MovieService {
         MovieDAO movieDAO = DAOFactory.getInstance().getMovieDAO();
         try {
             return movieDAO.takeMovie(id, lang);
-        } catch (MovieDAOException e) {
+        } catch (DAOException e) {
             throw new ServiceException("Error while taking movie", e);
         }
     }

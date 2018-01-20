@@ -1,7 +1,7 @@
 package by.tr.web.dao.impl.connection_pool;
 
-import by.tr.web.dao.configuration.DBParameter;
-import by.tr.web.exception.dao.ConnectionPoolException;
+import by.tr.web.dao.parameter.DBParameter;
+import by.tr.web.exception.dao.common.ConnectionPoolException;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 

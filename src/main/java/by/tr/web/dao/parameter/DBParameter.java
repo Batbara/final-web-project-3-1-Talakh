@@ -1,4 +1,4 @@
-package by.tr.web.dao.configuration;
+package by.tr.web.dao.parameter;
 
 public final class DBParameter {
     private DBParameter(){}

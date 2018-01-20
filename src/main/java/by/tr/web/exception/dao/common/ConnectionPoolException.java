@@ -1,4 +1,4 @@
-package by.tr.web.exception.dao;
+package by.tr.web.exception.dao.common;
 
 public class ConnectionPoolException extends RuntimeException {
     private static final long serialVersionUID = 6549626552288340993L;

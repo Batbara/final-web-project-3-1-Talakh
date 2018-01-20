@@ -1,6 +1,8 @@
 package by.tr.web.exception.dao.movie;
 
-public class NoSuchMovieException extends MovieDAOException {
+import by.tr.web.exception.dao.common.DAOException;
+
+public class NoSuchMovieException extends DAOException {
     private static final long serialVersionUID = -6221170658256289568L;
 
     public NoSuchMovieException() {

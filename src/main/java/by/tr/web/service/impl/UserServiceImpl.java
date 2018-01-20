@@ -4,8 +4,8 @@ import by.tr.web.dao.UserDAO;
 import by.tr.web.dao.factory.DAOFactory;
 import by.tr.web.domain.BanReason;
 import by.tr.web.domain.User;
+import by.tr.web.exception.dao.common.DAOException;
 import by.tr.web.exception.dao.user.PasswordDAOException;
-import by.tr.web.exception.dao.user.UserDAOException;
 import by.tr.web.exception.service.common.ServiceException;
 import by.tr.web.exception.service.user.CountingUserException;
 import by.tr.web.exception.service.user.EMailAlreadyRegisteredException;
@@ -48,7 +48,7 @@ public class UserServiceImpl implements UserService {
                 user = new User(login, password, eMail);
                 userDAO.register(user);
             }
-        } catch (UserDAOException ex) {
+        } catch (DAOException ex) {
             throw new ServiceException("Error while registering user", ex);
         }
         return user;
@@ -80,7 +80,7 @@ public class UserServiceImpl implements UserService {
             }
         } catch (PasswordDAOException e) {
             throw new IncorrectPasswordException("Incorrect password", e);
-        } catch (UserDAOException ex) {
+        } catch (DAOException ex) {
             throw new ServiceException("Error while login user", ex);
         }
         return user;
@@ -97,7 +97,7 @@ public class UserServiceImpl implements UserService {
         List<User> userList;
         try {
             userList = userDAO.takeUserList(startRecordNum, recordsToTake, lang);
-        } catch (UserDAOException e) {
+        } catch (DAOException e) {
             throw new ServiceException("Unable to get users list from data base", e);
         }
         return userList;
@@ -110,7 +110,7 @@ public class UserServiceImpl implements UserService {
         try {
             usersCount = userDAO.countUsers();
             return usersCount;
-        } catch (UserDAOException e) {
+        } catch (DAOException e) {
             throw new CountingUserException("Cannot count users in data base", e);
         }
     }
@@ -125,7 +125,7 @@ public class UserServiceImpl implements UserService {
         try {
             banReasonList = userDAO.getBanReasonList(lang);
             return banReasonList;
-        } catch (UserDAOException e) {
+        } catch (DAOException e) {
             throw new ServiceException("Cannot retrieve ban reason list from data base", e);
         }
     }
@@ -140,7 +140,7 @@ public class UserServiceImpl implements UserService {
         UserDAO userDAO = DAOFactory.getInstance().getUserDAO();
         try {
             userDAO.unbanUser(userID);
-        } catch (UserDAOException e) {
+        } catch (DAOException e) {
             throw new ServiceException("Error while unbanning user", e);
         }
     }
@@ -153,7 +153,7 @@ public class UserServiceImpl implements UserService {
         UserDAO userDAO = DAOFactory.getInstance().getUserDAO();
         try {
             userDAO.banUser(user);
-        } catch (UserDAOException e) {
+        } catch (DAOException e) {
             throw new UserServiceException("Unable to ban user " + user.toString(), e);
         }
     }
