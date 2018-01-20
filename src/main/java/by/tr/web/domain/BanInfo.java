@@ -67,7 +67,7 @@ public class BanInfo implements Serializable {
         return banReason;
     }
 
-    public void setBanReason(String banReason) {
-        this.banReason.setReason(banReason);
+    public void setBanReason(BanReason banReason) {
+        this.banReason = banReason;
     }
 }

@@ -154,16 +154,6 @@ public final class ConnectionPool {
             throw new ConnectionPoolException("Error deleting connection from the given away connections pool");
         }
         try {
-            for(Connection c : connectionQueue){
-                logger.debug("in connectionQueue");
-                String connectionState = c.isClosed() ? "is closed" : "isn't closed";
-                logger.debug("connection "+ connectionState);
-            }
-            for(Connection c : givenAwayConQueue){
-                logger.debug("in givenAwayConQueue");
-                String connectionState = c.isClosed() ? "is closed" : "isn't closed";
-                logger.debug("connection "+ connectionState);
-            }
             if (connection.isClosed()) {
                reopenConnection(connection);
             }

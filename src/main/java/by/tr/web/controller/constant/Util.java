@@ -2,6 +2,10 @@ package by.tr.web.controller.constant;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public final class Util {
     private Util(){}
@@ -24,5 +28,13 @@ public final class Util {
             lang = (String) session.getAttribute(FrontControllerParameter.LOCALE);
         }
         return lang;
+    }
+    public static Timestamp getTimeFromString(String time, String timePattern) throws ParseException {
+        SimpleDateFormat dateFormat = new SimpleDateFormat(timePattern);
+
+        Date parsedTimeStamp = dateFormat.parse(time);
+
+        Timestamp timestamp = new Timestamp(parsedTimeStamp.getTime());
+        return timestamp;
     }
 }

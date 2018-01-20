@@ -3,6 +3,7 @@ package by.tr.web.controller.command.impl.admin_command;
 import by.tr.web.controller.command.Command;
 import by.tr.web.controller.constant.FrontControllerParameter;
 import by.tr.web.controller.constant.JSPAttribute;
+import by.tr.web.controller.constant.Util;
 import by.tr.web.domain.BanInfo;
 import by.tr.web.domain.BanReason;
 import by.tr.web.domain.User;
@@ -19,20 +20,14 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Timestamp;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 public class BanUserImpl implements Command {
 
     private static final Logger logger = Logger.getLogger(BanUserImpl.class);
-    private String TIME_PATTERN = "yyyy-MM-dd'T'hh:mm:ss";
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-
-        String banTime = request.getParameter(JSPAttribute.BAN_TIME);
-        String unbanTime = request.getParameter(JSPAttribute.UNBAN_TIME);
 
         response.setContentType(FrontControllerParameter.TEXT_HTML_CONTENT_TYPE);
         response.setCharacterEncoding(request.getCharacterEncoding());
@@ -40,12 +35,11 @@ public class BanUserImpl implements Command {
 
         try {
             User userToBan = retrieveUserToBan(request);
-            BanReason banReason = getBanReason(request);
-            BanInfo banInfo = new BanInfo(getTimeFromString(banTime), getTimeFromString(unbanTime), banReason);
 
+            BanInfo banInfo = formBanInfo(request);
             userToBan.setBanInfo(banInfo);
-            UserService userService = ServiceFactory.getInstance().getUserService();
 
+            UserService userService = ServiceFactory.getInstance().getUserService();
             userService.banUser(userToBan);
 
             out.print(FrontControllerParameter.SUCCESS_RESPONSE);
@@ -84,13 +78,22 @@ public class BanUserImpl implements Command {
         throw new ServiceException("Cannot get ban reason");
     }
 
-    private Timestamp getTimeFromString(String time) throws ParseException {
-        SimpleDateFormat dateFormat = new SimpleDateFormat(TIME_PATTERN);
+    private BanInfo formBanInfo(HttpServletRequest request) throws ServiceException, ParseException {
+        String banTimeParameter = request.getParameter(JSPAttribute.BAN_TIME);
+        String unbanTimeParameter = request.getParameter(JSPAttribute.UNBAN_TIME);
 
-        Date parsedTimeStamp = dateFormat.parse(time);
+        BanInfo banInfo = new BanInfo();
 
-        Timestamp timestamp = new Timestamp(parsedTimeStamp.getTime());
-        return timestamp;
+        BanReason banReason = getBanReason(request);
+        banInfo.setBanReason(banReason);
+
+        Timestamp banTime = Util.getTimeFromString(banTimeParameter, FrontControllerParameter.DEFAULT_TIME_PATTERN);
+        banInfo.setBanTime(banTime);
+
+        Timestamp unbanTime = Util.getTimeFromString(unbanTimeParameter, FrontControllerParameter.DEFAULT_TIME_PATTERN);
+        banInfo.setUnbanTime(unbanTime);
+
+        return banInfo;
     }
 
 }

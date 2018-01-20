@@ -9,6 +9,19 @@ public class BanReason implements Serializable {
     private String reason;
 
     public BanReason() {
+
+    }
+    public BanReason(String reason){
+        this.reason = reason;
+    }
+
+    public BanReason(int id) {
+        this.id = id;
+    }
+
+    public BanReason(int id, String reason) {
+        this.id = id;
+        this.reason = reason;
     }
 
     @Override
@@ -19,13 +32,13 @@ public class BanReason implements Serializable {
         BanReason banReason = (BanReason) o;
 
         if (id != banReason.id) return false;
-        return reason.equals(banReason.reason);
+        return reason != null ? reason.equals(banReason.reason) : banReason.reason == null;
     }
 
     @Override
     public int hashCode() {
         int result = id;
-        result = 31 * result + reason.hashCode();
+        result = 31 * result + (reason != null ? reason.hashCode() : 0);
         return result;
     }
 

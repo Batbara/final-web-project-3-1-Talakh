@@ -26,15 +26,13 @@ public class User implements Serializable {
     }
 
     public User() {
-        userName = "";
-        eMail = "";
-        password = "";
         banInfo = new BanInfo();
         userStatus = UserStatus.CASUAL_VIEWER;
         userReviews = new ArrayList<>();
     }
 
     public User(String userName, String password, String eMail) {
+        this();
         setUserName(userName);
         setPassword(password);
         seteMail(eMail);
@@ -42,6 +40,7 @@ public class User implements Serializable {
     }
 
     public User(int userID, String userName, String eMail, String userStatus, boolean isBanned, Timestamp registrationDate) {
+        this();
         setId(userID);
         setUserName(userName);
         seteMail(eMail);
@@ -136,24 +135,29 @@ public class User implements Serializable {
 
         User user = (User) o;
 
-        if (isBanned != user.isBanned) return false;
         if (id != user.id) return false;
-        if (!userName.equals(user.userName)) return false;
-        if (!eMail.equals(user.eMail)) return false;
-        if (!password.equals(user.password)) return false;
-        if (!banInfo.equals(user.banInfo)) return false;
-        return userStatus == user.userStatus;
+        if (isBanned != user.isBanned) return false;
+        if (userName != null ? !userName.equals(user.userName) : user.userName != null) return false;
+        if (eMail != null ? !eMail.equals(user.eMail) : user.eMail != null) return false;
+        if (password != null ? !password.equals(user.password) : user.password != null) return false;
+        if (userStatus != user.userStatus) return false;
+        if (banInfo != null ? !banInfo.equals(user.banInfo) : user.banInfo != null) return false;
+        if (registrationDate != null ? !registrationDate.equals(user.registrationDate) : user.registrationDate != null)
+            return false;
+        return userReviews != null ? userReviews.equals(user.userReviews) : user.userReviews == null;
     }
 
     @Override
     public int hashCode() {
-        int result = userName.hashCode();
-        result = 31 * result + eMail.hashCode();
-        result = 31 * result + password.hashCode();
-        result = 31 * result + userStatus.hashCode();
+        int result = id;
+        result = 31 * result + (userName != null ? userName.hashCode() : 0);
+        result = 31 * result + (eMail != null ? eMail.hashCode() : 0);
+        result = 31 * result + (password != null ? password.hashCode() : 0);
+        result = 31 * result + (userStatus != null ? userStatus.hashCode() : 0);
         result = 31 * result + (isBanned ? 1 : 0);
-        result = 31 * result + id;
-        result = 31 * result + banInfo.hashCode();
+        result = 31 * result + (banInfo != null ? banInfo.hashCode() : 0);
+        result = 31 * result + (registrationDate != null ? registrationDate.hashCode() : 0);
+        result = 31 * result + (userReviews != null ? userReviews.hashCode() : 0);
         return result;
     }
 }

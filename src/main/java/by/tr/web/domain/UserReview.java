@@ -65,8 +65,8 @@ public class UserReview implements Serializable {
         UserReview review = (UserReview) o;
 
         if (userRate != review.userRate) return false;
-        if (!user.equals(review.user)) return false;
-        if (!show.equals(review.show)) return false;
+        if (user != null ? !user.equals(review.user) : review.user != null) return false;
+        if (show != null ? !show.equals(review.show) : review.show != null) return false;
         if (reviewContent != null ? !reviewContent.equals(review.reviewContent) : review.reviewContent != null)
             return false;
         return postDate != null ? postDate.equals(review.postDate) : review.postDate == null;
@@ -74,8 +74,8 @@ public class UserReview implements Serializable {
 
     @Override
     public int hashCode() {
-        int result = user.hashCode();
-        result = 31 * result + show.hashCode();
+        int result = user != null ? user.hashCode() : 0;
+        result = 31 * result + (show != null ? show.hashCode() : 0);
         result = 31 * result + userRate;
         result = 31 * result + (reviewContent != null ? reviewContent.hashCode() : 0);
         result = 31 * result + (postDate != null ? postDate.hashCode() : 0);

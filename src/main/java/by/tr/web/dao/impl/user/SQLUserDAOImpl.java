@@ -97,6 +97,7 @@ public class SQLUserDAOImpl implements UserDAO {
             if (isBanned) {
                 setBanInfo(connection, user, lang);
             }
+            setUserReviews(connection, user);
             return user;
         } catch (SQLException e) {
             throw new DAOException("Failed to login user", e);
@@ -302,7 +303,7 @@ public class SQLUserDAOImpl implements UserDAO {
 
                 banInfo.setBanTime(banTime);
                 banInfo.setUnbanTime(unbanTime);
-                banInfo.setBanReason(banReason);
+                banInfo.setBanReason(new BanReason(banReason));
             }
             user.setBanInfo(banInfo);
         } catch (SQLException e) {

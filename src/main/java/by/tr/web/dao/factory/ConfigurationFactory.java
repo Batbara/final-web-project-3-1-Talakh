@@ -10,7 +10,7 @@ import by.tr.web.exception.dao.common.SqlQueryConfigurationError;
 import java.lang.reflect.Field;
 
 public class ConfigurationFactory {
-    private static ConfigurationFactory instance = new ConfigurationFactory();
+    private static final ConfigurationFactory instance = new ConfigurationFactory();
     private Configuration userQueryConfig = new UserSqlQueryConfig();
     private Configuration movieQueryConfig = new MovieSqlQueryConfig();
     private Configuration showQueryConfig = new ShowSqlQueryConfig();
