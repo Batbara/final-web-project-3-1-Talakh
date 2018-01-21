@@ -8,7 +8,7 @@ import by.tr.web.exception.dao.common.DAOException;
 import by.tr.web.exception.dao.user.PasswordDAOException;
 import by.tr.web.exception.service.common.ServiceException;
 import by.tr.web.exception.service.user.CountingUserException;
-import by.tr.web.exception.service.user.EMailAlreadyRegisteredException;
+import by.tr.web.exception.service.user.EmailAlreadyRegisteredException;
 import by.tr.web.exception.service.user.IncorrectPasswordException;
 import by.tr.web.exception.service.user.InvalidUserIDException;
 import by.tr.web.exception.service.user.NoSuchUserException;
@@ -24,11 +24,11 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     @Override
-    public User register(String login, String password, String eMail) throws ServiceException {
+    public User register(String login, String password, String email) throws ServiceException {
         ValidatorFactory validatorFactory = ValidatorFactory.getInstance();
         UserValidator registerValidator = validatorFactory.getRegisterValidator();
 
-        boolean isDataValid = registerValidator.validateCredentials(login, password, eMail);
+        boolean isDataValid = registerValidator.validateCredentials(login, password, email);
         if (!isDataValid) {
             throw new ServiceException("Unexpected error while validating user register credentials");
         }
@@ -41,11 +41,11 @@ public class UserServiceImpl implements UserService {
             if (isUserRegistered) {
                 throw new UserAlreadyExistsException("User " + login + " already exists");
             }
-            boolean isEmailRegistered = userDAO.isEmailRegistered(eMail);
+            boolean isEmailRegistered = userDAO.isEmailRegistered(email);
             if (isEmailRegistered) {
-                throw new EMailAlreadyRegisteredException("E-mail " + eMail + " is already registered");
+                throw new EmailAlreadyRegisteredException("E-mail " + email + " is already registered");
             } else {
-                user = new User(login, password, eMail);
+                user = new User(login, password, email);
                 userDAO.register(user);
             }
         } catch (DAOException ex) {

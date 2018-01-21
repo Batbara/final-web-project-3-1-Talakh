@@ -104,7 +104,7 @@
                                     <div class="userID ${currentUser.id}"><c:out value="${currentUser.id}"/></div>
                                 </td>
                                 <td class="userName ${currentUser.id}"><c:out value="${currentUser.userName}"/></td>
-                                <td><c:out value="${currentUser.eMail}"/></td>
+                                <td><c:out value="${currentUser.email}"/></td>
                                 <td><c:out value="${currentUser.userStatus}"/></td>
                                 <td>
                                 <span  data-toggle="tooltip" data-placement="bottom" title="${unban}" >
@@ -132,7 +132,7 @@
                                     <div class="userID ${currentUser.id}"><c:out value="${currentUser.id}"/></div>
                                 </td>
                                 <td class="userName ${currentUser.id}"><c:out value="${currentUser.userName}"/></td>
-                                <td><c:out value="${currentUser.eMail}"/></td>
+                                <td><c:out value="${currentUser.email}"/></td>
                                 <td><c:out value="${currentUser.userStatus}"/></td>
                                 <td>
                                     <c:if test="${currentUser.userStatus ne 'ADMIN'}">

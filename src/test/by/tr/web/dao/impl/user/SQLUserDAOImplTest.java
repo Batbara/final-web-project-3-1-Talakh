@@ -5,6 +5,7 @@ import by.tr.web.dao.impl.connection_pool.ConnectionPool;
 import by.tr.web.domain.BanInfo;
 import by.tr.web.domain.BanReason;
 import by.tr.web.domain.User;
+import by.tr.web.domain.builder.UserBuilder;
 import by.tr.web.exception.dao.common.DAOException;
 import by.tr.web.exception.dao.user.PasswordDAOException;
 import org.junit.AfterClass;
@@ -78,7 +79,7 @@ public class SQLUserDAOImplTest {
 
         User user = new User();
         user.setUserName(userName);
-        user.seteMail(eMail);
+        user.setEmail(eMail);
         user.setPassword(password);
 
         boolean expected = true;
@@ -100,7 +101,7 @@ public class SQLUserDAOImplTest {
 
         expectedUser.setId(37);
         expectedUser.setUserName(userName);
-        expectedUser.seteMail("maggie.simpson@gmail.com");
+        expectedUser.setEmail("maggie.simpson@gmail.com");
         expectedUser.setStatus(User.UserStatus.CASUAL_VIEWER);
 
         Timestamp regDate = Util.getTimeFromString("2018-01-19T19:19:36", dateTimePattern);
@@ -133,9 +134,9 @@ public class SQLUserDAOImplTest {
 
     @Test
     public void testIsEmailRegistered() throws DAOException {
-        String eMail = "talahbarbara@gmail.com";
+        String email = "talahbarbara@gmail.com";
         boolean expected = true;
-        boolean actual = userDAO.isEmailRegistered(eMail);
+        boolean actual = userDAO.isEmailRegistered(email);
         Assert.assertEquals(expected, actual);
     }
 
@@ -150,16 +151,16 @@ public class SQLUserDAOImplTest {
     public void testSuccessfulBanUser() throws SQLException, DAOException {
         String userName = "ThePond";
 
-        User user = new User();
-        user.setId(27);
-        user.setUserName(userName);
-
         BanInfo banInfo = new BanInfo();
         banInfo.setBanReason(new BanReason(3));
         banInfo.setBanTime(new Timestamp(System.currentTimeMillis()));
         banInfo.setUnbanTime(new Timestamp(System.currentTimeMillis() + 100000000L));
 
-        user.setBanInfo(banInfo);
+        User user = new UserBuilder()
+                .addId(27)
+                .addUserName(userName)
+                .addBanInfo(banInfo)
+                .create();
 
         userDAO.banUser(user);
 
@@ -211,7 +212,15 @@ public class SQLUserDAOImplTest {
                 boolean isBanned = resultSet.getShort(4) == 1;
                 Timestamp regDate = resultSet.getTimestamp(5);
 
-                user = new User(userID, userName, userEmail, userStatus, isBanned, regDate);
+             //   user = new User(userID, userName, userEmail, userStatus, isBanned, regDate);
+                user = new UserBuilder()
+                        .addId(userID)
+                        .addUserName(userName)
+                        .addEmail(userEmail)
+                        .addUserStatus(User.UserStatus.valueOf(userStatus.toUpperCase()))
+                        .addBanStatus(isBanned)
+                        .addRegistrationDate(regDate)
+                        .create();
                 if (isBanned) {
                     setBanInfo(connection, user);
                 }
@@ -291,6 +300,7 @@ public class SQLUserDAOImplTest {
             preparedStatement = connection.prepareStatement(SET_BAN_QUERY);
 
             BanInfo banInfo = user.getBanInfo();
+
             preparedStatement.setTimestamp(1, banInfo.getBanTime());
             preparedStatement.setTimestamp(2, banInfo.getUnbanTime());
             preparedStatement.setInt(3, banInfo.getBanReason().getId());

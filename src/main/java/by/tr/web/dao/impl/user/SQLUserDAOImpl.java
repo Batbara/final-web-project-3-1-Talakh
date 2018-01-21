@@ -7,9 +7,10 @@ import by.tr.web.dao.impl.connection_pool.ConnectionPool;
 import by.tr.web.dao.parameter.SqlQueryName;
 import by.tr.web.domain.BanInfo;
 import by.tr.web.domain.BanReason;
-import by.tr.web.domain.Show;
 import by.tr.web.domain.User;
 import by.tr.web.domain.UserReview;
+import by.tr.web.domain.builder.UserBuilder;
+import by.tr.web.domain.builder.UserReviewBuilder;
 import by.tr.web.exception.dao.common.DAOException;
 import by.tr.web.exception.dao.user.PasswordDAOException;
 import by.tr.web.exception.dao.user.RegistrationDAOException;
@@ -45,7 +46,7 @@ public class SQLUserDAOImpl implements UserDAO {
 
             preparedStatement.setString(1, user.getUserName());
             preparedStatement.setString(2, user.getPassword());
-            preparedStatement.setString(3, user.geteMail());
+            preparedStatement.setString(3, user.getEmail());
 
             preparedStatement.executeUpdate();
 
@@ -87,12 +88,20 @@ public class SQLUserDAOImpl implements UserDAO {
             boolean isBanned = false;
             if (resultSet.next()) {
                 int userID = resultSet.getInt(1);
-                String eMail = resultSet.getString(2);
+                String email = resultSet.getString(2);
                 String status = resultSet.getString(3);
                 isBanned = resultSet.getShort(4) == 1;
                 Timestamp regDate = resultSet.getTimestamp(5);
 
-                user = new User(userID, login, eMail, status, isBanned, regDate);
+                //user = new User(userID, login, eMail, status, isBanned, regDate);
+                user = new UserBuilder()
+                        .addId(userID)
+                        .addUserName(login)
+                        .addEmail(email)
+                        .addUserStatus(User.UserStatus.valueOf(status.toUpperCase()))
+                        .addBanStatus(isBanned)
+                        .addRegistrationDate(regDate)
+                        .create();
             }
             if (isBanned) {
                 setBanInfo(connection, user, lang);
@@ -151,7 +160,15 @@ public class SQLUserDAOImpl implements UserDAO {
                 boolean isBanned = resultSet.getShort(5) == 1;
                 Timestamp regDate = resultSet.getTimestamp(6);
 
-                user = new User(userID, userName, userEmail, userStatus, isBanned, regDate);
+               // user = new User(userID, userName, userEmail, userStatus, isBanned, regDate);
+                user = new UserBuilder()
+                        .addId(userID)
+                        .addUserName(userName)
+                        .addEmail(userEmail)
+                        .addUserStatus(User.UserStatus.valueOf(userStatus))
+                        .addBanStatus(isBanned)
+                        .addRegistrationDate(regDate)
+                        .create();
                 if (isBanned) {
                     setBanInfo(connection, user, lang);
                 }
@@ -246,6 +263,7 @@ public class SQLUserDAOImpl implements UserDAO {
                 banReason = new BanReason();
                 banReason.setId(id);
                 banReason.setReason(reason);
+
                 banReasonList.add(banReason);
             }
             return banReasonList;
@@ -336,17 +354,22 @@ public class SQLUserDAOImpl implements UserDAO {
                 String reviewContent = resultSet.getString(3);
                 Timestamp reviewPostDate = resultSet.getTimestamp(4);
 
-                review = new UserReview();
-                Show show = new Show();
-                show.setShowID(showId);
+                review = new UserReviewBuilder()
+                        .addShowId(showId)
+                        .addUser(user)
+                        .addUserRate(userRate)
+                        .addReviewContent(reviewContent)
+                        .addPostDate(reviewPostDate)
+                        .create();
+               /* review = new UserReview();
 
-                review.setShow(show);
+                review.setShowId(showId);
                 review.setUser(user);
                 review.setUserRate(userRate);
                 if (reviewContent != null) {
                     review.setReviewContent(reviewContent);
                     review.setPostDate(reviewPostDate);
-                }
+                }*/
                 reviewList.add(review);
             }
             user.setUserReviews(reviewList);

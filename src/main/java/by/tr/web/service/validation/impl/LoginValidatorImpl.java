@@ -24,7 +24,7 @@ public class LoginValidatorImpl implements UserValidator {
     }
 
     @Override
-    public boolean checkEMail(String email) {
+    public boolean checkEmail(String email) {
         return false;
     }
 }

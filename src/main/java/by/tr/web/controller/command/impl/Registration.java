@@ -5,9 +5,9 @@ import by.tr.web.controller.constant.FrontControllerParameter;
 import by.tr.web.controller.constant.JSPPagePath;
 import by.tr.web.domain.User;
 import by.tr.web.exception.service.common.ServiceException;
-import by.tr.web.exception.service.user.EMailAlreadyRegisteredException;
+import by.tr.web.exception.service.user.EmailAlreadyRegisteredException;
 import by.tr.web.exception.service.user.IncorrectPasswordException;
-import by.tr.web.exception.service.user.InvalidEMailException;
+import by.tr.web.exception.service.user.InvalidEmailException;
 import by.tr.web.exception.service.user.InvalidLoginException;
 import by.tr.web.exception.service.user.UserAlreadyExistsException;
 import by.tr.web.service.UserService;
@@ -48,7 +48,7 @@ public class Registration implements Command {
         } catch (InvalidLoginException ex) {
             logger.error("Invalid login",ex);
             showRegisterError(request, response, FrontControllerParameter.LOGIN);
-        } catch (InvalidEMailException | EMailAlreadyRegisteredException ex) {
+        } catch (InvalidEmailException | EmailAlreadyRegisteredException ex) {
             logger.error("E-mail error", ex);
             showRegisterError(request, response, FrontControllerParameter.EMAIL);
         } catch (UserAlreadyExistsException ex) {

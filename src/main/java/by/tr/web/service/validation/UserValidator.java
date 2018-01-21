@@ -2,7 +2,7 @@ package by.tr.web.service.validation;
 
 import by.tr.web.exception.service.common.ServiceException;
 import by.tr.web.exception.service.user.IncorrectPasswordException;
-import by.tr.web.exception.service.user.InvalidEMailException;
+import by.tr.web.exception.service.user.InvalidEmailException;
 import by.tr.web.exception.service.user.InvalidLoginException;
 
 public interface UserValidator{
@@ -13,7 +13,7 @@ public interface UserValidator{
 
     boolean checkLogin(String login);
     boolean checkPassword(String password);
-    boolean checkEMail(String email);
+    boolean checkEmail(String email);
 
     default boolean validateCredentials (String login, String password) throws ServiceException {
         if(!checkLogin(login)){
@@ -24,12 +24,12 @@ public interface UserValidator{
         }
         return true;
     }
-    default boolean validateCredentials (String login, String password, String eMail) throws ServiceException{
+    default boolean validateCredentials (String login, String password, String email) throws ServiceException{
         if(!checkLogin(login)){
             throw new InvalidLoginException("Incorrect login");
         }
-        if(!checkEMail(eMail)){
-            throw  new InvalidEMailException("Invalid email");
+        if(!checkEmail(email)){
+            throw  new InvalidEmailException("Invalid email");
         }
         if(!checkPassword(password)){
             throw new IncorrectPasswordException("Invalid password");

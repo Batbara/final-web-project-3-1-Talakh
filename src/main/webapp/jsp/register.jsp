@@ -14,7 +14,7 @@
     <fmt:message bundle="${loc}" key="local.submit.signup" var="signupButton"/>
     <fmt:message bundle="${loc}" key="local.error.register.user" var="regUserError"/>
     <fmt:message bundle="${loc}" key="local.error.login" var="regLoginError"/>
-    <fmt:message bundle="${loc}" key="local.error.register.eMail" var="regEMailError"/>
+    <fmt:message bundle="${loc}" key="local.error.register.email" var="regEmailError"/>
     <fmt:message bundle="${loc}" key="local.error.register.password" var="regPasswordError"/>
     <fmt:message bundle="${loc}" key="local.placeholder.password" var="passwordPlaceholder"/>
     <fmt:message bundle="${loc}" key="local.placeholder.username" var="userNamePlaceholder"/>
@@ -43,8 +43,8 @@
                 </p>
 
                 <p align="right">
-                    <label for="eMail" >E-mail:</label>
-                    <input id="eMail" type="email" name="eMail" value="" required>
+                    <label for="email" >E-mail:</label>
+                    <input id="email" type="email" name="email" value="" required>
                 </p>
 
                 <p id="button" align="center"><input type="submit" value="${signupButton}"></p>
@@ -56,8 +56,8 @@
                         <c:when test="${requestScope.registerError == 'user'}">
                             <c:out value="${regUserError}"/>
                         </c:when>
-                        <c:when test="${requestScope.registerError == 'eMail'}">
-                            <c:out value="${regEMailError}"/>
+                        <c:when test="${requestScope.registerError == 'email'}">
+                            <c:out value="${regEmailError}"/>
                         </c:when>
                         <c:when test="${requestScope.registerError == 'password'}">
                             <c:out value="${regPasswordError}"/>

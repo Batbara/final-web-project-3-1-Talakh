@@ -10,6 +10,9 @@ import by.tr.web.domain.Genre;
 import by.tr.web.domain.Movie;
 import by.tr.web.domain.User;
 import by.tr.web.domain.UserReview;
+import by.tr.web.domain.builder.MovieBuilder;
+import by.tr.web.domain.builder.UserBuilder;
+import by.tr.web.domain.builder.UserReviewBuilder;
 import by.tr.web.exception.dao.common.DAOException;
 import by.tr.web.exception.dao.movie.MovieCounterDAOException;
 import by.tr.web.exception.dao.movie.MovieInitializationException;
@@ -56,12 +59,20 @@ public class MovieDAOImpl implements MovieDAO {
                 int year = resultSet.getInt(4);
                 double rating = resultSet.getDouble(5);
 
-                movie = new Movie();
+                MovieBuilder movieBuilder = new MovieBuilder();
+                movie = movieBuilder
+                        .addId(showID)
+                        .addTitle(title)
+                        .addPoster(poster)
+                        .addYear(year)
+                        .addUserRating(rating)
+                        .create();
+               /* movie = new Movie();
                 movie.setShowID(showID);
                 movie.setTitle(title);
                 movie.setPoster(poster);
                 movie.setYear(year);
-                movie.setUserRating(rating);
+                movie.setUserRating(rating);*/
 
                 movies.add(movie);
             }
@@ -122,9 +133,8 @@ public class MovieDAOImpl implements MovieDAO {
                 throw new DAOException("Movie with id " + id + " not found");
             }
 
-            Movie movie = new Movie(id);
+            Movie movie = setMovieInfo(id, resultSet);
 
-            setMovieInfo(movie, resultSet);
             setMovieGenres(movie, lang, connection);
             setMovieCountries(movie, lang, connection);
             setMovieReviews(movie, connection);
@@ -137,7 +147,7 @@ public class MovieDAOImpl implements MovieDAO {
         }
     }
 
-    private void setMovieInfo(Movie movie, ResultSet resultSet) throws DAOException {
+    private Movie setMovieInfo(int movieId, ResultSet resultSet) throws DAOException {
         try {
             String title = resultSet.getString(1);
             Date yearDate = resultSet.getDate(2);
@@ -149,7 +159,21 @@ public class MovieDAOImpl implements MovieDAO {
             String synopsis = resultSet.getString(8);
             String poster = resultSet.getString(9);
 
-            movie.setTitle(title);
+            int year = getYearFromDate(yearDate);
+
+            Movie movie = new MovieBuilder()
+                    .addId(movieId)
+                    .addTitle(title)
+                    .addYear(year)
+                    .addPremiereDate(premiereDate)
+                    .addRuntime(runtime)
+                    .addBoxOffice(boxOffice)
+                    .addBudget(movieBudget)
+                    .addMpaaRating(Movie.MPAARating.valueOf(mpaaRating))
+                    .addSynopsis(synopsis)
+                    .addPoster(poster)
+                    .create();
+           /* movie.setTitle(title);
             movie.setYear(getYearFromDate(yearDate));
             movie.setPremiereDate(premiereDate);
             movie.setRuntime(runtime);
@@ -157,8 +181,8 @@ public class MovieDAOImpl implements MovieDAO {
             movie.setBudget(movieBudget);
             movie.setMpaaRating(mpaaRating);
             movie.setSynopsis(synopsis);
-            movie.setPoster(poster);
-
+            movie.setPoster(poster);*/
+            return movie;
         } catch (SQLException e) {
             throw new MovieInitializationException("Error while initializing movie information", e);
         }
@@ -247,16 +271,18 @@ public class MovieDAOImpl implements MovieDAO {
                 String reviewContent = resultSet.getString(4);
                 Timestamp postDate = resultSet.getTimestamp(5);
 
-                review = new UserReview();
-                user = new User();
-                user.setId(userID);
-                user.setUserName(userName);
-                review.setUser(user);
+                user = new UserBuilder()
+                        .addId(userID)
+                        .addUserName(userName)
+                        .create();
 
-                review.setUserRate(userRate);
-                review.setReviewContent(reviewContent);
-                review.setPostDate(postDate);
-                review.setShow(movie);
+                review = new UserReviewBuilder()
+                        .addShowId(movie.getShowID())
+                        .addUser(user)
+                        .addUserRate(userRate)
+                        .addReviewContent(reviewContent)
+                        .addPostDate(postDate)
+                        .create();
 
                 movie.addReview(review);
             }

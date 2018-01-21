@@ -23,11 +23,11 @@ public class RegisterValidatorImpl implements UserValidator {
         return password.length() >= MIN_PASSWORD_LENGTH && password.length() <= MAX_PASSWORD_LENGTH;
     }
 
-    public boolean checkEMail(String eMail){
-        if(eMail.isEmpty()){
+    public boolean checkEmail(String email){
+        if(email.isEmpty()){
             return false;
         }
-        Matcher matcher = eMailPattern.matcher(eMail);
+        Matcher matcher = eMailPattern.matcher(email);
         return matcher.matches();
     }
 

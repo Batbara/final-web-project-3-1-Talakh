@@ -12,7 +12,7 @@ public class User implements Serializable {
     private int id;
 
     private String userName;
-    private String eMail;
+    private String email;
     private String password;
 
     private UserStatus userStatus;
@@ -31,11 +31,11 @@ public class User implements Serializable {
         userReviews = new ArrayList<>();
     }
 
-    public User(String userName, String password, String eMail) {
+    public User(String userName, String password, String email) {
         this();
         setUserName(userName);
         setPassword(password);
-        seteMail(eMail);
+        setEmail(email);
         setStatus(UserStatus.CASUAL_VIEWER);
     }
 
@@ -43,7 +43,7 @@ public class User implements Serializable {
         this();
         setId(userID);
         setUserName(userName);
-        seteMail(eMail);
+        setEmail(eMail);
         setUserStatus(userStatus);
         setIsBanned(isBanned);
         setRegistrationDate(registrationDate);
@@ -65,12 +65,12 @@ public class User implements Serializable {
         this.userName = userName;
     }
 
-    public String geteMail() {
-        return eMail;
+    public String getEmail() {
+        return email;
     }
 
-    public void seteMail(String eMail) {
-        this.eMail = eMail;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPassword() {
@@ -138,12 +138,13 @@ public class User implements Serializable {
         if (id != user.id) return false;
         if (isBanned != user.isBanned) return false;
         if (userName != null ? !userName.equals(user.userName) : user.userName != null) return false;
-        if (eMail != null ? !eMail.equals(user.eMail) : user.eMail != null) return false;
+        if (email != null ? !email.equals(user.email) : user.email != null) return false;
         if (password != null ? !password.equals(user.password) : user.password != null) return false;
         if (userStatus != user.userStatus) return false;
         if (banInfo != null ? !banInfo.equals(user.banInfo) : user.banInfo != null) return false;
         if (registrationDate != null ? !registrationDate.equals(user.registrationDate) : user.registrationDate != null)
             return false;
+
         return userReviews != null ? userReviews.equals(user.userReviews) : user.userReviews == null;
     }
 
@@ -151,7 +152,7 @@ public class User implements Serializable {
     public int hashCode() {
         int result = id;
         result = 31 * result + (userName != null ? userName.hashCode() : 0);
-        result = 31 * result + (eMail != null ? eMail.hashCode() : 0);
+        result = 31 * result + (email != null ? email.hashCode() : 0);
         result = 31 * result + (password != null ? password.hashCode() : 0);
         result = 31 * result + (userStatus != null ? userStatus.hashCode() : 0);
         result = 31 * result + (isBanned ? 1 : 0);
