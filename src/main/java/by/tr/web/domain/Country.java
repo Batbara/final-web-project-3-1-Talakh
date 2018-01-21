@@ -7,7 +7,10 @@ public class Country implements Serializable {
     private String countryName;
 
     public Country() {
-        countryName = "";
+    }
+
+    public Country(String countryName) {
+        this.countryName = countryName;
     }
 
     public String getCountryName() {

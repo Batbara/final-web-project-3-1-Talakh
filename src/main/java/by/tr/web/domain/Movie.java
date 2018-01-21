@@ -52,6 +52,7 @@ public class Movie extends Show implements Serializable {
         this.mpaaRating = MPAARating.valueOf(transformMPAAString(rating));
     }
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -60,27 +61,28 @@ public class Movie extends Show implements Serializable {
 
         Movie movie = (Movie) o;
 
-        if (boxOffice.equals(movie.boxOffice)) return false;
-        if (budget.equals(movie.budget)) return false;
+        if (boxOffice != null ? !boxOffice.equals(movie.boxOffice) : movie.boxOffice != null) return false;
+        if (budget != null ? !budget.equals(movie.budget) : movie.budget != null) return false;
         return mpaaRating == movie.mpaaRating;
     }
 
     @Override
     public int hashCode() {
         int result = super.hashCode();
-        result = 31 * result + boxOffice.hashCode();
-        result = 31 * result + budget.hashCode();
-        result = 31 * result + mpaaRating.hashCode();
+        result = 31 * result + (boxOffice != null ? boxOffice.hashCode() : 0);
+        result = 31 * result + (budget != null ? budget.hashCode() : 0);
+        result = 31 * result + (mpaaRating != null ? mpaaRating.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
         return "Movie{" +
-                "boxOffice=" + boxOffice +
-                ", budget=" + budget +
-                ", MPAA rating=" + mpaaRating +
-                "} " + super.toString();
+                super.toString() +
+                " boxOffice='" + boxOffice + '\'' +
+                ", budget='" + budget + '\'' +
+                ", mpaaRating=" + mpaaRating +
+                "} ";
     }
 
     private String transformMPAAString(String rating) {

@@ -21,6 +21,7 @@ public class User implements Serializable {
 
     private Timestamp registrationDate;
     private List<UserReview> userReviews;
+
     public enum UserStatus {
         ADMIN, CASUAL_VIEWER, MOVIE_FAN, REVIEWER, CRITIC
     }
@@ -124,7 +125,8 @@ public class User implements Serializable {
     public void setUserReviews(List<UserReview> userReviews) {
         this.userReviews = userReviews;
     }
-    public void addUserReview (UserReview review){
+
+    public void addUserReview(UserReview review) {
         userReviews.add(review);
     }
 
@@ -160,5 +162,20 @@ public class User implements Serializable {
         result = 31 * result + (registrationDate != null ? registrationDate.hashCode() : 0);
         result = 31 * result + (userReviews != null ? userReviews.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", userName='" + userName + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", userStatus=" + userStatus +
+                ", isBanned=" + isBanned +
+                ", banInfo=" + banInfo +
+                ", registrationDate=" + registrationDate +
+                ", userReviews=" + userReviews +
+                '}';
     }
 }

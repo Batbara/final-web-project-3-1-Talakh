@@ -7,9 +7,10 @@ public class Genre implements Serializable {
     private String genreName;
 
     public Genre() {
-        genreName = "";
     }
-
+    public Genre(String genreName){
+        this.genreName = genreName;
+    }
     public String getGenreName() {
         return genreName;
     }

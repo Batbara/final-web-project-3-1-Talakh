@@ -59,20 +59,13 @@ public class MovieDAOImpl implements MovieDAO {
                 int year = resultSet.getInt(4);
                 double rating = resultSet.getDouble(5);
 
-                MovieBuilder movieBuilder = new MovieBuilder();
-                movie = movieBuilder
+                movie = new MovieBuilder()
                         .addId(showID)
                         .addTitle(title)
                         .addPoster(poster)
                         .addYear(year)
                         .addUserRating(rating)
                         .create();
-               /* movie = new Movie();
-                movie.setShowID(showID);
-                movie.setTitle(title);
-                movie.setPoster(poster);
-                movie.setYear(year);
-                movie.setUserRating(rating);*/
 
                 movies.add(movie);
             }
@@ -149,6 +142,7 @@ public class MovieDAOImpl implements MovieDAO {
 
     private Movie setMovieInfo(int movieId, ResultSet resultSet) throws DAOException {
         try {
+
             String title = resultSet.getString(1);
             Date yearDate = resultSet.getDate(2);
             Date premiereDate = resultSet.getDate(3);
@@ -173,15 +167,7 @@ public class MovieDAOImpl implements MovieDAO {
                     .addSynopsis(synopsis)
                     .addPoster(poster)
                     .create();
-           /* movie.setTitle(title);
-            movie.setYear(getYearFromDate(yearDate));
-            movie.setPremiereDate(premiereDate);
-            movie.setRuntime(runtime);
-            movie.setBoxOffice(boxOffice);
-            movie.setBudget(movieBudget);
-            movie.setMpaaRating(mpaaRating);
-            movie.setSynopsis(synopsis);
-            movie.setPoster(poster);*/
+
             return movie;
         } catch (SQLException e) {
             throw new MovieInitializationException("Error while initializing movie information", e);
@@ -207,8 +193,7 @@ public class MovieDAOImpl implements MovieDAO {
             while (resultSet.next()) {
                 String genreName = resultSet.getString(1);
 
-                genre = new Genre();
-                genre.setGenreName(genreName);
+                genre = new Genre(genreName);
                 movie.addGenre(genre);
             }
 
@@ -301,7 +286,8 @@ public class MovieDAOImpl implements MovieDAO {
 
         return year;
     }
-    private String formMovieListQuery(String orderType){
+
+    private String formMovieListQuery(String orderType) {
 
         Configuration queryConfig = ConfigurationFactory.getInstance().getMovieQueryConfig();
         String takeMovieListQuery = queryConfig.getSqlQuery(SqlQueryName.TAKE_MOVIE_LIST_QUERY);

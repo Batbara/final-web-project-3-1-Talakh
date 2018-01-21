@@ -148,28 +148,33 @@ public class Show implements Serializable {
 
         if (showID != show.showID) return false;
         if (year != show.year) return false;
-        if (userRating != show.userRating) return false;
-        if (!title.equals(show.title)) return false;
-        if (!synopsis.equals(show.synopsis)) return false;
-        if (!poster.equals(show.poster)) return false;
-        if (!premiereDate.equals(show.premiereDate)) return false;
-        if (!runtime.equals(show.runtime)) return false;
-        if (!genreList.equals(show.genreList)) return false;
-        return countryList.equals(show.countryList);
-
+        if (Double.compare(show.userRating, userRating) != 0) return false;
+        if (title != null ? !title.equals(show.title) : show.title != null) return false;
+        if (synopsis != null ? !synopsis.equals(show.synopsis) : show.synopsis != null) return false;
+        if (poster != null ? !poster.equals(show.poster) : show.poster != null) return false;
+        if (premiereDate != null ? !premiereDate.equals(show.premiereDate) : show.premiereDate != null) return false;
+        if (runtime != null ? !runtime.equals(show.runtime) : show.runtime != null) return false;
+        if (genreList != null ? !genreList.equals(show.genreList) : show.genreList != null) return false;
+        if (countryList != null ? !countryList.equals(show.countryList) : show.countryList != null) return false;
+        return reviewList != null ? reviewList.equals(show.reviewList) : show.reviewList == null;
     }
 
     @Override
     public int hashCode() {
-        int result = showID;
-        result = 31 * result + title.hashCode();
-        result = 31 * result + synopsis.hashCode();
-        result = 31 * result + poster.hashCode();
+        int result;
+        long temp;
+        result = showID;
+        result = 31 * result + (title != null ? title.hashCode() : 0);
+        result = 31 * result + (synopsis != null ? synopsis.hashCode() : 0);
+        result = 31 * result + (poster != null ? poster.hashCode() : 0);
         result = 31 * result + year;
-        result = 31 * result + premiereDate.hashCode();
-        result = 31 * result + runtime.hashCode();
-        result = 31 * result + genreList.hashCode();
-        result = 31 * result + countryList.hashCode();
+        result = 31 * result + (premiereDate != null ? premiereDate.hashCode() : 0);
+        result = 31 * result + (runtime != null ? runtime.hashCode() : 0);
+        result = 31 * result + (genreList != null ? genreList.hashCode() : 0);
+        result = 31 * result + (countryList != null ? countryList.hashCode() : 0);
+        temp = Double.doubleToLongBits(userRating);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        result = 31 * result + (reviewList != null ? reviewList.hashCode() : 0);
         return result;
     }
 

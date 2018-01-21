@@ -25,7 +25,7 @@ import java.text.ParseException;
 public class SQLUserDAOImplTest {
     private SQLUserDAOImpl userDAO;
     private static ConnectionPool connectionPool;
-    private final static String dateTimePattern = "yyyy-MM-dd'T'hh:mm:ss";
+    private final static String DEFAULT_TIME_PATTERN = "yyyy-MM-dd'T'hh:mm:ss";
 
     private static final String DELETE_USER_QUERY = "DELETE FROM test.user WHERE user_name = ?";
     private static final String GET_USER_QUERY = "SELECT user.user_id, user.user_email, " +
@@ -74,13 +74,14 @@ public class SQLUserDAOImplTest {
     @Test
     public void testSuccessfulRegistration() throws DAOException, SQLException {
         String userName = "PusheenTheCat";
-        String eMail = "fluffy.moor@gmail.com";
+        String email = "fluffy.moor@gmail.com";
         String password = "catzDaBest!2007";
 
-        User user = new User();
-        user.setUserName(userName);
-        user.setEmail(eMail);
-        user.setPassword(password);
+        User user = new UserBuilder()
+                .addUserName(userName)
+                .addEmail(email)
+                .addPassword(password)
+                .create();
 
         boolean expected = true;
         boolean actual = userDAO.register(user);
@@ -96,18 +97,16 @@ public class SQLUserDAOImplTest {
         String userName = "Maggie";
         String password = "12345";
         String lang = "ru";
+        Timestamp regDate = Util.getTimeFromString("2018-01-19T19:19:36", DEFAULT_TIME_PATTERN);
 
-        User expectedUser = new User();
-
-        expectedUser.setId(37);
-        expectedUser.setUserName(userName);
-        expectedUser.setEmail("maggie.simpson@gmail.com");
-        expectedUser.setStatus(User.UserStatus.CASUAL_VIEWER);
-
-        Timestamp regDate = Util.getTimeFromString("2018-01-19T19:19:36", dateTimePattern);
-        expectedUser.setRegistrationDate(regDate);
-
-        expectedUser.setIsBanned(false);
+        User expectedUser = new UserBuilder()
+                .addId(37)
+                .addUserName(userName)
+                .addEmail("maggie.simpson@gmail.com")
+                .addUserStatus(User.UserStatus.CASUAL_VIEWER)
+                .addRegistrationDate(regDate)
+                .addBanStatus(false)
+                .create();
 
         User actualUser = userDAO.login(userName, password, lang);
 
