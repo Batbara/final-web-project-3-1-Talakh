@@ -41,7 +41,7 @@ public class BanInfoTag extends TagSupport {
             out.write(tag);
             return SKIP_BODY;
         } catch (IOException e) {
-            String message = "Cannot write tag to page";
+            String message = "Cannot write ban info tag to page";
             logger.error(message, e);
             throw new CustomTagLibException(message, e);
         }
@@ -49,23 +49,23 @@ public class BanInfoTag extends TagSupport {
 
     private String formTag(ResourceBundle resourceBundle) {
         BanInfo banInfo = user.getBanInfo();
-        StringBuilder builder = new StringBuilder();
-        builder.append(CustomTagLibParameter.P_OPEN_TAG);
+        StringBuilder tagBuilder = new StringBuilder();
+        tagBuilder.append(CustomTagLibParameter.P_OPEN_TAG);
 
         String ban = resourceBundle.getString(LocalizationPropertyKey.USER_BAN_INFO);
         String banTime = banInfo.getBanTime().toString();
-        appendPair(ban, banTime, builder);
+        appendPair(ban, banTime, tagBuilder);
 
         String unban = resourceBundle.getString(LocalizationPropertyKey.USER_UNBAN_INFO);
         String unbanTime = banInfo.getUnbanTime().toString();
-        appendPair(unban, unbanTime, builder);
+        appendPair(unban, unbanTime, tagBuilder);
 
         String reasonMessage = resourceBundle.getString(LocalizationPropertyKey.USER_BAN_REASON);
         String banReason = banInfo.getBanReason().getReason();
-        appendPair(reasonMessage, banReason, builder);
+        appendPair(reasonMessage, banReason, tagBuilder);
 
-        builder.append(CustomTagLibParameter.P_CLOSE_TAG);
-        return builder.toString();
+        tagBuilder.append(CustomTagLibParameter.P_CLOSE_TAG);
+        return tagBuilder.toString();
     }
 
     private void appendPair(String message, String value, StringBuilder builder) {

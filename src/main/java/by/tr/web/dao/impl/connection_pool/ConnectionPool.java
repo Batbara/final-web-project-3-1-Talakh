@@ -2,6 +2,7 @@ package by.tr.web.dao.impl.connection_pool;
 
 import by.tr.web.dao.parameter.DBParameter;
 import by.tr.web.exception.dao.common.ConnectionPoolException;
+import by.tr.web.exception.dao.common.TransactionError;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
@@ -106,6 +107,18 @@ public final class ConnectionPool {
         return connection;
     }
 
+    public void rollbackConnection(Connection connection) {
+        try {
+            if (connection != null) {
+                connection.rollback();
+            }
+        } catch (SQLException e) {
+            String message = "Error while rolling back transaction";
+            logger.error(message, e);
+            throw new TransactionError(message, e);
+        }
+    }
+
     public void closeConnection(Connection connection, Statement st, ResultSet rs) throws ConnectionPoolException {
         try {
             if (rs != null) {
@@ -117,36 +130,20 @@ public final class ConnectionPool {
             throw new ConnectionPoolException("Closing result set error", e);
         }
 
-        try {
-            if (st != null) {
-                st.close();
-            }
-        } catch (SQLException e) {
-            closeConnection(connection);
-            logger.error("Closing statement error", e);
-            throw new ConnectionPoolException("Closing statement error", e);
-        }
+        closeStatement(st);
+
         closeConnection(connection);
     }
-    public void closeResources (Statement st, ResultSet rs){
-        try {
-            if (rs != null) {
-                rs.close();
-            }
-        } catch (SQLException e) {
-            logger.error("Closing result set error", e);
-            throw new ConnectionPoolException("Closing result set error", e);
-        }
 
-        try {
-            if (st != null) {
-                st.close();
-            }
-        } catch (SQLException e) {
-            logger.error("Closing statement error", e);
-            throw new ConnectionPoolException("Closing statement error", e);
-        }
+    public void closeResources(Statement st, ResultSet rs) {
+        closeResultSet(rs);
+        closeStatement(st);
     }
+
+    public void closeResources(Statement st) {
+        closeStatement(st);
+    }
+
 
     public void closeConnection(Connection connection) throws ConnectionPoolException {
         if (!givenAwayConQueue.remove(connection)) {
@@ -155,7 +152,7 @@ public final class ConnectionPool {
         }
         try {
             if (connection.isClosed()) {
-               reopenConnection(connection);
+                connection = reopenConnection();
             }
             if (connection.isReadOnly()) {
                 connection.setReadOnly(false);
@@ -191,8 +188,28 @@ public final class ConnectionPool {
         }
     }
 
-    private void reopenConnection(Connection connection) throws SQLException {
-        connection = DriverManager.getConnection(url, user, password);
+    private Connection reopenConnection() throws SQLException {
+        return DriverManager.getConnection(url, user, password);
+    }
+    private void closeStatement(Statement st) {
+        try {
+            if (st != null) {
+                st.close();
+            }
+        } catch (SQLException e) {
+            logger.error("Closing statement error", e);
+            throw new ConnectionPoolException("Closing statement error", e);
+        }
+    }
+    private void closeResultSet(ResultSet rs){
+        try {
+            if (rs != null) {
+                rs.close();
+            }
+        } catch (SQLException e) {
+            logger.error("Closing result set error", e);
+            throw new ConnectionPoolException("Closing result set error", e);
+        }
     }
 
 }

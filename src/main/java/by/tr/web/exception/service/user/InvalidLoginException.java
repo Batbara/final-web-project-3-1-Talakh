@@ -1,8 +1,8 @@
 package by.tr.web.exception.service.user;
 
-import by.tr.web.exception.service.common.ServiceException;
+import by.tr.web.exception.service.common.ValidationException;
 
-public class InvalidLoginException extends ServiceException {
+public class InvalidLoginException extends ValidationException {
 
     private static final long serialVersionUID = 5312994197872900803L;
 

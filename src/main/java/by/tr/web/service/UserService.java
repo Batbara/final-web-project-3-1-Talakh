@@ -13,10 +13,11 @@ public interface UserService {
     User login(String login, String password, String lang) throws ServiceException;
 
     List<User> takeUserList(int startRecordNum, int recordsToTake, String lang) throws ServiceException;
-
+    User updateReviewList(User user) throws ServiceException;
     int countUsers() throws ServiceException;
 
     List<BanReason> takeBanReasonList(String lang) throws ServiceException;
     void unbanUser(int userID) throws ServiceException;
     void banUser(User user) throws ServiceException;
+
 }

@@ -19,8 +19,11 @@ public final class LocalizationPropertyKey {
     public static final String STATUS_ADMIN = "local.info.user.status.admin";
     public static final String STATUS_CASUAL_VIEWER = "local.info.user.status.casualViewer";
     public static final String STATUS_MOVIE_FAN = "local.info.user.status.movieFan";
-    public static final String STATUS_REVIEWER = " local.info.user.status.reviewer";
+    public static final String STATUS_REVIEWER = "local.info.user.status.reviewer";
     public static final String STATUS_CRITIC = "local.info.user.status.critic";
+
+    public static final String SHOW_RATING = "local.show.sidenav.rating";
+    public static final String USER_CUSTOM_RATE = "local.show.user.custom.rate";
 
     public static String getUserStatusProperty(User.UserStatus userStatus) {
         return userStatusMap.get(userStatus);

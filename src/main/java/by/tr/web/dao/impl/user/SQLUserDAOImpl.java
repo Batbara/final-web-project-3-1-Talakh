@@ -93,7 +93,6 @@ public class SQLUserDAOImpl implements UserDAO {
                 isBanned = resultSet.getShort(4) == 1;
                 Timestamp regDate = resultSet.getTimestamp(5);
 
-                //user = new User(userID, login, eMail, status, isBanned, regDate);
                 user = new UserBuilder()
                         .addId(userID)
                         .addUserName(login)
@@ -114,6 +113,18 @@ public class SQLUserDAOImpl implements UserDAO {
             connectionPool.closeConnection(connection, preparedStatement, resultSet);
         }
 
+    }
+
+    @Override
+    public User updateReviewList(User user) throws DAOException {
+        Connection connection = null;
+        try {
+            connection = connectionPool.takeConnection();
+            setUserReviews(connection, user);
+            return user;
+        } finally {
+            connectionPool.closeConnection(connection);
+        }
     }
 
     @Override
@@ -360,15 +371,7 @@ public class SQLUserDAOImpl implements UserDAO {
                         .addReviewContent(reviewContent)
                         .addPostDate(reviewPostDate)
                         .create();
-               /* review = new UserReview();
 
-                review.setShowId(showId);
-                review.setUser(user);
-                review.setUserRate(userRate);
-                if (reviewContent != null) {
-                    review.setReviewContent(reviewContent);
-                    review.setPostDate(reviewPostDate);
-                }*/
                 reviewList.add(review);
             }
             user.setUserReviews(reviewList);

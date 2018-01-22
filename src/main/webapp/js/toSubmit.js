@@ -36,10 +36,7 @@ var getUrlParameter = function getUrlParameter(sParam) {
         }
     }
 };*/
-function submitTakeMovieList() {
-    $("#movies-form").submit();
-    return false;
-}
+
 $("#form-login").on("submit", function (event) {
 
     event.preventDefault();

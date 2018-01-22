@@ -1,16 +1,21 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib prefix="mpb" uri="mpbtaglib" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
     <link href="${pageContext.request.contextPath}//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css"
           rel="stylesheet">
     <link rel="stylesheet" type="text/css"
           href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/starrr.css">
 
     <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/layout.css">
@@ -23,9 +28,13 @@
     <fmt:message bundle="${loc}" key="local.movie.order.year" var="year"/>
     <fmt:message bundle="${loc}" key="local.movie.order.rating" var="rating"/>
     <fmt:message bundle="${loc}" key="local.navButton.movies" var="pageTitle"/>
+    <fmt:message bundle="${loc}" key="local.message.success" var="successMessage"/>
+    <fmt:message bundle="${loc}" key="local.message.rateApproved" var="rateApprovedMessage"/>
+    <fmt:message bundle="${loc}" key="local.message.oops" var="oopsMessage"/>
+    <fmt:message bundle="${loc}" key="local.message.rateDenied" var="rateDeniedMessage"/>
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title> ${pageTitle}| MotionPicture Bank [MPB]</title>
+    <title> ${pageTitle} | MotionPicture Bank [MPB]</title>
 </head>
 <body>
 <jsp:include page="/WEB-INF/jsp/header.jsp"/>
@@ -77,7 +86,8 @@
                             <c:forEach begin="1" end="${requestScope.numOfPages}" var="i">
                                 <c:choose>
                                     <c:when test="${requestScope.page eq i}">
-                                        <li><input class="btn btn-default active disabled" type="submit" name="page" value="${i}"></li>
+                                        <li><input class="btn btn-default active disabled" type="submit" name="page"
+                                                   value="${i}"></li>
                                     </c:when>
                                     <c:otherwise>
                                         <li>
@@ -101,23 +111,70 @@
         <div class="movie-table center-block">
             <table class="table center-text">
                 <c:set var="id" value="${requestScope.onPage*(requestScope.page-1)+1}" scope="page"/>
-                <c:forEach items="${requestScope.movies}" var="currentUser">
+                <c:forEach items="${requestScope.movies}" var="currentMovie">
                     <tr class="center-text">
-                        <td>
-                            <div class="movieID"><b><c:out value="${id}"/></b></div>
+                        <td class="movieID">
+                            <div class="movieID ${currentMovie.showID}"><b><c:out value="${id}"/></b></div>
                             <c:set var="id" value="${id+1}"/>
                         </td>
-                        <td><img src="/images${currentUser.poster}.jpg" class="poster"></td>
-                        <td><a href="${pageContext.request.contextPath}/mpb?command=take_movie&id=${currentUser.showID}"><c:out
-                                value="${currentUser.title}"/></a></td>
-                        <td><c:out value="${currentUser.year}"/></td>
-                        <td class="rate">
-                            <div><img src="${pageContext.request.contextPath}/images/star.png" class="star"></div>
-                            <div><c:out value="${currentUser.formattedUserRating}"/></div>
+                        <td><img src="/images${currentMovie.poster}.jpg" class="img-thumbnail poster"></td>
+                        <td>
+                            <a href="${pageContext.request.contextPath}/mpb?command=take_movie&id=${currentMovie.showID}"><c:out
+                                    value="${currentMovie.title}"/></a></td>
+                        <td><c:out value="${currentMovie.year}"/></td>
+                        <td>
+                            <jsp:include page="/WEB-INF/jsp/rateVidget.jsp"/>
+                            <div class="starrr ${currentMovie.showID}"></div>
+                            <!--<div><img src="${pageContext.request.contextPath}/images/star.png" class="star"></div>-->
+                            <div class="rate ${currentMovie.showID}"><mpb:show-rating show="${currentMovie}"
+                                                                                      user="${sessionScope.user}"/></div>
                         </td>
                     </tr>
                 </c:forEach>
             </table>
+        </div>
+        <div class="modal fade" id="ratingSetSuccessful" role="dialog">
+            <div class="modal-dialog modal-md">
+
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;
+                        </button>
+                        <h3 class="modal-title">${successMessage}</h3>
+                    </div>
+                    <div class="modal-body">
+
+                                ${rateApprovedMessage}
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="ratingSetFailed" role="dialog">
+            <div class="modal-dialog modal-md">
+
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;
+                        </button>
+                        <h3 class="modal-title">${oopsMessage}</h3>
+                    </div>
+                    <div class="modal-body">
+                        <div class="fluid-container">
+
+
+                                ${rateDeniedMessage}
+
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">OK</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </article>
     <aside>
@@ -127,10 +184,18 @@
     </aside>
 </div>
 <jsp:include page="/WEB-INF/jsp/footer.jsp"/>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.js"></script>
 <script src="${pageContext.request.contextPath}/js/toSubmit.js"></script>
 <script src="${pageContext.request.contextPath}/js/cookieHandler.js"></script>
-<script src="${pageContext.request.contextPath}/js/table.js"></script>
 
+<script src="${pageContext.request.contextPath}/js/starrr.js"></script>
+<script src="${pageContext.request.contextPath}/js/table.js"></script>
 <script src="${pageContext.request.contextPath}/js/content.js"></script>
+<script>
+    $(document).ready(function(){
+        $('a.fa').tooltip();
+    });
+</script>
 </body>
 </html>

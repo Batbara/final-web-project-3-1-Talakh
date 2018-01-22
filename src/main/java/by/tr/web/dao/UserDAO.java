@@ -11,6 +11,8 @@ public interface UserDAO {
 
     User login(String login, String password, String lang) throws DAOException;
 
+    User updateReviewList(User user) throws DAOException;
+
     boolean isUserRegistered(String login) throws DAOException;
 
     boolean isEmailRegistered(String eMail) throws DAOException;

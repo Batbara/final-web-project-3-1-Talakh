@@ -31,16 +31,6 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public int countMovies() throws ServiceException {
-        MovieDAO movieDAO = DAOFactory.getInstance().getMovieDAO();
-        try {
-            return movieDAO.countMovies();
-        } catch (MovieCounterDAOException e) {
-            throw new CountingMoviesException("Can't get number of movies", e);
-        }
-    }
-
-    @Override
     public Movie takeMovie(int id, String lang) throws ServiceException {
         validate(id, lang);
         MovieDAO movieDAO = DAOFactory.getInstance().getMovieDAO();
@@ -71,6 +61,16 @@ public class MovieServiceImpl implements MovieService {
         DataTypeValidator dataTypeValidator = validatorFactory.getDataTypeValidator();
         if (!dataTypeValidator.checkLanguage(lang) && id <= 0) {
             throw new ServiceException("Invalid input parameters");
+        }
+    }
+
+    @Override
+    public int countShow() throws ServiceException {
+        MovieDAO movieDAO = DAOFactory.getInstance().getMovieDAO();
+        try {
+            return movieDAO.countMovies();
+        } catch (MovieCounterDAOException e) {
+            throw new CountingMoviesException("Can't get number of movies", e);
         }
     }
 }

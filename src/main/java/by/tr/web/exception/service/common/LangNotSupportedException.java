@@ -1,6 +1,6 @@
 package by.tr.web.exception.service.common;
 
-public class LangNotSupportedException extends ServiceException {
+public class LangNotSupportedException extends ValidationException {
     private static final long serialVersionUID = -1458543367474337743L;
 
     public LangNotSupportedException() {

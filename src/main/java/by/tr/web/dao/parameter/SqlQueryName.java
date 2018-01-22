@@ -21,7 +21,10 @@ public final class SqlQueryName {
     public static final String TAKE_GENRE_OF_SHOW_QUERY = "show.take.genre";
     public static final String TAKE_COUNTRY_OF_SHOW_QUERY = "show.take.country";
     public static final String TAKE_REVIEWS_OF_SHOW_QUERY = "show.take.reviews";
-
+    public static final String ADD_USER_RATE = "show.add.user.rate";
+    public static final String UPDATE_USER_RATE = "show.update.user.rate";
+    public static final String UPDATE_USER_REVIEW = "show.update.user.review";
+    public static final String CHECK_USER_REIVEW_PRESENCE = "show.check.user.review.presence";
     private SqlQueryName() {
     }
 }

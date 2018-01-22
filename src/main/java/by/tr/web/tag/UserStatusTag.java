@@ -39,7 +39,7 @@ public class UserStatusTag extends TagSupport {
             out.write(tag);
             return SKIP_BODY;
         } catch (IOException e) {
-            String message = "Cannot write tag to page";
+            String message = "Cannot write user status tag to page";
             logger.error(message, e);
             throw new CustomTagLibException(message, e);
         }

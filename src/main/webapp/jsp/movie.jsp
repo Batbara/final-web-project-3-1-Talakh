@@ -15,9 +15,9 @@
     <fmt:message bundle="${loc}" key="local.info.genre" var="genreType"/>
     <fmt:message bundle="${loc}" key="local.info.country" var="countryType"/>
     <fmt:message bundle="${loc}" key="local.info.premiere" var="premiereType"/>
-    <fmt:message bundle="${loc}" key="local.movie.sidenav.rating" var="ratingNav"/>
-    <fmt:message bundle="${loc}" key="local.movie.sidenav.reviews" var="reviewsNav"/>
-    <fmt:message bundle="${loc}" key="local.movie.sidenav.synopsis" var="synopsisNav"/>
+    <fmt:message bundle="${loc}" key="local.show.sidenav.rating" var="ratingNav"/>
+    <fmt:message bundle="${loc}" key="local.show.sidenav.reviews" var="reviewsNav"/>
+    <fmt:message bundle="${loc}" key="local.show.sidenav.synopsis" var="synopsisNav"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <link href="${pageContext.request.contextPath}//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">

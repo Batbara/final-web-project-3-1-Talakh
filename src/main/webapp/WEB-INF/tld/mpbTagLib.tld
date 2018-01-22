@@ -44,4 +44,19 @@
             <rtexprvalue>true</rtexprvalue>
         </attribute>
     </tag>
+    <tag>
+        <name>show-rating</name>
+        <tag-class>by.tr.web.tag.ShowRatingTag</tag-class>
+        <body-content>empty</body-content>
+        <attribute>
+            <name>show</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>user</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
 </taglib>

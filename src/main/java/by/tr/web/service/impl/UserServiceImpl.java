@@ -104,6 +104,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User updateReviewList(User user) throws ServiceException {
+        if (user == null) {
+            throw new NoSuchUserException("User is empty");
+        }
+        UserDAO userDAO = DAOFactory.getInstance().getUserDAO();
+        try {
+            return userDAO.updateReviewList(user);
+        } catch (DAOException e) {
+            throw new ServiceException("Cannot update user review list", e);
+        }
+    }
+
+    @Override
     public int countUsers() throws ServiceException {
         UserDAO userDAO = DAOFactory.getInstance().getUserDAO();
         int usersCount;

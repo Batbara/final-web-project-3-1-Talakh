@@ -43,4 +43,8 @@
         <cp:commandName>take_movie</cp:commandName>
         <cp:className>by.tr.web.controller.command.impl.TakeMovieImpl</cp:className>
     </cp:command>
+    <cp:command>
+        <cp:commandName>add_user_rate</cp:commandName>
+        <cp:className>by.tr.web.controller.command.impl.AddUserRate</cp:className>
+    </cp:command>
 </cp:commandList>

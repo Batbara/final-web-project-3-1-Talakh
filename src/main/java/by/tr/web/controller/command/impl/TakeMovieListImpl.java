@@ -53,7 +53,7 @@ public class TakeMovieListImpl implements TakeListCommand {
         int numberOfRecords;
 
         try {
-            numberOfRecords = movieService.countMovies();
+            numberOfRecords = movieService.countShow();
 
             int numOfPages = (int) Math.ceil((double) numberOfRecords / recordsOnPage);
             int recordsToTake = Util.calcTableRecordsToTake(recordsOnPage, currentPage, numberOfRecords);

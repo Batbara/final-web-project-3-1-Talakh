@@ -130,6 +130,15 @@ public class User implements Serializable {
         userReviews.add(review);
     }
 
+    public int getUserRateForShow (int showId){
+        int userRate = 0;
+        for(UserReview review : userReviews){
+            if(review.getShowId() == showId){
+                return review.getUserRate();
+            }
+        }
+        return userRate;
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

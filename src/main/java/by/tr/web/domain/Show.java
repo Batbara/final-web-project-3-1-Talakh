@@ -3,8 +3,6 @@ package by.tr.web.domain;
 import java.io.Serializable;
 import java.sql.Date;
 import java.sql.Time;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -116,11 +114,6 @@ public class Show implements Serializable {
 
     public void setPoster(String poster) {
         this.poster = poster;
-    }
-
-    public String getFormattedUserRating() {
-        NumberFormat formatter = new DecimalFormat("#0.00");
-        return formatter.format(userRating);
     }
 
     public double getUserRating() {
