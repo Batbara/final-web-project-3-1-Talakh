@@ -2,7 +2,7 @@ package by.tr.web.controller.command.impl.admin_command;
 
 import by.tr.web.controller.command.Command;
 import by.tr.web.controller.constant.FrontControllerParameter;
-import by.tr.web.controller.constant.JSPAttribute;
+import by.tr.web.controller.constant.JspAttribute;
 import by.tr.web.exception.service.common.ServiceException;
 import by.tr.web.service.UserService;
 import by.tr.web.service.factory.ServiceFactory;
@@ -20,7 +20,7 @@ public class UnbanUserImpl implements Command {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        String unbanIDString = request.getParameter(JSPAttribute.USER_UNBAN_ID);
+        String unbanIDString = request.getParameter(JspAttribute.USER_UNBAN_ID);
         int userUnbanID = Integer.parseInt(unbanIDString);
 
         response.setContentType(FrontControllerParameter.TEXT_HTML_CONTENT_TYPE);

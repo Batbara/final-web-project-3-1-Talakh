@@ -15,9 +15,38 @@ $(document).ready(function(){
     $('.alert').hide();
     $('#banDialog, #unbanDialog').on('hidden.bs.modal', function () {
        location.reload(true);
-    })
+    });
+    setUpMovieTableSelection();
+    setUpUsersTableSelection();
 });
+function setUpUsersTableSelection() {
 
+    var selectedOnPage = getCookie("onUsersPage");
+    if(selectedOnPage == ""){
+        $("#onUsersPageSelection").val(1);
+    } else {
+        $("#onUsersPageSelection").val(selectedOnPage);
+    }
+
+}
+
+function setUpMovieTableSelection() {
+    var selectedOrder = getCookie("movieOrder");
+    if(selectedOrder == ""){
+        $("#orderSelection").val(1);
+    } else {
+
+        $("#orderSelection").val(selectedOrder);
+    }
+
+    var selectedOnPage = getCookie("onMoviePage");
+    if(selectedOnPage == ""){
+        $("#onPageSelection").val(1);
+    } else {
+        $("#onPageSelection").val(selectedOnPage);
+    }
+
+}
 $("#banTime").val(new Date().toJSON().slice(0,19));
 $("#banTime").attr("min", new Date().toJSON().slice(0,19));
 $("#unbanTime").attr("min", new Date().toJSON().slice(0,19));

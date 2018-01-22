@@ -1,8 +1,8 @@
 package by.tr.web.controller.command.impl;
 
 import by.tr.web.controller.command.Command;
-import by.tr.web.controller.constant.JSPPagePath;
-import by.tr.web.controller.constant.Util;
+import by.tr.web.controller.constant.JspPagePath;
+import by.tr.web.controller.util.Util;
 import by.tr.web.domain.Movie;
 import by.tr.web.exception.service.common.ServiceException;
 import by.tr.web.service.MovieService;
@@ -33,7 +33,7 @@ public class TakeMovieImpl implements Command {
             request.getRequestDispatcher("/m").forward(request, response);
         } catch (ServiceException e) {
             logger.error("Error while taking movie", e);
-            request.getRequestDispatcher(JSPPagePath.INTERNAL_ERROR_PAGE).forward(request, response);
+            request.getRequestDispatcher(JspPagePath.INTERNAL_ERROR_PAGE).forward(request, response);
         }
 
     }

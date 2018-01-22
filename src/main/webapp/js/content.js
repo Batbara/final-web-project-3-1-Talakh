@@ -1,6 +1,6 @@
-window.onload = function () {
+$(document).ready(function () {
     replaceLineBreaks();
-};
+});
 
 function replaceLineBreaks() {
     var reviews = document.getElementsByClassName("reviewContent");

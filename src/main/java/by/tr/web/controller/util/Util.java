@@ -1,4 +1,6 @@
-package by.tr.web.controller.constant;
+package by.tr.web.controller.util;
+
+import by.tr.web.controller.constant.FrontControllerParameter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;

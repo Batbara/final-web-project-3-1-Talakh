@@ -1,8 +1,8 @@
 package by.tr.web.controller.command.impl;
 
 import by.tr.web.controller.command.Command;
-import by.tr.web.controller.constant.FrontControllerParameter;
-import by.tr.web.controller.constant.JSPPagePath;
+import by.tr.web.controller.constant.JspAttribute;
+import by.tr.web.controller.constant.JspPagePath;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,7 +13,7 @@ public class LogoutImpl implements Command {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession();
-        session.removeAttribute(FrontControllerParameter.USER);
-        response.sendRedirect(JSPPagePath.INDEX);
+        session.removeAttribute(JspAttribute.USER);
+        response.sendRedirect(JspPagePath.INDEX);
     }
 }

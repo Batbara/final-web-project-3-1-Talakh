@@ -160,12 +160,11 @@ public class SQLUserDAOImpl implements UserDAO {
                 boolean isBanned = resultSet.getShort(5) == 1;
                 Timestamp regDate = resultSet.getTimestamp(6);
 
-               // user = new User(userID, userName, userEmail, userStatus, isBanned, regDate);
                 user = new UserBuilder()
                         .addId(userID)
                         .addUserName(userName)
                         .addEmail(userEmail)
-                        .addUserStatus(User.UserStatus.valueOf(userStatus))
+                        .addUserStatus(User.UserStatus.valueOf(userStatus.toUpperCase()))
                         .addBanStatus(isBanned)
                         .addRegistrationDate(regDate)
                         .create();

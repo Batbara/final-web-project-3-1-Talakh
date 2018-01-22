@@ -36,12 +36,9 @@
 
                 <form id="movies-form" action="${pageContext.request.contextPath}/mpb" method="get">
                     <input type="hidden" name="command" value="take_movie_list"/>
-                    <input type="hidden" name="order" value="title">
-                    <input type="hidden" name="onPage" value="5">
-                    <input type="hidden" name="page" value="1">
                     <a href="javascript:{}"
                        onclick="document.getElementById('movies-form').submit(); return false;">
-                        <div class="nav_button"><c:out value="${movies}"/></div>
+                        <span class="nav_button"><c:out value="${movies}"/></span>
                     </a>
 
                 </form>

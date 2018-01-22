@@ -2,8 +2,9 @@ package by.tr.web.controller.command.impl;
 
 import by.tr.web.controller.command.Command;
 import by.tr.web.controller.constant.FrontControllerParameter;
-import by.tr.web.controller.constant.JSPPagePath;
-import by.tr.web.controller.constant.Util;
+import by.tr.web.controller.constant.JspAttribute;
+import by.tr.web.controller.constant.JspPagePath;
+import by.tr.web.controller.util.Util;
 import by.tr.web.domain.User;
 import by.tr.web.exception.service.common.ServiceException;
 import by.tr.web.exception.service.user.IncorrectPasswordException;
@@ -26,8 +27,8 @@ public class Logination implements Command {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        String login = request.getParameter(FrontControllerParameter.LOGIN);
-        String password = request.getParameter(FrontControllerParameter.PASSWORD);
+        String login = request.getParameter(JspAttribute.LOGIN);
+        String password = request.getParameter(JspAttribute.PASSWORD);
         String lang = Util.getLanguage(request);
 
         ServiceFactory serviceFactory = ServiceFactory.getInstance();
@@ -39,26 +40,26 @@ public class Logination implements Command {
 
 
             if (isBanned(user)) {
-                request.setAttribute(FrontControllerParameter.USER, user);
+                request.setAttribute(JspAttribute.USER, user);
                 sendErrorMessage(request, response, FrontControllerParameter.USER_IS_BANNED);
             } else {
                 HttpSession session = request.getSession(true);
 
-                session.setAttribute(FrontControllerParameter.USER, user);
-                response.sendRedirect(JSPPagePath.USER_ACCOUNT_PATH);
+                session.setAttribute(JspAttribute.USER, user);
+                response.sendRedirect(JspPagePath.USER_ACCOUNT_PATH);
             }
         } catch (InvalidLoginException ex) {
             logger.error("Invalid login", ex);
-            sendErrorMessage(request, response, FrontControllerParameter.LOGIN);
+            sendErrorMessage(request, response, JspAttribute.LOGIN);
         } catch (NoSuchUserException e) {
             logger.error("No such user", e);
-            sendErrorMessage(request, response, FrontControllerParameter.USER);
+            sendErrorMessage(request, response, JspAttribute.USER);
         } catch (IncorrectPasswordException e) {
             logger.error("Incorrect password", e);
-            sendErrorMessage(request, response, FrontControllerParameter.PASSWORD);
+            sendErrorMessage(request, response, JspAttribute.PASSWORD);
         } catch (ServiceException ex) {
             logger.log(Level.FATAL, "Internal error", ex);
-            RequestDispatcher dispatcher = request.getRequestDispatcher(JSPPagePath.INTERNAL_ERROR_PAGE);
+            RequestDispatcher dispatcher = request.getRequestDispatcher(JspPagePath.INTERNAL_ERROR_PAGE);
             dispatcher.forward(request, response);
         }
 
@@ -71,6 +72,6 @@ public class Logination implements Command {
     private void sendErrorMessage(HttpServletRequest request, HttpServletResponse response, String errorType)
             throws ServletException, IOException {
         request.setAttribute(FrontControllerParameter.LOGIN_ERROR, errorType);
-        request.getRequestDispatcher(JSPPagePath.LOGIN_PAGE).forward(request, response);
+        request.getRequestDispatcher(JspPagePath.LOGIN_PAGE).forward(request, response);
     }
 }

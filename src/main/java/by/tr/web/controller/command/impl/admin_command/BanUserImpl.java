@@ -2,8 +2,8 @@ package by.tr.web.controller.command.impl.admin_command;
 
 import by.tr.web.controller.command.Command;
 import by.tr.web.controller.constant.FrontControllerParameter;
-import by.tr.web.controller.constant.JSPAttribute;
-import by.tr.web.controller.constant.Util;
+import by.tr.web.controller.constant.JspAttribute;
+import by.tr.web.controller.util.Util;
 import by.tr.web.domain.BanInfo;
 import by.tr.web.domain.BanReason;
 import by.tr.web.domain.User;
@@ -57,8 +57,8 @@ public class BanUserImpl implements Command {
     }
 
     private User retrieveUserToBan(HttpServletRequest request) throws ServiceException {
-        List<User> userList = (List<User>) request.getSession().getAttribute(JSPAttribute.USER_LIST);
-        int userBanID = Integer.parseInt(request.getParameter(JSPAttribute.USER_BAN_ID));
+        List<User> userList = (List<User>) request.getSession().getAttribute(JspAttribute.USER_LIST);
+        int userBanID = Integer.parseInt(request.getParameter(JspAttribute.USER_BAN_ID));
         for (User user : userList) {
             if (user.getId() == userBanID) {
                 return user;
@@ -68,8 +68,8 @@ public class BanUserImpl implements Command {
     }
 
     private BanReason getBanReason(HttpServletRequest request) throws ServiceException {
-        String inputReason = request.getParameter(JSPAttribute.BAN_REASON);
-        List<BanReason> banReasonList = (List<BanReason>) request.getSession().getAttribute(JSPAttribute.BAN_REASON_LIST);
+        String inputReason = request.getParameter(JspAttribute.BAN_REASON);
+        List<BanReason> banReasonList = (List<BanReason>) request.getSession().getAttribute(JspAttribute.BAN_REASON_LIST);
         for (BanReason banReason : banReasonList) {
             if (banReason.getReason().equals(inputReason)) {
                 return banReason;
@@ -79,8 +79,8 @@ public class BanUserImpl implements Command {
     }
 
     private BanInfo formBanInfo(HttpServletRequest request) throws ServiceException, ParseException {
-        String banTimeParameter = request.getParameter(JSPAttribute.BAN_TIME);
-        String unbanTimeParameter = request.getParameter(JSPAttribute.UNBAN_TIME);
+        String banTimeParameter = request.getParameter(JspAttribute.BAN_TIME);
+        String unbanTimeParameter = request.getParameter(JspAttribute.UNBAN_TIME);
 
         BanInfo banInfo = new BanInfo();
 

@@ -8,16 +8,22 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    min-width: 500px;
+
     margin-bottom: 50px;
+}
+.movie-table {
+    max-width: 600px;
 }
 table {
     border: 10px solid #50434D;
     background-color: #B8C99D;
+    font-family: 'Tinos', serif;
 }
-tbody {
-     font-family: 'Tinos', serif;
- }
+.control {
+    background-color: rgba(221,243,188,0.71);
+    margin: 20px auto;
+    max-width: 800px;
+}
 .user-table table{
     border: 5px solid #50434D;
 }
@@ -46,17 +52,13 @@ tbody {
      border-bottom: 10px solid #50434D;
  }
 .order, .onPage {
-    font-family: 'Alegreya Sans SC', sans-serif;
+
     display: flex;
     margin: 20px;
     font-size: 15px;
     color: #50434D;
 }
-option {
-    font-family: 'Alegreya Sans SC', sans-serif;
-    font-size: 15px;
-    color: #50434D;
-}
+
 .navigation ul{
     display: flex;
     margin: 20px;

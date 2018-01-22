@@ -1,6 +1,6 @@
 package by.tr.web.controller.command;
 
-import by.tr.web.controller.constant.XMLParameter;
+import by.tr.web.controller.constant.XmlParameter;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -10,16 +10,16 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = XMLParameter.COMMAND, propOrder = {
-        XMLParameter.COMMAND_NAME,
-        XMLParameter.CLASS_NAME
+@XmlType(name = XmlParameter.COMMAND, propOrder = {
+        XmlParameter.COMMAND_NAME,
+        XmlParameter.CLASS_NAME
 })
 public class CommandPrototype {
     @XmlAttribute(name = "scope", required = true)
     private String scope;
-    @XmlElement(namespace = XMLParameter.NAMESPACE)
+    @XmlElement(namespace = XmlParameter.NAMESPACE)
     private String commandName;
-    @XmlElement(namespace = XMLParameter.NAMESPACE)
+    @XmlElement(namespace = XmlParameter.NAMESPACE)
     private String className;
 
 

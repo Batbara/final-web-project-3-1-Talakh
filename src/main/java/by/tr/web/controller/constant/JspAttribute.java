@@ -1,6 +1,6 @@
 package by.tr.web.controller.constant;
 
-public final class JSPAttribute {
+public final class JspAttribute {
     public final static String BAN_REASON = "banReason";
     public final static String BAN_REASON_LIST = "banReasonList";
     public final static String BAN_TIME = "banTime";
@@ -9,5 +9,12 @@ public final class JSPAttribute {
     public final static String USER_LIST = "userList";
     public final static String USER_BAN_ID = "userBanID";
     public final static String USER_UNBAN_ID = "userUnbanID";
-    private JSPAttribute(){}
+    public static final String LOGIN = "login";
+    public static final String PASSWORD = "password";
+    public static final String EMAIL = "email";
+    public static final String USER = "user";
+    public static final String ADDRESS ="address";
+
+    public static final String MOVIES = "movies";
+    private JspAttribute(){}
 }

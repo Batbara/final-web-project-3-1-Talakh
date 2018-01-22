@@ -2,6 +2,7 @@ package by.tr.web.controller.filter;
 
 import by.tr.web.controller.command.CommandProvider;
 import by.tr.web.controller.constant.FrontControllerParameter;
+import by.tr.web.controller.constant.JspAttribute;
 import by.tr.web.domain.User;
 
 import javax.servlet.Filter;
@@ -45,7 +46,7 @@ public class AccessChecker implements Filter {
 
     private boolean checkAccess(HttpServletRequest request) {
         HttpSession session = request.getSession();
-        User user = (User) session.getAttribute(FrontControllerParameter.USER);
+        User user = (User) session.getAttribute(JspAttribute.USER);
         if (user == null) {
             return false;
         }

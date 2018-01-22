@@ -46,14 +46,15 @@
 <div class="main">
     <c:import url="/WEB-INF/jsp/adminNav.jsp"/>
     <article>
+        <div class="fluid-container">
         <div class="row">
             <div class="col-sm-12">
                 <div class="onPage pull-left">
                     <form action="${pageContext.request.contextPath}/mpb" method="get" id="onPageForm"
                           onchange="submitPerPage();">
                         <input type="hidden" name="command" value="take_user_list">
-                        <label for="onPageSelection"><c:out value="${onPage}"/></label>
-                        <select name="onPage" id="onPageSelection">
+                        <label for="onUsersPageSelection"><c:out value="${onPage}"/></label>
+                        <select name="onPage" id="onUsersPageSelection">
                             <option value="25">25</option>
                             <option value="50">50</option>
                             <option value="100">100</option>
@@ -85,8 +86,8 @@
                 </nav>
             </div>
         </div>
-
-        <div class="users-table">
+        </div>
+        <div class="table-responsive users-table">
             <table class="table">
                 <tr>
                     <th>id</th>
@@ -250,8 +251,9 @@
     </aside>
 </div>
 <c:import url="/WEB-INF/jsp/footer.jsp"/>
-<script src="../../../js/table.js"></script>
-<script src="../../../js/content.js"></script>
-<script src="../../../js/toSubmit.js"></script>
+<script src="${pageContext.request.contextPath}/js/cookieHandler.js"></script>
+<script src="${pageContext.request.contextPath}/js/toSubmit.js"></script>
+<script src="${pageContext.request.contextPath}/js/table.js"></script>
+<script src="${pageContext.request.contextPath}/js/content.js"></script>
 </body>
 </html>

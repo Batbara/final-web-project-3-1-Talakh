@@ -10,6 +10,7 @@ function submitPerPage() {
     $("#onPageForm").submit();
 
 }
+/*
 $( document ).ready(setSelectedOptions);
 function setSelectedOptions(){
     setSelectionFor('orderSelection', 'order');
@@ -34,7 +35,11 @@ var getUrlParameter = function getUrlParameter(sParam) {
             return sParameterName[1] === undefined ? true : sParameterName[1];
         }
     }
-};
+};*/
+function submitTakeMovieList() {
+    $("#movies-form").submit();
+    return false;
+}
 $("#form-login").on("submit", function (event) {
 
     event.preventDefault();

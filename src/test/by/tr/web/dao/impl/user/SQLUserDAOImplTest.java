@@ -1,6 +1,6 @@
 package by.tr.web.dao.impl.user;
 
-import by.tr.web.controller.constant.Util;
+import by.tr.web.controller.util.Util;
 import by.tr.web.dao.impl.connection_pool.ConnectionPool;
 import by.tr.web.domain.BanInfo;
 import by.tr.web.domain.BanReason;

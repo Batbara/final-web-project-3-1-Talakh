@@ -1,6 +1,6 @@
 package by.tr.web.controller.constant;
 
-public final class JSPPagePath {
+public final class JspPagePath {
     public static final String LOGIN_PAGE ="jsp/login.jsp";
     public static final String REGISTER_PAGE ="jsp/register.jsp";
     public static final String INDEX = "/index.jsp";
@@ -9,6 +9,6 @@ public final class JSPPagePath {
     public static final String MOVIE_LIST_PAGE = "/movies";
     public static final String FRONT_CONTROLLER = "/mpb";
     public static final String ADMINISTRATION_PAGE_PATH = "/WEB-INF/jsp/admin/users.jsp";
-    private JSPPagePath(){}
+    private JspPagePath(){}
 }
 

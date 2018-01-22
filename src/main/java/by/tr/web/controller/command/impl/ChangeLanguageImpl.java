@@ -2,7 +2,8 @@ package by.tr.web.controller.command.impl;
 
 import by.tr.web.controller.command.Command;
 import by.tr.web.controller.constant.FrontControllerParameter;
-import by.tr.web.controller.constant.JSPPagePath;
+import by.tr.web.controller.constant.JspAttribute;
+import by.tr.web.controller.constant.JspPagePath;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -23,11 +24,11 @@ public class ChangeLanguageImpl implements Command {
     }
 
     private String formRedirectAddress(HttpServletRequest request) {
-        String address = request.getParameter(FrontControllerParameter.ADDRESS);
+        String address = request.getParameter(JspAttribute.ADDRESS);
         String query = request.getParameter(FrontControllerParameter.QUERY);
         StringBuilder addressConstructor = new StringBuilder();
         if (!query.isEmpty()) {
-            addressConstructor.append(JSPPagePath.FRONT_CONTROLLER);
+            addressConstructor.append(JspPagePath.FRONT_CONTROLLER);
             addressConstructor.append("?");
             addressConstructor.append(query);
         } else {

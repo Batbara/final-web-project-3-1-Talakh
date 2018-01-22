@@ -1,6 +1,6 @@
 package by.tr.web.dao.impl.movie;
 
-import by.tr.web.controller.constant.Util;
+import by.tr.web.controller.util.Util;
 import by.tr.web.dao.impl.connection_pool.ConnectionPool;
 import by.tr.web.domain.Country;
 import by.tr.web.domain.Genre;
