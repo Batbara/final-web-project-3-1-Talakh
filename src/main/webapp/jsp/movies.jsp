@@ -81,7 +81,7 @@
 
                 <div class="col-sm-4">
                     <nav class="navigation pull-right">
-                        <c:import url="/WEB-INF/jsp/pager.jsp"/>
+                        <c:import url="/WEB-INF/jsp/paging/paging.jsp"/>
                     </nav>
                 </div>
             </div>
