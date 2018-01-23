@@ -81,28 +81,7 @@
 
                 <div class="col-sm-4">
                     <nav class="navigation pull-right">
-                        <ul class="pagination">
-
-                            <c:forEach begin="1" end="${requestScope.numOfPages}" var="i">
-                                <c:choose>
-                                    <c:when test="${requestScope.page eq i}">
-                                        <li><input class="btn btn-default active disabled" type="submit" name="page"
-                                                   value="${i}"></li>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <li>
-                                            <form method="get" action="${pageContext.request.contextPath}/mpb">
-                                                <input type="hidden" name="command" value="take_movie_list">
-                                                <input type="hidden" name="order" value="${requestScope.order}">
-                                                <input type="hidden" name="onPage" value="${requestScope.onPage}">
-                                                <input class="btn btn-default" type="submit" name="page" value="${i}">
-                                            </form>
-                                        </li>
-                                    </c:otherwise>
-                                </c:choose>
-                            </c:forEach>
-
-                        </ul>
+                        <c:import url="/WEB-INF/jsp/pager.jsp"/>
                     </nav>
                 </div>
             </div>
@@ -123,9 +102,7 @@
                                     value="${currentMovie.title}"/></a></td>
                         <td><c:out value="${currentMovie.year}"/></td>
                         <td>
-                            <jsp:include page="/WEB-INF/jsp/rateVidget.jsp"/>
                             <div class="starrr ${currentMovie.showID}"></div>
-                            <!--<div><img src="${pageContext.request.contextPath}/images/star.png" class="star"></div>-->
                             <div class="rate ${currentMovie.showID}"><mpb:show-rating show="${currentMovie}"
                                                                                       user="${sessionScope.user}"/></div>
                         </td>
