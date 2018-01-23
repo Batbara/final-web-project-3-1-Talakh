@@ -64,25 +64,10 @@
                     </form>
                 </div>
                 <nav class="navigation pull-right">
-                    <ul class="pagination">
-                        <c:forEach begin="1" end="${requestScope.numOfPages}" var="i">
-                            <c:choose>
-                                <c:when test="${requestScope.page eq i}">
-                                    <li><input class="btn btn-default active disabled" type="submit" name="page"
-                                               value="${i}"></li>
-                                </c:when>
-                                <c:otherwise>
-                                    <li>
-                                        <form method="get" action="${pageContext.request.contextPath}/mpb">
-                                            <input type="hidden" name="command" value="take_user_list">
-                                            <input type="hidden" name="onPage" value="${requestScope.onPage}">
-                                            <input class="btn btn-default " type="submit" name="page" value="${i}">
-                                        </form>
-                                    </li>
-                                </c:otherwise>
-                            </c:choose>
-                        </c:forEach>
-                    </ul>
+
+                    <c:import url="/WEB-INF/jsp/paging/paging.jsp">
+                        <c:param name="command" value="take_user_list"/>
+                    </c:import>
                 </nav>
             </div>
         </div>

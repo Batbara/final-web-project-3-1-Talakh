@@ -8,17 +8,21 @@
                 <c:when test="${requestScope.page eq 1}">
                     <c:import url="/WEB-INF/jsp/paging/disabledPage.jsp">
                         <c:param name="pageNumber" value="<<"/>
+                        <c:param name="command" value="${param.command}"/>
                     </c:import>
                     <c:import url="/WEB-INF/jsp/paging/disabledPage.jsp">
                         <c:param name="pageNumber" value="${1}"/>
+                        <c:param name="command" value="${param.command}"/>
                     </c:import>
                 </c:when>
                 <c:otherwise>
                     <c:import url="/WEB-INF/jsp/paging/enabledPage.jsp">
                         <c:param name="pageNumber" value="<<"/>
+                        <c:param name="command" value="${param.command}"/>
                     </c:import>
                     <c:import url="/WEB-INF/jsp/paging/enabledPage.jsp">
                         <c:param name="pageNumber" value="${1}"/>
+                        <c:param name="command" value="${param.command}"/>
                     </c:import>
                 </c:otherwise>
             </c:choose>
@@ -30,11 +34,13 @@
                     <c:when test="${requestScope.page eq i}">
                         <c:import url="/WEB-INF/jsp/paging/disabledPage.jsp">
                             <c:param name="pageNumber" value="${i}"/>
+                            <c:param name="command" value="${param.command}"/>
                         </c:import>
                     </c:when>
                     <c:otherwise>
                         <c:import url="/WEB-INF/jsp/paging/enabledPage.jsp">
                             <c:param name="pageNumber" value="${i}"/>
+                            <c:param name="command" value="${param.command}"/>
                         </c:import>
                     </c:otherwise>
                 </c:choose>
@@ -45,11 +51,13 @@
                 <c:when test="${requestScope.page eq requestScope.numOfPages}">
                     <c:import url="/WEB-INF/jsp/paging/disabledPage.jsp">
                         <c:param name="pageNumber" value=">>"/>
+                        <c:param name="command" value="${param.command}"/>
                     </c:import>
                 </c:when>
                 <c:otherwise>
                     <c:import url="/WEB-INF/jsp/paging/enabledPage.jsp">
                         <c:param name="pageNumber" value=">>"/>
+                        <c:param name="command" value="${param.command}"/>
                     </c:import>
 
                 </c:otherwise>
@@ -72,10 +80,12 @@
                         <c:otherwise>
                             <c:import url="/WEB-INF/jsp/paging/enabledPage.jsp">
                                 <c:param name="pageNumber" value="<<"/>
+                                <c:param name="command" value="${param.command}"/>
                             </c:import>
 
                             <c:import url="/WEB-INF/jsp/paging/enabledPage.jsp">
                                 <c:param name="pageNumber" value="${1}"/>
+                                <c:param name="command" value="${param.command}"/>
                             </c:import>
                         </c:otherwise>
                     </c:choose>
@@ -90,6 +100,7 @@
                             <c:otherwise>
                                 <c:import url="/WEB-INF/jsp/paging/enabledPage.jsp">
                                     <c:param name="pageNumber" value="${i}"/>
+                                    <c:param name="command" value="${param.command}"/>
                                 </c:import>
                             </c:otherwise>
                         </c:choose>
@@ -105,6 +116,7 @@
 
                             <c:import url="/WEB-INF/jsp/paging/enabledPage.jsp">
                                 <c:param name="pageNumber" value=">>"/>
+                                <c:param name="command" value="${param.command}"/>
                             </c:import>
 
                         </c:otherwise>
@@ -116,6 +128,7 @@
 
                     <c:import url="/WEB-INF/jsp/paging/enabledPage.jsp">
                         <c:param name="pageNumber" value="<<"/>
+                        <c:param name="command" value="${param.command}"/>
                     </c:import>
                     <c:forEach begin="${requestScope.page-2}" end="${requestScope.page+2}" var="i">
                         <c:choose>
@@ -128,6 +141,7 @@
 
                                 <c:import url="/WEB-INF/jsp/paging/enabledPage.jsp">
                                     <c:param name="pageNumber" value="${i}"/>
+                                    <c:param name="command" value="${param.command}"/>
                                 </c:import>
 
                             </c:otherwise>
@@ -135,6 +149,7 @@
                     </c:forEach>
                     <c:import url="/WEB-INF/jsp/paging/enabledPage.jsp">
                         <c:param name="pageNumber" value=">>"/>
+                        <c:param name="command" value="${param.command}"/>
                     </c:import>
 
                 </c:when>
@@ -154,6 +169,7 @@
                             <c:otherwise>
                                 <c:import url="/WEB-INF/jsp/paging/enabledPage.jsp">
                                     <c:param name="pageNumber" value="${i}"/>
+                                    <c:param name="command" value="${param.command}"/>
                                 </c:import>
                             </c:otherwise>
                         </c:choose>
@@ -169,6 +185,7 @@
                         <c:otherwise>
                             <c:import url="/WEB-INF/jsp/paging/enabledPage.jsp">
                                 <c:param name="pageNumber" value=">>"/>
+                                <c:param name="command" value="${param.command}"/>
                             </c:import>
                         </c:otherwise>
 

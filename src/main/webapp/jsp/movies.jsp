@@ -69,7 +69,7 @@
                             <input type="hidden" name="order" value="${requestScope.order}">
                             <label for="onPageSelection"><c:out value="${onPage}"/></label>
                             <select name="onPage" id="onPageSelection">
-                                <option value="5">5</option>
+                                <option value="2">2</option>
                                 <option value="15">15</option>
                                 <option value="25">25</option>
                             </select>
@@ -81,7 +81,9 @@
 
                 <div class="col-sm-4">
                     <nav class="navigation pull-right">
-                        <c:import url="/WEB-INF/jsp/paging/paging.jsp"/>
+                        <c:import url="/WEB-INF/jsp/paging/paging.jsp">
+                            <c:param name="command" value="take_movie_list"/>
+                        </c:import>
                     </nav>
                 </div>
             </div>
