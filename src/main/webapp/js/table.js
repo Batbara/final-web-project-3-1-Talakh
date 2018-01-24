@@ -10,24 +10,24 @@ $(".bannedUser").on("click", function () {
         }
     }
 });
+
 $(document).ready(function(){
    $('[data-toggle="tooltip"]').tooltip();
 
-   // $("body").tooltip({ selector: '[data-toggle=tooltip]' });
     $('.alert').hide();
     $('#banDialog, #unbanDialog, #ratingSetFailed, #ratingSetSuccessful').on('hidden.bs.modal', function () {
        location.reload(true);
     });
     setUpMovieTableSelection();
     setUpUsersTableSelection();
+    setUpTvShowTableSelection();
 });
 $(function () {
     var starElements = $('.starrr');
     var elementsNum = starElements.length;
     for(var element = 0; element<elementsNum; element++){
         var currStar = starElements[element];
-        //var starrClasses = $(currStar).attr("class").split(" ");
-     //   var showId = starrClasses[starrClasses.length-1];
+
         var showId = $(currStar).attr("class").split(" ").pop();
         var rating = retrieveShowRating(showId);
         var isReadOnly = checkForReadOnly();
@@ -83,17 +83,35 @@ function setUpUsersTableSelection() {
 function setUpMovieTableSelection() {
     var selectedOrder = getCookie("movieOrder");
     if(selectedOrder == ""){
-        $("#orderSelection").val(1);
+        $("#movieOrderSelection").val(1);
     } else {
 
-        $("#orderSelection").val(selectedOrder);
+        $("#movieOrderSelection").val(selectedOrder);
     }
 
     var selectedOnPage = getCookie("onMoviePage");
     if(selectedOnPage == ""){
-        $("#onPageSelection").val(1);
+        $("#movieOnPageSelection").val(1);
     } else {
-        $("#onPageSelection").val(selectedOnPage);
+        $("#movieOnPageSelection").val(selectedOnPage);
+    }
+
+}
+
+function setUpTvShowTableSelection() {
+    var selectedOrder = getCookie("tvShowOrder");
+    if(selectedOrder == ""){
+        $("#tvOrderSelection").val(1);
+    } else {
+
+        $("#tvOrderSelection").val(selectedOrder);
+    }
+
+    var selectedOnPage = getCookie("onTvShowPage");
+    if(selectedOnPage == ""){
+        $("#tvOnPageSelection").val(1);
+    } else {
+        $("#tvOnPageSelection").val(selectedOnPage);
     }
 
 }

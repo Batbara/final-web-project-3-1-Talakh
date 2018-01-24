@@ -11,20 +11,20 @@
     <fmt:setLocale value="${sessionScope.local}"/>
     <fmt:setBundle basename="localization.local" var="loc"/>
     <fmt:message bundle="${loc}" key="local.title.forbidden" var="title"/>
-    <fmt:message bundle="${loc}" key="local.message.forbidden" var="forbiddenMessage"/>
+    <fmt:message bundle="${loc}" key="local.message.notfound" var="notFoundMessage"/>
     <fmt:message bundle="${loc}" key="local.navButton.home" var="home"/>
     <title>${title} | MotionPicture Bank [MPB]</title>
 </head>
-<body>
+<body style="background-color: #5bdcc0">
 <div class="container">
     <div class="errorImage">
         <div>
-            <img src="../../../images/403.png" alt="404" class="img-responsive center-block">
+            <img src="${pageContext.request.contextPath}/images/404.gif" alt="404" class="img-responsive center-block">
         </div>
     </div>
     <div class="row text-center">
         <div class="message">
-            ${forbiddenMessage}
+            ${notFoundMessage}
         </div>
     </div>
     <div class="row text-center">

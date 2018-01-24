@@ -3,6 +3,7 @@ package by.tr.web.dao.factory;
 import by.tr.web.dao.Configuration;
 import by.tr.web.dao.impl.configuration.MovieSqlQueryConfig;
 import by.tr.web.dao.impl.configuration.ShowSqlQueryConfig;
+import by.tr.web.dao.impl.configuration.TvShowSqlQueryConfig;
 import by.tr.web.dao.impl.configuration.UserSqlQueryConfig;
 import by.tr.web.exception.dao.common.DAOException;
 import by.tr.web.exception.dao.common.SqlQueryConfigurationError;
@@ -14,6 +15,7 @@ public class ConfigurationFactory {
     private Configuration userQueryConfig = new UserSqlQueryConfig();
     private Configuration movieQueryConfig = new MovieSqlQueryConfig();
     private Configuration showQueryConfig = new ShowSqlQueryConfig();
+    private Configuration tvShowConfig = new TvShowSqlQueryConfig();
 
     public static ConfigurationFactory getInstance() {
         return instance;
@@ -30,6 +32,10 @@ public class ConfigurationFactory {
         } catch (IllegalAccessException e) {
            throw new SqlQueryConfigurationError("Cannot access class field", e);
         }
+    }
+
+    public Configuration getTvShowConfig() {
+        return tvShowConfig;
     }
 
     public Configuration getShowQueryConfig() {

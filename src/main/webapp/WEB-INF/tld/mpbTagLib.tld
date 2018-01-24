@@ -45,6 +45,16 @@
         </attribute>
     </tag>
     <tag>
+        <name>tvShow-status</name>
+        <tag-class>by.tr.web.tag.TvShowStatusTag</tag-class>
+        <body-content>empty</body-content>
+        <attribute>
+            <name>status</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+    <tag>
         <name>show-rating</name>
         <tag-class>by.tr.web.tag.ShowRatingTag</tag-class>
         <body-content>empty</body-content>

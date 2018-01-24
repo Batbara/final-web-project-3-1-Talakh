@@ -6,15 +6,9 @@
 <%@ taglib prefix="mpb" uri="mpbtaglib" %>
 <html>
 <head>
-
-    <link rel="stylesheet" type="text/css" href="/css/layout.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <link href="${pageContext.request.contextPath}//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css"
-          rel="stylesheet">
-    <link rel="stylesheet" type="text/css"
-          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"/>
+    <c:import url="/WEB-INF/jsp/styling.jsp"/>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/account.css">
-    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+
     <fmt:setLocale value="${sessionScope.local}"/>
     <fmt:setBundle basename="localization.local" var="loc"/>
     <fmt:message bundle="${loc}" key="local.navButton.logout" var="logout"/>
@@ -29,7 +23,7 @@
     <title> ${profile} | ${sessionScope.user.userName} | MotionPicture Bank [MPB]</title>
 </head>
 <body>
-<jsp:include page="/WEB-INF/jsp/header.jsp"/>
+<c:import url="/WEB-INF/jsp/header/header.jsp"/>
 
 <div class="main">
     <nav class="side-nav"></nav>
@@ -81,6 +75,6 @@
     </aside>
 
 </div>
-<jsp:include page="/WEB-INF/jsp/footer.jsp"/>
+<c:import url="/WEB-INF/jsp/footer.jsp"/>
 </body>
 </html>

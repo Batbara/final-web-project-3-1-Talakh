@@ -18,6 +18,9 @@ public final class SqlQueryName {
     public static final String TAKE_MOVIE_LIST_QUERY = "movie.take.movielist";
     public static final String TAKE_MOVIE_INFO_QUERY = "movie.take.movie.info";
 
+    public static final String TVSHOW_COUNTER_QUERY = "tv.count.tvshows";
+    public static final String TAKE_TVSHOW_LIST_QUERY = "tv.take.tvshow.list";
+
     public static final String TAKE_GENRE_OF_SHOW_QUERY = "show.take.genre";
     public static final String TAKE_COUNTRY_OF_SHOW_QUERY = "show.take.country";
     public static final String TAKE_REVIEWS_OF_SHOW_QUERY = "show.take.reviews";

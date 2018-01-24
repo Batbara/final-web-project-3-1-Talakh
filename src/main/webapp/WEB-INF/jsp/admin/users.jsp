@@ -7,9 +7,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
+    <c:import url="/WEB-INF/jsp/styling.jsp"/>
     <fmt:setLocale value="${sessionScope.local}"/>
     <fmt:setBundle basename="localization.local" var="loc"/>
     <fmt:message bundle="${loc}" key="local.navButton.admin" var="title"/>
@@ -18,10 +17,7 @@
     <fmt:message bundle="${loc}" key="local.info.user.unban" var="unban"/>
     <fmt:message bundle="${loc}" key="local.info.user.unbanTime" var="unbanTime"/>
     <fmt:message bundle="${loc}" key="local.info.user.banTime" var="banTime"/>
-    <fmt:message bundle="${loc}" key="local.movie.onPage" var="onPage"/>
-    <fmt:message bundle="${loc}" key="local.admin.usertable.action" var="actionHeader"/>
-    <fmt:message bundle="${loc}" key="local.admin.usertable.name" var="usernameHeader"/>
-    <fmt:message bundle="${loc}" key="local.admin.usertable.status" var="statusHeader"/>
+    <fmt:message bundle="${loc}" key="local.table.onPage" var="onPage"/>
     <fmt:message bundle="${loc}" key="local.message.errorMessage" var="errorMessage"/>
     <fmt:message bundle="${loc}" key="local.message.banSuccessful" var="banSuccesful"/>
     <fmt:message bundle="${loc}" key="local.message.success" var="successMessage"/>
@@ -32,17 +28,12 @@
 
     <title>${title} | MotionPicture Bank [MPB]</title>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <link href="${pageContext.request.contextPath}//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" />
 
-    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="/css/layout.css">
-    <link rel="stylesheet" type="text/css" href="/css/table-style.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/table-style.css">
 
 </head>
 <body>
-<c:import url="/WEB-INF/jsp/header.jsp"/>
+<c:import url="/WEB-INF/jsp/header/header.jsp"/>
 <div class="main">
     <c:import url="/WEB-INF/jsp/adminNav.jsp"/>
     <article>
@@ -50,22 +41,13 @@
         <div class="row">
             <div class="col-sm-12">
                 <div class="onPage pull-left">
-                    <form action="${pageContext.request.contextPath}/mpb" method="get" id="onPageForm"
-                          onchange="submitPerPage();">
-                        <input type="hidden" name="command" value="take_user_list">
-                        <label for="onUsersPageSelection"><c:out value="${onPage}"/></label>
-                        <select name="onPage" id="onUsersPageSelection">
-                            <option value="25">25</option>
-                            <option value="50">50</option>
-                            <option value="100">100</option>
-                        </select>
-                        <input type="hidden" name="page" value="1">
-
-                    </form>
+                    <c:import url="/WEB-INF/jsp/table_control/onPageForm.jsp">
+                        <c:param name="command" value="take_user_list"/>
+                    </c:import>
                 </div>
                 <nav class="navigation pull-right">
 
-                    <c:import url="/WEB-INF/jsp/paging/paging.jsp">
+                    <c:import url="/WEB-INF/jsp/table_control/paging.jsp">
                         <c:param name="command" value="take_user_list"/>
                     </c:import>
                 </nav>
@@ -73,69 +55,7 @@
         </div>
         </div>
         <div class="table-responsive users-table">
-            <table class="table">
-                <tr>
-                    <th>id</th>
-                    <th>${usernameHeader}</th>
-                    <th>E-mail</th>
-                    <th>${statusHeader}</th>
-                    <th>${actionHeader}</th>
-                </tr>
-                <c:forEach items="${requestScope.userList}" var="currentUser">
-                    <c:choose>
-                        <c:when test="${currentUser.isBanned eq true}">
-
-                            <tr class="bannedUser" data-toggle="collapse" data-target="#${currentUser.id}">
-                                <td>
-                                    <div class="userID ${currentUser.id}"><c:out value="${currentUser.id}"/></div>
-                                </td>
-                                <td class="userName ${currentUser.id}"><c:out value="${currentUser.userName}"/></td>
-                                <td><c:out value="${currentUser.email}"/></td>
-                                <td><c:out value="${currentUser.userStatus}"/></td>
-                                <td>
-                                <span  data-toggle="tooltip" data-placement="bottom" title="${unban}" >
-                                     <a data-toggle="modal" data-target="#unbanDialog" class="unbanButton ${currentUser.id}" href="#">
-                                         <span class="glyphicon glyphicon-ok"></span>
-                                        </a>
-                                </span>
-                                    <span class="glyphicon glyphicon-trash"></span>
-                                    <span class="glyphicon glyphicon-sunglasses"></span>
-                                </td>
-
-                            </tr>
-
-                            <tr class="banContent collapse" id="${currentUser.id}">
-                                <td colspan="5">
-                                    <mpb:ban-info user="${currentUser}"/>
-                                </td>
-                            </tr>
-
-                        </c:when>
-                        <c:otherwise>
-
-                            <tr>
-                                <td>
-                                    <div class="userID ${currentUser.id}"><c:out value="${currentUser.id}"/></div>
-                                </td>
-                                <td class="userName ${currentUser.id}"><c:out value="${currentUser.userName}"/></td>
-                                <td><c:out value="${currentUser.email}"/></td>
-                                <td><c:out value="${currentUser.userStatus}"/></td>
-                                <td>
-                                    <c:if test="${currentUser.userStatus ne 'ADMIN'}">
-                                        <span  data-toggle="tooltip" data-placement="bottom" title="${ban}" >
-                                        <a data-toggle="modal" data-target="#banDialog" class="banButton ${currentUser.id}" href="#">
-                                            <span class="glyphicon glyphicon-remove"></span>
-                                        </a>
-                                        </span>
-                                        <span class="glyphicon glyphicon-trash"></span>
-                                        <span class="glyphicon glyphicon-sunglasses"></span>
-                                    </c:if>
-                                </td>
-                            </tr>
-                        </c:otherwise>
-                    </c:choose>
-                </c:forEach>
-            </table>
+            <c:import url="/WEB-INF/jsp/table_content/usersTable.jsp"/>
 
         </div>
         <div class="modal fade" id="banDialog" role="dialog">
@@ -236,9 +156,6 @@
     </aside>
 </div>
 <c:import url="/WEB-INF/jsp/footer.jsp"/>
-<script src="${pageContext.request.contextPath}/js/cookieHandler.js"></script>
-<script src="${pageContext.request.contextPath}/js/toSubmit.js"></script>
-<script src="${pageContext.request.contextPath}/js/table.js"></script>
-<script src="${pageContext.request.contextPath}/js/content.js"></script>
+<c:import url="/WEB-INF/jsp/table_control/tableScripts.jsp"/>
 </body>
 </html>

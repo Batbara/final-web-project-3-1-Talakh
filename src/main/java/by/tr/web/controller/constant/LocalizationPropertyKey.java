@@ -1,5 +1,6 @@
 package by.tr.web.controller.constant;
 
+import by.tr.web.domain.TvShow;
 import by.tr.web.domain.User;
 import by.tr.web.exception.controller.UserStatusBundleException;
 import org.apache.log4j.Logger;
@@ -10,6 +11,8 @@ import java.util.Map;
 
 public final class LocalizationPropertyKey {
     private static Map<User.UserStatus, String> userStatusMap = new HashMap<>();
+    private static Map<TvShow.ShowStatus, String> tvShowStatusMap = new HashMap<>();
+
     private final static Logger logger = Logger.getLogger(LocalizationPropertyKey.class);
 
     public static final String USER_BAN_INFO = "local.info.user.ban";
@@ -22,12 +25,21 @@ public final class LocalizationPropertyKey {
     public static final String STATUS_REVIEWER = "local.info.user.status.reviewer";
     public static final String STATUS_CRITIC = "local.info.user.status.critic";
 
+    public static final String STATUS_FINISHED = "local.info.tvshow.status.finished";
+    public static final String STATUS_RETURNING = "local.info.tvshow.status.returning";
+    public static final String STATUS_PAUSE = "local.info.tvshow.status.paused";
+
     public static final String SHOW_RATING = "local.show.sidenav.rating";
     public static final String USER_CUSTOM_RATE = "local.show.user.custom.rate";
 
     public static String getUserStatusProperty(User.UserStatus userStatus) {
         return userStatusMap.get(userStatus);
     }
+
+    public static String getTvShowStatusProperty(TvShow.ShowStatus showStatus){
+        return tvShowStatusMap.get(showStatus);
+    }
+
 
     private LocalizationPropertyKey() {}
     static {
@@ -37,6 +49,11 @@ public final class LocalizationPropertyKey {
                 Field field = LocalizationPropertyKey.class.getField("STATUS_" + userStatus.name());
                 String fieldValue = (String) field.get(null);
                 userStatusMap.put(userStatus, fieldValue);
+            }
+            for(TvShow.ShowStatus tvShowStatus : TvShow.ShowStatus.values()){
+                Field field = LocalizationPropertyKey.class.getField("STATUS_" + tvShowStatus.name());
+                String fieldValue = (String) field.get(null);
+                tvShowStatusMap.put(tvShowStatus, fieldValue);
             }
         } catch (NoSuchFieldException e) {
             String message = "Cannot resolve class field";

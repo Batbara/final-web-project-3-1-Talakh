@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" type="text/css" href="/css/layout.css">
+    <c:import url="/WEB-INF/jsp/styling.jsp"/>
     <fmt:setLocale value="${sessionScope.local}"/>
     <fmt:setBundle basename="localization.local" var="loc"/>
     <fmt:message bundle="${loc}" key="local.message.signup" var="signupMessage"/>
@@ -22,7 +22,7 @@
     <title><c:out value="${signupButton}"/> | MotionPicture Bank [MPB]</title>
 </head>
 <body>
-<jsp:include page="/WEB-INF/jsp/header.jsp"/>
+<c:import url="/WEB-INF/jsp/header/header.jsp"/>
 <div class="main">
     <nav class="side-nav"></nav>
     <article>
@@ -73,7 +73,7 @@
     <aside></aside>
 
 </div>
-<jsp:include page="/WEB-INF/jsp/footer.jsp"/>
+<c:import url="/WEB-INF/jsp/footer.jsp"/>
 
 </body>
 </html>

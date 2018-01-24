@@ -5,7 +5,9 @@ import by.tr.web.exception.service.common.ServiceException;
 
 import java.util.List;
 
-public interface MovieService extends ShowService{
+public interface MovieService {
+    int countMovie() throws ServiceException;
+
     List<Movie> takeOrderedMovieList(int startID, int moviesNumber, String orderType, String lang) throws ServiceException;
 
     Movie takeMovie(int id, String lang) throws ServiceException;

@@ -20,8 +20,8 @@ public class UnbanUserImpl implements Command {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        String unbanIDString = request.getParameter(JspAttribute.USER_UNBAN_ID);
-        int userUnbanID = Integer.parseInt(unbanIDString);
+        String userUnbanID = request.getParameter(JspAttribute.USER_UNBAN_ID);
+
 
         response.setContentType(FrontControllerParameter.TEXT_HTML_CONTENT_TYPE);
         response.setCharacterEncoding(request.getCharacterEncoding());

@@ -97,7 +97,7 @@ ul {
 }
 
 
-#ruButton, #enButton{
+.lang-button{
 	border: none;
 	overflow: hidden;
 	display: flex;
@@ -110,7 +110,7 @@ ul {
 	outline:none;
 	/*background: url("/images/ru.gif") no-repeat;*/
 }
-#ruButton:hover, #enButton:hover {
+#lang-button:hover {
 	color: #BF496A;
 }
 .lang_button{

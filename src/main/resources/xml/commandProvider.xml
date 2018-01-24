@@ -15,21 +15,21 @@
         <cp:commandName>unban_user</cp:commandName>
         <cp:className>by.tr.web.controller.command.impl.admin_command.UnbanUserImpl</cp:className>
     </cp:command>
-    <cp:command >
+    <cp:command>
         <cp:commandName>change_language</cp:commandName>
-        <cp:className>by.tr.web.controller.command.impl.ChangeLanguageImpl</cp:className>
+        <cp:className>by.tr.web.controller.command.impl.user_command.ChangeLanguageImpl</cp:className>
     </cp:command>
     <cp:command>
         <cp:commandName>login</cp:commandName>
-        <cp:className>by.tr.web.controller.command.impl.Logination</cp:className>
+        <cp:className>by.tr.web.controller.command.impl.user_command.LoginationImpl</cp:className>
     </cp:command>
     <cp:command>
         <cp:commandName>register</cp:commandName>
-        <cp:className>by.tr.web.controller.command.impl.Registration</cp:className>
+        <cp:className>by.tr.web.controller.command.impl.user_command.RegistrationImpl</cp:className>
     </cp:command>
     <cp:command>
         <cp:commandName>logout</cp:commandName>
-        <cp:className>by.tr.web.controller.command.impl.LogoutImpl</cp:className>
+        <cp:className>by.tr.web.controller.command.impl.user_command.LogoutImpl</cp:className>
     </cp:command>
     <cp:command>
         <cp:commandName>take_account</cp:commandName>
@@ -44,7 +44,11 @@
         <cp:className>by.tr.web.controller.command.impl.TakeMovieImpl</cp:className>
     </cp:command>
     <cp:command>
+        <cp:commandName>take_tv_list</cp:commandName>
+        <cp:className>by.tr.web.controller.command.impl.TakeTvListImpl</cp:className>
+    </cp:command>
+    <cp:command>
         <cp:commandName>add_user_rate</cp:commandName>
-        <cp:className>by.tr.web.controller.command.impl.AddUserRate</cp:className>
+        <cp:className>by.tr.web.controller.command.impl.AddUserRateImpl</cp:className>
     </cp:command>
 </cp:commandList>

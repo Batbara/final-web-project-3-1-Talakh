@@ -16,6 +16,7 @@ public final class JspAttribute {
     public static final String ADDRESS ="address";
 
     public static final String MOVIES = "movies";
+    public static final String TV_SHOWS = "tvShows";
     public static final String USER_ID = "userId";
     public static final String SHOW_ID = "showId";
     public static final String USER_RATE = "userRate";

@@ -3,7 +3,6 @@ package by.tr.web.controller.command.impl.admin_command;
 import by.tr.web.controller.command.Command;
 import by.tr.web.controller.constant.FrontControllerParameter;
 import by.tr.web.controller.constant.JspAttribute;
-import by.tr.web.controller.util.Util;
 import by.tr.web.domain.BanInfo;
 import by.tr.web.domain.BanReason;
 import by.tr.web.domain.User;
@@ -11,6 +10,7 @@ import by.tr.web.exception.service.common.ServiceException;
 import by.tr.web.exception.service.user.NoSuchUserException;
 import by.tr.web.service.UserService;
 import by.tr.web.service.factory.ServiceFactory;
+import by.tr.web.util.Util;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;

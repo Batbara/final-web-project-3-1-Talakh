@@ -1,0 +1,23 @@
+sup {
+    color: #999;
+    font-size: 9px;
+}
+.status {
+    display: inline-block;
+    width: 20px;
+    height: 7px;
+    background: url(/images/statuses.png) no-repeat 0 0;
+    cursor: help;
+}
+.status.pause {
+    width: 5px;
+    background-position: -60px -80px;
+}
+.status.returning {
+    width: 4px;
+    background-position: -60px 0;
+}
+.status.finished {
+    width: 7px;
+    background-position: -60px -60px;
+}

@@ -13,6 +13,10 @@ public class Movie extends Show implements Serializable {
         G, PG, PG_13, R, NC_17
     }
 
+    public enum MovieOrderType {
+        TITLE, YEAR, RATING
+    }
+
     public Movie() {
         mpaaRating = MPAARating.G;
     }
@@ -105,4 +109,5 @@ public class Movie extends Show implements Serializable {
         }
         return formattedBuilder.reverse().toString();
     }
+
 }

@@ -144,7 +144,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void unbanUser(int userID) throws ServiceException {
+    public void unbanUser(String userID) throws ServiceException {
         DataTypeValidator validator = ValidatorFactory.getInstance().getDataTypeValidator();
         boolean isIDValid = validator.checkForPositive(userID);
         if (!isIDValid) {
@@ -152,7 +152,8 @@ public class UserServiceImpl implements UserService {
         }
         UserDAO userDAO = DAOFactory.getInstance().getUserDAO();
         try {
-            userDAO.unbanUser(userID);
+            int idFromString = Integer.parseInt(userID);
+            userDAO.unbanUser(idFromString);
         } catch (DAOException e) {
             throw new ServiceException("Error while unbanning user", e);
         }

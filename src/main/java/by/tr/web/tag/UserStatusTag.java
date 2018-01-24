@@ -2,9 +2,9 @@ package by.tr.web.tag;
 
 import by.tr.web.controller.constant.FrontControllerParameter;
 import by.tr.web.controller.constant.LocalizationPropertyKey;
-import by.tr.web.controller.util.Util;
 import by.tr.web.domain.User;
 import by.tr.web.exception.controller.CustomTagLibException;
+import by.tr.web.util.Util;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;

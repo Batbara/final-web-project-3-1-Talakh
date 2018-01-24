@@ -99,15 +99,24 @@ public final class ConnectionPool {
         Connection connection;
         try {
             connection = connectionQueue.take();
+            if(connection.isClosed()){
+                connection = reopenConnection();
+            }
             givenAwayConQueue.add(connection);
+            return connection;
         } catch (InterruptedException e) {
-            logger.error("Error connecting to the data source", e);
-            throw new ConnectionPoolException("Error connecting to the data source", e);
+            String message = "Error connecting to the data source";
+            logger.error(message, e);
+            throw new ConnectionPoolException(message, e);
+        } catch (SQLException e) {
+            String message = "Error while reopening connection";
+            logger.error(message, e);
+            throw new ConnectionPoolException(message, e);
         }
-        return connection;
+
     }
 
-    public void rollbackConnection(Connection connection) {
+    public void rollbackConnection(Connection connection) throws TransactionError{
         try {
             if (connection != null) {
                 connection.rollback();

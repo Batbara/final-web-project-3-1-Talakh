@@ -6,12 +6,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-
-    <link rel="stylesheet" type="text/css" href="/css/layout.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" />
-
-    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <c:import url="/WEB-INF/jsp/styling.jsp"/>
     <fmt:setLocale value="${sessionScope.local}"/>
     <fmt:setBundle basename="localization.local" var="loc"/>
     <fmt:message bundle="${loc}" key="local.message.signin" var="signinMessage"/>
@@ -28,7 +23,7 @@
 
 </head>
 <body>
-<jsp:include page="/WEB-INF/jsp/header.jsp"/>
+<c:import url="/WEB-INF/jsp/header/header.jsp"/>
 <div class="main">
     <nav class="side-nav"></nav>
     <article>
@@ -112,7 +107,7 @@
     <aside></aside>
 
 </div>
-<jsp:include page="/WEB-INF/jsp/footer.jsp"/>
+<c:import url="/WEB-INF/jsp/footer.jsp"/>
 
 </body>
 </html>

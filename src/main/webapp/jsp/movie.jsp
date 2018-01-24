@@ -19,17 +19,12 @@
     <fmt:message bundle="${loc}" key="local.show.sidenav.reviews" var="reviewsNav"/>
     <fmt:message bundle="${loc}" key="local.show.sidenav.synopsis" var="synopsisNav"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <link href="${pageContext.request.contextPath}//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" />
-
-    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="/css/layout.css">
-    <link rel="stylesheet" type="text/css" href="/css/movie.css">
+    <c:import url="/WEB-INF/jsp/styling.jsp"/>
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/movie.css">
     <title><jsp:getProperty name = "movie" property = "title"/> | MotionPicture Bank [MPB]</title>
 </head>
 <body>
-<c:import url="/WEB-INF/jsp/header.jsp"/>
+<c:import url="/WEB-INF/jsp/header/header.jsp"/>
 <div class="main">
     <nav class="side-nav">
         <ul>
@@ -178,6 +173,6 @@
     </aside>
 </div>
 <c:import url="/WEB-INF/jsp/footer.jsp"/>
-<script src="../js/content.js"></script>
+<script src="${pageContext.request.contextPath}/js/content.js"></script>
 </body>
 </html>

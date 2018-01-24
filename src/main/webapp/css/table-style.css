@@ -12,7 +12,7 @@
     margin-bottom: 50px;
 }
 .movie-table {
-    max-width: 800px;
+    max-width: 750px;
 }
 table {
     border: 10px solid #50434D;
@@ -39,13 +39,32 @@ table {
     vert-align: middle;
 }
 .table>tbody>tr>td{
-    width: 150px;
+   /* width: 150px;*/
     text-align: center;
     vertical-align: middle;
 }
-.table>tbody>tr>td:first-child{
-    width: 20px;
+.table>thead>tr>th{
+    border-bottom: 5px solid #50434D;
+    background-color: #9e8a73;
+}
+.table>tbody>tr>td.show-id-cell{
+    width: 25px;
     vertical-align: top;
+}
+.table>tbody>tr>td.rating-cell{
+    width: 170px;
+}
+.table>tbody>tr>td.show-title-cell{
+    width: 200px;
+}
+.table>tbody>tr>td.season{
+    width: 25px;
+}
+.table>tbody>tr>td.year-cell{
+    width: 25px;
+}
+.table>tbody>tr>td.poster-cell{
+    width: 120px;
 }
  .user-table td {
      border-bottom: 5px solid #50434D;
@@ -54,9 +73,7 @@ table {
 
      border-bottom: 10px solid #50434D;
  }
- .movieID{
-     max-width: 25px;
- }
+
 .order, .onPage {
 
     display: flex;
@@ -86,12 +103,7 @@ table {
     font-size: 30px;
     background-color: #B8C99D;
 }
-tr > td:first-child {
-    width: 25px;
-    align-content: center;
-    horiz-align: center;
-    vertical-align: center;
-}
+
 th {
     text-align: center;
 }
