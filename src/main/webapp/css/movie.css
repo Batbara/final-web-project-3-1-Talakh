@@ -16,17 +16,58 @@ h1, h3 {
     flex-direction: column;
 }
 
+.title {
+    display: flex;
+    font-size: 24px;
+    padding-bottom: 5px;
+    color: #494141;
+    font-weight: bold;
+}
+a.title:hover{
+    color: #F0D399;
+}
+
+
+.affix-top {
+    position: static;
+    margin-top:20px;
+}
+
+.affix {
+    position: fixed;
+    top:120px;
+}
+
 .infoWrapper {
     display: flex;
-    flex-direction: row;
     justify-content: center;
-    align-items: center;
+    align-items: flex-end;
     background-color: #9e8a73;
     padding: 3%;
 }
 
+.table-hover tbody tr:hover td {
+
+    background-color: #f0d399;
+}
+.type {
+    color: #50434d;
+    font-size: 14px;
+}
+
+.table.table-hover>tbody>tr>td {
+    border-top: 1px solid #f0d399;
+}
+.infoTable {
+    border: none;
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 5%;
+    font-size: 18px;
+}
+
 .posterBlock > img {
-    width: 320px;
+    max-width: 100%;
     height: auto;
 }
 
@@ -35,31 +76,22 @@ h1, h3 {
 
 }
 
-.synopsis {
+.synopsis, .rating {
     margin-top: 2%;
     padding: 2%;
     font-family: 'Tinos', serif;
 
 }
-
-.rating {
+.rating-content {
     display: flex;
-    flex-direction: row;
-    margin-top: 5%;
-
-}
-
-.star {
-    margin-left: 2%;
-    display: flex;
+    flex-direction: column;
     align-items: center;
-    font-size: 40px;
-    font-family: 'Amatic SC', cursive;
+
+}
+a.fa.fa-star, a.fa.fa-star-o {
+    font-size: 32px;
 }
 
-.star img {
-    margin-right: 2%;
-}
 
 .review {
     margin-right: 10%;
@@ -69,14 +101,18 @@ h1, h3 {
     color: black;
 }
 
-.synopsisContent {
+.synopsis-content, .rating-content {
     margin-right: 10%;
     margin-left: 5%;
     padding: 10px;
+    font-size: 16px;
     color: black;
     background-color: #9e8a73;
 }
-
+.rating-content {
+    background-color: #F0D399;
+    text-align: center;
+}
 .reviewContent {
     padding: 20px;
     font-family: 'Tinos', serif;

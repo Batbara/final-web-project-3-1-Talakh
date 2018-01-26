@@ -163,7 +163,7 @@ public class MovieDAOSqlImpl implements MovieDAO {
                     .addRuntime(runtime)
                     .addBoxOffice(boxOffice)
                     .addBudget(movieBudget)
-                    .addMpaaRating(Movie.MPAARating.valueOf(mpaaRating))
+                    .addMpaaRating(mpaaRating)
                     .addSynopsis(synopsis)
                     .addPoster(poster)
                     .create();

@@ -55,6 +55,17 @@
         </attribute>
     </tag>
     <tag>
+        <name>mpaa-rating</name>
+        <tag-class>by.tr.web.tag.MpaaRatingTag</tag-class>
+        <body-content>empty</body-content>
+        <attribute>
+            <name>mpaaRating</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+
+    <tag>
         <name>show-rating</name>
         <tag-class>by.tr.web.tag.ShowRatingTag</tag-class>
         <body-content>empty</body-content>

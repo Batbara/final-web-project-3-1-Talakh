@@ -65,8 +65,8 @@ public class MovieBuilder extends ShowBuilder {
 
     @Override
     public MovieBuilder addRuntime(Time runtime) {
-       super.addRuntime(runtime);
-       return this;
+        super.addRuntime(runtime);
+        return this;
     }
 
     @Override
@@ -97,8 +97,12 @@ public class MovieBuilder extends ShowBuilder {
         return this;
     }
 
-    public MovieBuilder addMpaaRating(Movie.MPAARating mpaaRating) {
-        this.mpaaRating = mpaaRating;
+    public MovieBuilder addMpaaRating(String mpaaRating) {
+        if (mpaaRating != null) {
+            this.mpaaRating = Movie.MPAARating.valueOf(transformMPAAString(mpaaRating));
+        } else {
+            this.mpaaRating = Movie.MPAARating.NONE;
+        }
         return this;
     }
 
@@ -121,5 +125,9 @@ public class MovieBuilder extends ShowBuilder {
         movie.setMpaaRating(mpaaRating);
 
         return movie;
+    }
+
+    private String transformMPAAString(String rating) {
+        return rating.replace("-", "_").toUpperCase();
     }
 }

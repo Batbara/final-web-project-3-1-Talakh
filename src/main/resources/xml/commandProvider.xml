@@ -48,6 +48,10 @@
         <cp:className>by.tr.web.controller.command.impl.TakeTvListImpl</cp:className>
     </cp:command>
     <cp:command>
+        <cp:commandName>take_tv_show</cp:commandName>
+        <cp:className>by.tr.web.controller.command.impl.TakeTvShowImpl</cp:className>
+    </cp:command>
+    <cp:command>
         <cp:commandName>add_user_rate</cp:commandName>
         <cp:className>by.tr.web.controller.command.impl.AddUserRateImpl</cp:className>
     </cp:command>

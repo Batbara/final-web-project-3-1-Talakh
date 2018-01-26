@@ -36,8 +36,6 @@ public class Genre implements Serializable {
 
     @Override
     public String toString() {
-        return "Genre{" +
-                "genreName='" + genreName + '\'' +
-                '}';
+        return genreName;
     }
 }

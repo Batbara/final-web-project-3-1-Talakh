@@ -27,7 +27,7 @@
         <div class="fluid-container control">
 
             <div class="row">
-                <div class="col-sm-4">
+                <div class="col-md-4">
                     <c:import url="/WEB-INF/jsp/table_control/orderForm.jsp">
                         <c:param name="command" value="take_movie_list"/>
                     </c:import>
@@ -38,7 +38,7 @@
                     </c:import>
                 </div>
 
-                <div class="col-sm-4">
+                <div class="col-md-4">
                     <nav class="navigation pull-right">
                         <c:import url="/WEB-INF/jsp/table_control/paging.jsp">
                             <c:param name="command" value="take_movie_list"/>

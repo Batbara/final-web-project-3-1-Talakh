@@ -10,7 +10,7 @@ public class Movie extends Show implements Serializable {
     private MPAARating mpaaRating;
 
     public enum MPAARating {
-        G, PG, PG_13, R, NC_17
+        G, PG, PG_13, R, NC_17, NONE
     }
 
     public enum MovieOrderType {
@@ -53,7 +53,11 @@ public class Movie extends Show implements Serializable {
     }
 
     public void setMpaaRating(String rating) {
-        this.mpaaRating = MPAARating.valueOf(transformMPAAString(rating));
+        if (rating != null) {
+            this.mpaaRating = MPAARating.valueOf(transformMPAAString(rating));
+        } else {
+            this.mpaaRating = Movie.MPAARating.NONE;
+        }
     }
 
 

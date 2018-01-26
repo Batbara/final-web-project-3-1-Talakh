@@ -38,8 +38,6 @@ public class Country implements Serializable {
 
     @Override
     public String toString() {
-        return "Country{" +
-                "countryName='" + countryName + '\'' +
-                '}';
+        return countryName;
     }
 }

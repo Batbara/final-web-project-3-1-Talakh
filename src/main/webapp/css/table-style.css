@@ -1,6 +1,7 @@
 @import 'https://fonts.googleapis.com/css?family=Alegreya+Sans+SC';
 @import 'https://fonts.googleapis.com/css?family=Fredericka+the+Great';
 @import 'https://fonts.googleapis.com/css?family=Tinos:400,700';
+
 .movie-table, .user-table {
 
     color: #595151;
@@ -11,68 +12,86 @@
 
     margin-bottom: 50px;
 }
+
 .movie-table {
     max-width: 750px;
 }
+
 table {
     border: 10px solid #50434D;
     background-color: #B8C99D;
     font-family: 'Tinos', serif;
 }
+
 .control {
-    background-color: rgba(221,243,188,0.71);
+    background-color: rgba(221, 243, 188, 0.71);
     margin: 20px auto;
     max-width: 900px;
 }
-.user-table table{
+
+.user-table table {
     border: 5px solid #50434D;
 }
+
 .poster {
     width: auto;
     max-height: 120px;
 }
+
 .rate {
     color: #50434D;
     font-size: 20px;
 }
+
 .rate img {
     vert-align: middle;
 }
-.table>tbody>tr>td{
-   /* width: 150px;*/
+
+.table > tbody > tr > td {
+    /* width: 150px;*/
     text-align: center;
     vertical-align: middle;
 }
-.table>thead>tr>th{
+
+.table > thead > tr > th {
     border-bottom: 5px solid #50434D;
-    background-color: #9e8a73;
+    background-color: #50434d;
+    color: #b8c99d;
 }
-.table>tbody>tr>td.show-id-cell{
+
+.table > tbody > tr > td.show-id-cell {
     width: 25px;
     vertical-align: top;
 }
-.table>tbody>tr>td.rating-cell{
+
+.table > tbody > tr > td.rating-cell {
     width: 170px;
 }
-.table>tbody>tr>td.show-title-cell{
+
+.table > tbody > tr > td.show-title-cell {
     width: 200px;
 }
-.table>tbody>tr>td.season{
+
+.table > tbody > tr > td.season {
     width: 25px;
 }
-.table>tbody>tr>td.year-cell{
+
+.table > tbody > tr > td.year-cell {
     width: 25px;
 }
-.table>tbody>tr>td.poster-cell{
+
+.table > tbody > tr > td.poster-cell {
     width: 120px;
 }
- .user-table td {
-     border-bottom: 5px solid #50434D;
- }
- .movie-table td {
 
-     border-bottom: 10px solid #50434D;
- }
+.user-table td {
+    border-bottom: 5px solid #50434D;
+}
+
+.movie-table td {
+
+    border-bottom: 10px solid #50434D;
+}
 
 .order, .onPage {
 
@@ -82,19 +101,22 @@ table {
     color: #50434D;
 }
 
-.navigation ul{
+.navigation ul {
     display: flex;
     margin: 20px;
 }
-.navigation > li{
+
+.navigation > li {
     display: -webkit-flex;
     display: flex;
     flex: 0 1 auto;
 }
-.pageButton{
+
+.pageButton {
     border: none;
     overflow: hidden;
 }
+
 .currButton {
     width: 40px;
     height: 40px;
@@ -108,26 +130,32 @@ th {
     text-align: center;
 }
 
-tr.bannedUser{
-    background-color: rgba(220,64,51,0.52);
+tr.bannedUser {
+    background-color: rgba(220, 64, 51, 0.52);
 }
+
 tr.bannedUser:hover {
     cursor: pointer;
 }
-tr.banContent{
+
+tr.banContent {
     border: none;
-    background-color: rgba(236,146,133,0.66);
+    background-color: rgba(236, 146, 133, 0.66);
 }
-a.banButton > span{
-    color: rgba(220,64,51,0.62);
+
+a.banButton > span {
+    color: rgba(220, 64, 51, 0.62);
 }
-a.banButton:hover >span {
-    color: rgba(154,46,35,0.7);
+
+a.banButton:hover > span {
+    color: rgba(154, 46, 35, 0.7);
 }
-a.unbanButton > span{
+
+a.unbanButton > span {
     color: #B8C99D;
 
 }
-a.unbanButton:hover >span{
-    color: rgba(114,123,100,0.97);
+
+a.unbanButton:hover > span {
+    color: rgba(114, 123, 100, 0.97);
 }

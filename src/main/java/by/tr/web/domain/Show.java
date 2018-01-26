@@ -20,7 +20,9 @@ public class Show implements Serializable {
     private Time runtime;
 
     private List<Genre> genreList;
+    private String[] genres;
     private List<Country> countryList;
+    private String[] countries;
 
     private double userRating;
     private List<UserReview> reviewList;
@@ -67,12 +69,21 @@ public class Show implements Serializable {
         return genreList;
     }
 
+    public String[] getGenres() {
+        return convertToStringArray(genreList);
+    }
+
     public void setGenreList(List<Genre> genreList) {
         this.genreList = genreList;
     }
 
     public List<Country> getCountryList() {
         return countryList;
+    }
+
+    public String[] getCountries() {
+
+        return convertToStringArray(countryList);
     }
 
     public void setCountryList(List<Country> countryList) {
@@ -195,5 +206,14 @@ public class Show implements Serializable {
         }
         avgRating = avgRating / reviewList.size();
         return avgRating;
+    }
+
+    private <T> String[] convertToStringArray(List<T> list) {
+        Object[] arr = list.toArray();
+        String[] strings = new String[arr.length];
+        for (int element = 0; element < arr.length; element++) {
+            strings[element] = arr[element].toString();
+        }
+        return strings;
     }
 }

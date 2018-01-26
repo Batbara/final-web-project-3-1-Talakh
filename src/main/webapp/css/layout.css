@@ -39,26 +39,22 @@ body {
     min-width: 170px;
 }
 
-.side-nav li {
-    padding-top: 15%;
+
+.nav {
+    margin-top: 50px;
 }
 
-.side-nav > a {
+.nav>li>a:hover {
+    background-color: #F0D399;
+    color: #494141;
+}
+.nav>li>a{
     font-family: 'Tinos', serif;
-    font-size: 25px;
-}
-
-.side-nav a:hover {
-    color: #BF496A;
-
-}
-
-.side-nav a {
+    font-size: 17px;
     color: #B8C99D;
 }
-
-.side-nav a:visited {
-    color: #F0D399;
+.nav>li {
+    padding-bottom: 20px;
 }
 
 .main > aside {

@@ -198,7 +198,7 @@ public class MovieDAOSqlImplTest {
                 .addPoster("/poster/232")
                 .addBoxOffice(83557872)
                 .addBudget(10000000)
-                .addMpaaRating(Movie.MPAARating.R)
+                .addMpaaRating("R")
                 .addRuntime(runTime)
                 .addGenres(movieGenres)
                 .addCountries(movieCountries)

@@ -18,6 +18,7 @@ var slice = [].slice;
       this.createStars();
       this.syncRating();
       if (this.options.readOnly) {
+        this.disableStars();
         return;
       }
       this.$el.on('mouseover.starrr', 'a', (function(_this) {
@@ -51,7 +52,9 @@ var slice = [].slice;
       }
       return results;
     };
-
+    Starrr.prototype.disableStars = function () {
+        $( this.getStars() ).css( 'pointer-events', 'none' );
+    };
     Starrr.prototype.setRating = function(rating) {
       /*if (this.options.rating === rating) {
         rating = void 0;
