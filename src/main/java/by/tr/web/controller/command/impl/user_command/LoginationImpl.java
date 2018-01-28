@@ -44,7 +44,8 @@ public class LoginationImpl implements Command {
                 HttpSession session = request.getSession(true);
 
                 session.setAttribute(JspAttribute.USER, user);
-                response.sendRedirect(JspPagePath.USER_ACCOUNT_PATH);
+                String address = Util.formRedirectAddress(request);
+                response.sendRedirect(address);
             }
         } catch (InvalidLoginException ex) {
             logger.error("Invalid login", ex);

@@ -92,6 +92,7 @@ public class UserDAOSqlImpl implements UserDAO {
                 String status = resultSet.getString(3);
                 isBanned = resultSet.getShort(4) == 1;
                 Timestamp regDate = resultSet.getTimestamp(5);
+                String userAvatar = resultSet.getString(6);
 
                 user = new UserBuilder()
                         .addId(userID)
@@ -100,12 +101,15 @@ public class UserDAOSqlImpl implements UserDAO {
                         .addUserStatus(User.UserStatus.valueOf(status.toUpperCase()))
                         .addBanStatus(isBanned)
                         .addRegistrationDate(regDate)
+                        .addAvatar(userAvatar)
                         .create();
+
+                setUserReviews(connection, user);
             }
             if (isBanned) {
                 setBanInfo(connection, user, lang);
             }
-            setUserReviews(connection, user);
+
             return user;
         } catch (SQLException e) {
             throw new DAOException("Failed to login user", e);

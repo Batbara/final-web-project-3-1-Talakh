@@ -20,6 +20,7 @@ public class UserBuilder {
     private BanInfo banInfo;
 
     private Timestamp registrationDate;
+    private String userAvatar;
     private List<UserReview> userReviews;
     public UserBuilder(){
         banInfo = new BanInfo();
@@ -61,6 +62,10 @@ public class UserBuilder {
         this.banInfo = banInfo;
         return this;
     }
+    public UserBuilder addAvatar(String userAvatar) {
+        this.userAvatar = userAvatar;
+        return this;
+    }
 
     public UserBuilder addRegistrationDate(Timestamp registrationDate) {
         this.registrationDate = registrationDate;
@@ -84,6 +89,7 @@ public class UserBuilder {
         user.setBanInfo(banInfo);
 
         user.setRegistrationDate(registrationDate);
+        user.setUserAvatar(userAvatar);
         user.setUserReviews(userReviews);
 
         return user;

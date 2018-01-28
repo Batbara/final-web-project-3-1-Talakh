@@ -40,7 +40,6 @@ public class RegistrationImpl implements Command {
 
             HttpSession session = request.getSession(true);
             session.setAttribute(JspAttribute.USER, newUser);
-
             response.sendRedirect(JspPagePath.USER_ACCOUNT_PATH);
         } catch (IncorrectPasswordException ex) {
             logger.error("Incorrect password", ex);

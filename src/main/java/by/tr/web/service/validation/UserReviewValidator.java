@@ -6,6 +6,8 @@ import by.tr.web.exception.service.common.ValidationException;
 public interface UserReviewValidator {
     boolean checkUserRate(UserReview userReview) throws ValidationException;
 
+    boolean checkReviewStatus (String reviewStatus) throws ValidationException;
+
     boolean checkUserReviewContent(UserReview userReview) throws ValidationException;
 
     default boolean checkUserInReview(UserReview userReview) throws ValidationException {

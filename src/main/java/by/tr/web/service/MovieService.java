@@ -10,5 +10,5 @@ public interface MovieService {
 
     List<Movie> takeOrderedMovieList(int startID, int moviesNumber, String orderType, String lang) throws ServiceException;
 
-    Movie takeMovie(int id, String lang) throws ServiceException;
+    Movie takeMovie(String id, String lang) throws ServiceException;
 }

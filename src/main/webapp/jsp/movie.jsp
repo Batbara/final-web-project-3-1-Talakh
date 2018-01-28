@@ -7,25 +7,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <fmt:setLocale value="${sessionScope.local}"/>
-    <fmt:setBundle basename="localization.local" var="loc"/>
-    <fmt:message bundle="${loc}" key="local.info.year" var="yearType"/>
-    <fmt:message bundle="${loc}" key="local.info.budget" var="budgetType"/>
-    <fmt:message bundle="${loc}" key="local.info.boxoffice" var="boxofficeType"/>
-    <fmt:message bundle="${loc}" key="local.info.mpaarating" var="mpaaratingType"/>
-    <fmt:message bundle="${loc}" key="local.info.runtime" var="runtimeType"/>
-    <fmt:message bundle="${loc}" key="local.info.genre" var="genreType"/>
-    <fmt:message bundle="${loc}" key="local.info.country" var="countryType"/>
-    <fmt:message bundle="${loc}" key="local.info.premiere" var="premiereType"/>
-
-    <fmt:message bundle="${loc}" key="local.show.sidenav.rating" var="ratingNav"/>
-    <fmt:message bundle="${loc}" key="local.show.sidenav.reviews" var="reviewsNav"/>
-    <fmt:message bundle="${loc}" key="local.show.sidenav.synopsis" var="synopsisNav"/>
     <c:import url="/WEB-INF/jsp/styling.jsp"/>
+
+    <jsp:useBean id="show" class="by.tr.web.domain.Movie" type="by.tr.web.domain.Movie" scope="request"/>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/movie.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/starrr.css">
     <title>
-        <jsp:getProperty name="movie" property="title"/>
+        <jsp:getProperty name="show" property="title"/>
         | MotionPicture Bank [MPB]</title>
 </head>
 <body>
@@ -38,7 +26,6 @@
 
     </nav>
     <article>
-        <jsp:useBean id="movie" class="by.tr.web.domain.Movie" type="by.tr.web.domain.Movie" scope="request"/>
         <div class="fluid-container">
 
             <div class="fluid-container infoWrapper">
@@ -47,130 +34,32 @@
                 <div class="col-md-4">
                 <span>
                     <a class="title"
-                       href="${pageContext.request.contextPath}/mpb?command=take_movie&id=<jsp:getProperty name="movie" property="showID"/>">
-                        <jsp:getProperty name="movie" property="title"/> (<jsp:getProperty name="movie" property="year"/>)</a>
+                       href="${pageContext.request.contextPath}/mpb?command=take_movie&showId=<jsp:getProperty name="show" property="showID"/>&reviewStatus=posted">
+                        <jsp:getProperty name="show" property="title"/> (<jsp:getProperty name="show"
+                                                                                          property="year"/>)</a>
                 </span>
-                    <div class="posterBlock"><img src="/images<jsp:getProperty name = "movie" property = "poster"/>.jpg"
+                    <div class="posterBlock"><img src="/images<jsp:getProperty name = "show" property = "poster"/>.jpg"
                                                   class="poster"></div>
                 </div>
 
                 <div class="infoTable">
 
                     <table class="table table-hover">
-                        <tr>
-                            <td class="type">
-                                <c:out value="${yearType}"/>
-                            </td>
-                            <td>
-                                <jsp:getProperty name="movie" property="year"/>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="type">
-                                <c:out value="${countryType}"/>
-                            </td>
-                            <td>
-                                <c:out value="${fn:join(movie.countries, ', ')}"/>
-
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="type">
-                                <c:out value="${genreType}"/>
-                            </td>
-                            <td>
-                                <c:out value="${fn:join(movie.genres, ', ')}"/>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="type">
-                                <c:out value="${boxofficeType}"/>
-                            </td>
-                            <td>
-                                <jsp:getProperty name="movie" property="boxOffice"/>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="type">
-                                <c:out value="${budgetType}"/>
-                            </td>
-                            <td>
-                                <jsp:getProperty name="movie" property="budget"/>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="type">
-                                <c:out value="${mpaaratingType}"/>
-                            </td>
-                            <td>
-                                <mpb:mpaa-rating mpaaRating="${movie.mpaaRating}"/>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="type">
-                                <c:out value="${premiereType}"/>
-                            </td>
-                            <td>
-                                <jsp:getProperty name="movie" property="premiereDate"/>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="type">
-                                <c:out value="${runtimeType}"/>
-                            </td>
-                            <td>
-                                <jsp:getProperty name="movie" property="runtime"/>
-                            </td>
-                        </tr>
+                        <c:import url="/WEB-INF/jsp/show_content/showBasicInfo.jsp"/>
+                        <c:import url="/WEB-INF/jsp/show_content/movieInfo.jsp"/>
+                        <c:import url="/WEB-INF/jsp/show_content/showTimeInfo.jsp"/>
                     </table>
                 </div>
 
             </div>
 
-
-            <div class="rating">
-                <h3 id="rating"><c:out value="${ratingNav}"/></h3>
-                <div class="rating-content">
-
-                    <div class="starrr ${movie.showID}"></div>
-                    <div class="rate ${movie.showID}"><mpb:show-rating show="${movie}"
-                                                                       user="${sessionScope.user}"/></div>
-                </div>
-
-            </div>
-            <div class="synopsis">
-                <h3 id="synopsis"><c:out value="${synopsisNav}"/></h3>
-                <div class="synopsis-content">
-                    <jsp:getProperty name="movie" property="synopsis"/>
-                </div>
-
-            </div>
-            <div class="reviews">
-                <h3 id="reviews"><c:out value="${reviewsNav}"/></h3>
-                <c:forEach var="review" items="${movie.reviewList}">
-                    <c:if test="${review.reviewContent != null}">
-                        <div class="review">
-                            <div class="author">
-                                <c:out value="${review.user.userName}"/>
-                            </div>
-                            <div class="postDate">
-                                <c:out value="${review.postDate}"/>
-                            </div>
-                            <div class="reviewContent">
-                                <p>
-                                    <c:out value="${review.reviewContent}"/>
-                                </p>
-                            </div>
-
-                        </div>
-                    </c:if>
-                </c:forEach>
-            </div>
+            <c:import url="/WEB-INF/jsp/show_content/showRating.jsp"/>
+            <c:import url="/WEB-INF/jsp/show_content/showSynopsis.jsp"/>
+            <c:import url="/WEB-INF/jsp/show_content/showReviews.jsp">
+                <c:param name="command" value="take_movie"/>
+            </c:import>
         </div>
-        <div class="addReview">
-            <form>
-            </form>
-        </div>
+
 
     </article>
     <aside>
@@ -182,6 +71,8 @@
 <c:import url="/WEB-INF/jsp/footer.jsp"/>
 <c:import url="/WEB-INF/jsp/table_content/ratingScripts.jsp"/>
 <script src="${pageContext.request.contextPath}/js/content.js"></script>
+
+<script src="${pageContext.request.contextPath}/js/review-submitter.js"></script>
 
 </body>
 </html>

@@ -13,11 +13,11 @@ public interface ShowValidator {
     boolean validateTakeListParameters(int startRecordNum, int moviesNumber,
                                        String orderType, String lang) throws ServiceException;
 
-    default boolean validateShowIdParameters(int showId, String lang) throws ServiceException {
+    default boolean validateShowIdParameters(String showId, String lang) throws ServiceException {
 
         ValidatorFactory validatorFactory = ValidatorFactory.getInstance();
         DataTypeValidator dataTypeValidator = validatorFactory.getDataTypeValidator();
-        if (!dataTypeValidator.checkLanguage(lang) && showId <= 0) {
+        if (!dataTypeValidator.checkLanguage(lang) && !dataTypeValidator.checkForPositive(showId)) {
             throw new ServiceException("Invalid input parameters");
         }
         return true;

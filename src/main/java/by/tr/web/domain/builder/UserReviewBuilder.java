@@ -12,11 +12,15 @@ public class UserReviewBuilder {
 
     private int userRate;
 
+    private String reviewTitle;
     private String reviewContent;
     private Timestamp postDate;
 
+    private UserReview.ReviewStatus reviewStatus;
+
     public UserReviewBuilder(){
         user = new User();
+        reviewStatus = UserReview.ReviewStatus.MODERATED;
     }
 
     public UserReviewBuilder addUser(User user) {
@@ -33,7 +37,10 @@ public class UserReviewBuilder {
         this.userRate = userRate;
         return this;
     }
-
+    public UserReviewBuilder addReviewTitle(String reviewTitle) {
+        this.reviewTitle = reviewTitle;
+        return this;
+    }
     public UserReviewBuilder addReviewContent(String reviewContent) {
         this.reviewContent = reviewContent;
         return this;
@@ -41,6 +48,10 @@ public class UserReviewBuilder {
 
     public UserReviewBuilder addPostDate(Timestamp postDate) {
         this.postDate = postDate;
+        return this;
+    }
+    public UserReviewBuilder addReviewStatus(String reviewStatus) {
+        this.reviewStatus = UserReview.ReviewStatus.valueOf(reviewStatus.toUpperCase());
         return this;
     }
     public UserReview create(){
@@ -51,7 +62,9 @@ public class UserReviewBuilder {
 
         userReview.setUserRate(userRate);
         userReview.setPostDate(postDate);
+        userReview.setReviewTitle(reviewTitle);
         userReview.setReviewContent(reviewContent);
+        userReview.setReviewStatus(reviewStatus);
 
         return userReview;
     }

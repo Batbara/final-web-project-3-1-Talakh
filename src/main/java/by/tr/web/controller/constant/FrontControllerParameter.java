@@ -19,6 +19,7 @@ public final class FrontControllerParameter {
     public static final String LOGIN_ERROR = "loginError";
 
     public static final String DESCENDING_ORDER = " desc";
+
     private FrontControllerParameter(){}
 
 }

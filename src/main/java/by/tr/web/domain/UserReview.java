@@ -10,10 +10,15 @@ public class UserReview implements Serializable {
     private int showId;
 
     private int userRate;
+    private String reviewTitle;
     private String reviewContent;
     private Timestamp postDate;
-
+    private ReviewStatus reviewStatus;
+    public enum ReviewStatus {
+        POSTED, MODERATED, DELETED
+    }
     public UserReview() {
+        reviewStatus = ReviewStatus.MODERATED;
     }
 
     @Override
@@ -57,6 +62,13 @@ public class UserReview implements Serializable {
         this.user = user;
     }
 
+    public String getReviewTitle() {
+        return reviewTitle;
+    }
+
+    public void setReviewTitle(String reviewTitle) {
+        this.reviewTitle = reviewTitle;
+    }
 
     public int getUserRate() {
         return userRate;
@@ -82,10 +94,19 @@ public class UserReview implements Serializable {
         this.postDate = postDate;
     }
 
+    public ReviewStatus getReviewStatus() {
+        return reviewStatus;
+    }
+
+    public void setReviewStatus(ReviewStatus reviewStatus) {
+        this.reviewStatus = reviewStatus;
+    }
+
     @Override
     public String toString() {
         return "UserReview{" +
-                "user=" + user +
+                "userId=" + user.getId() +
+                "userNme=" + user.getUserName() +
                 ", showId=" + showId +
                 ", userRate=" + userRate +
                 ", reviewContent='" + reviewContent + '\'' +

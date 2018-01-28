@@ -9,7 +9,7 @@ $(function () {
 
         var showId = $(currStar).attr("class").split(" ").pop();
         var rating = retrieveShowRating(showId);
-        var isReadOnly = checkForReadOnly();
+        var isReadOnly = !userIsLogged();
         $(currStar).starrr({
             max: 10,
             rating: rating,
@@ -68,8 +68,8 @@ function retrieveShowRating(showId) {
     return 0;
 }
 
-function checkForReadOnly() {
-    var login = $('a[href*="login"]');
-    return login.length != 0;
+function userIsLogged() {
+    var loggedUser = $('#loggedUser').data('logged-user');
+    return loggedUser !== "";
 
 }

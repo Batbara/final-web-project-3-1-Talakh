@@ -34,16 +34,17 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public Movie takeMovie(int id, String lang) throws ServiceException {
+    public Movie takeMovie(String id, String lang) throws ServiceException {
 
         ValidatorFactory validatorFactory = ValidatorFactory.getInstance();
         ShowValidator movieValidator = validatorFactory.getMovieValidator();
 
         movieValidator.validateShowIdParameters(id, lang);
+        int movieId = Integer.parseInt(id);
 
         MovieDAO movieDAO = DAOFactory.getInstance().getMovieDAO();
         try {
-            return movieDAO.takeMovie(id, lang);
+            return movieDAO.takeMovie(movieId, lang);
         } catch (DAOException e) {
             throw new ServiceException("Error while taking movie", e);
         }

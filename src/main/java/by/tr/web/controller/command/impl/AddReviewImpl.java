@@ -19,12 +19,13 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-public class AddUserRateImpl implements Command {
+public class AddReviewImpl implements Command {
     private static final Logger logger = Logger.getLogger(AddUserRateImpl.class);
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute(JspAttribute.USER);
+
 
         response.setContentType(FrontControllerParameter.TEXT_HTML_CONTENT_TYPE);
         response.setCharacterEncoding(request.getCharacterEncoding());
@@ -32,15 +33,18 @@ public class AddUserRateImpl implements Command {
 
         try {
             ShowService showService = ServiceFactory.getInstance().getShowService();
-            int userRate = showService.retrieveUserRate(request);
+
             int showId = showService.retrieveShowId(request);
+            String reviewTitle = showService.retrieveReviewTitle(request);
+            String reviewContent = showService.retrieveReviewContent(request);
 
             UserReview userReview = new UserReviewBuilder()
                     .addUser(user)
-                    .addUserRate(userRate)
                     .addShowId(showId)
+                    .addReviewTitle(reviewTitle)
+                    .addReviewContent(reviewContent)
                     .create();
-            showService.addUserRate(userReview);
+            showService.addUserReview(userReview);
 
             UserService userService = ServiceFactory.getInstance().getUserService();
             User updatedUser = userService.updateReviewList(user);
@@ -49,7 +53,7 @@ public class AddUserRateImpl implements Command {
 
             out.print(FrontControllerParameter.SUCCESS_RESPONSE);
         } catch (ServiceException e) {
-           logger.error("Cannot add user rate", e);
+            logger.error("Cannot add user review", e);
             out.print(FrontControllerParameter.FAILURE_RESPONSE);
         }
     }

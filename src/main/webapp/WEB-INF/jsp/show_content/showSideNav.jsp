@@ -5,6 +5,8 @@
 <fmt:message bundle="${loc}" key="local.show.sidenav.rating" var="ratingNav"/>
 <fmt:message bundle="${loc}" key="local.show.sidenav.reviews" var="reviewsNav"/>
 <fmt:message bundle="${loc}" key="local.show.sidenav.synopsis" var="synopsisNav"/>
+<fmt:message bundle="${loc}" key="local.show.sidenav.add.review" var="addReview"/>
+
 <ul class="nav nav-stacked" >
     <li>
         <a href="#rating" class = "nav_button">
@@ -19,6 +21,11 @@
     <li>
         <a href="#reviews" class = "nav_button">
             <c:out value="${reviewsNav}"/>
+        </a>
+    </li>
+    <li>
+        <a href="#addReview" class = "nav_button">
+            <c:out value="${addReview}"/>
         </a>
     </li>
 </ul>

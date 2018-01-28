@@ -6,5 +6,7 @@ public final class CustomTagLibParameter {
     public final static String BREAK_LINE_TAG = "<br/>";
     public final static String COLON_DELIMETER = ": ";
     public static final String COMMA_DELIMETER = ", ";
+    public static final String HYPHEN_DELIMETER = "-";
+    public static final String SPACE_DELIMETER = " ";
     private CustomTagLibParameter(){}
 }

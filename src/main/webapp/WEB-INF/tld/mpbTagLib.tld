@@ -19,21 +19,7 @@
             <rtexprvalue>true</rtexprvalue>
         </attribute>
     </tag>
-    <tag>
-        <name>reg-date</name>
-        <tag-class>by.tr.web.tag.RegistrationDateTag</tag-class>
-        <body-content>empty</body-content>
-        <attribute>
-            <name>user</name>
-            <required>true</required>
-            <rtexprvalue>true</rtexprvalue>
-        </attribute>
-        <attribute>
-            <name>pattern</name>
-            <required>false</required>
-            <rtexprvalue>true</rtexprvalue>
-        </attribute>
-    </tag>
+
     <tag>
         <name>user-status</name>
         <tag-class>by.tr.web.tag.UserStatusTag</tag-class>
@@ -44,6 +30,7 @@
             <rtexprvalue>true</rtexprvalue>
         </attribute>
     </tag>
+
     <tag>
         <name>tvShow-status</name>
         <tag-class>by.tr.web.tag.TvShowStatusTag</tag-class>

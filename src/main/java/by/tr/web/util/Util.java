@@ -1,6 +1,8 @@
 package by.tr.web.util;
 
 import by.tr.web.controller.constant.FrontControllerParameter;
+import by.tr.web.controller.constant.JspAttribute;
+import by.tr.web.controller.constant.JspPagePath;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -19,6 +21,22 @@ public final class Util {
             lang = (String) session.getAttribute(FrontControllerParameter.LOCALE);
         }
         return lang;
+    }
+    public static String formRedirectAddress(HttpServletRequest request) {
+        String address = request.getParameter(JspAttribute.ADDRESS);
+        if(address.isEmpty()){
+            return JspPagePath.INDEX;
+        }
+        String query = request.getParameter(FrontControllerParameter.QUERY);
+        StringBuilder addressConstructor = new StringBuilder();
+        if (!query.isEmpty()) {
+            addressConstructor.append(JspPagePath.FRONT_CONTROLLER);
+            addressConstructor.append("?");
+            addressConstructor.append(query);
+        } else {
+            addressConstructor.append(address);
+        }
+        return addressConstructor.toString();
     }
     public static Timestamp getTimeFromString(String time, String timePattern) throws ParseException {
         SimpleDateFormat dateFormat = new SimpleDateFormat(timePattern);

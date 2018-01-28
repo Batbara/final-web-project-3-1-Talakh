@@ -130,7 +130,7 @@ public class MovieDAOSqlImpl implements MovieDAO {
 
             setMovieGenres(movie, lang, connection);
             setMovieCountries(movie, lang, connection);
-            setMovieReviews(movie, connection);
+           // setMovieReviews(movie, connection);
 
             return movie;
         } catch (SQLException e) {
@@ -234,7 +234,7 @@ public class MovieDAOSqlImpl implements MovieDAO {
         }
     }
 
-    private void setMovieReviews(Movie movie, Connection connection) throws DAOException {
+    private void setMovieRating(Movie movie, Connection connection) throws DAOException {
         ResultSet resultSet = null;
         PreparedStatement preparedStatement = null;
 
@@ -252,19 +252,23 @@ public class MovieDAOSqlImpl implements MovieDAO {
             while (resultSet.next()) {
                 int userID = resultSet.getInt(1);
                 String userName = resultSet.getString(2);
-                int userRate = resultSet.getInt(3);
-                String reviewContent = resultSet.getString(4);
-                Timestamp postDate = resultSet.getTimestamp(5);
+                String userAvatar = resultSet.getString(3);
+                int userRate = resultSet.getInt(4);
+                String reviewTitle = resultSet.getString(5);
+                String reviewContent = resultSet.getString(6);
+                Timestamp postDate = resultSet.getTimestamp(7);
 
                 user = new UserBuilder()
                         .addId(userID)
                         .addUserName(userName)
+                        .addAvatar(userAvatar)
                         .create();
 
                 review = new UserReviewBuilder()
                         .addShowId(movie.getShowID())
                         .addUser(user)
                         .addUserRate(userRate)
+                        .addReviewTitle(reviewTitle)
                         .addReviewContent(reviewContent)
                         .addPostDate(postDate)
                         .create();

@@ -55,4 +55,8 @@
         <cp:commandName>add_user_rate</cp:commandName>
         <cp:className>by.tr.web.controller.command.impl.AddUserRateImpl</cp:className>
     </cp:command>
+    <cp:command>
+        <cp:commandName>add_review</cp:commandName>
+        <cp:className>by.tr.web.controller.command.impl.AddReviewImpl</cp:className>
+    </cp:command>
 </cp:commandList>

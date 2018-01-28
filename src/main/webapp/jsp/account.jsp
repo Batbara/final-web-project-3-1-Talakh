@@ -54,8 +54,10 @@
                         userStatus="${sessionScope.user.userStatus}"/></span>
                 </div>
                 <div class="small-div">
-                    <span class="key">${since}</span> <span class="value"><mpb:reg-date
-                        user="${sessionScope.user}"/></span>
+                    <span class="key">${since}</span> <span class="value">
+                    <fmt:formatDate pattern = "dd.MM.yyyy"
+                                    value = "${sessionScope.user.registrationDate}" />
+                   </span>
                 </div>
 
             </div>

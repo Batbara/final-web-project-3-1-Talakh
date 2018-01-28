@@ -20,6 +20,7 @@ public class User implements Serializable {
     private BanInfo banInfo;
 
     private Timestamp registrationDate;
+    private String userAvatar;
     private List<UserReview> userReviews;
 
     public enum UserStatus {
@@ -128,6 +129,14 @@ public class User implements Serializable {
 
     public void addUserReview(UserReview review) {
         userReviews.add(review);
+    }
+
+    public String getUserAvatar() {
+        return userAvatar;
+    }
+
+    public void setUserAvatar(String userAvatar) {
+        this.userAvatar = userAvatar;
     }
 
     public int getUserRateForShow (int showId){

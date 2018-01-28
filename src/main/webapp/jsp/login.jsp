@@ -40,6 +40,7 @@
 
             <form id="form-login" action="${pageContext.request.contextPath}/mpb" method="post">
                 <input type="hidden" name="command" value="login">
+
                 <p align="right">
                     <label for="login"><c:out value="${logout}"/>:</label>
                     <input id="login" type="text" name="login" value=""
@@ -52,6 +53,8 @@
                            pattern="^[a-zA-Z0-9!*_?@#$%^&]{5,}$" placeholder="${passwordPlaceholder}" required>
 
                 </p>
+                <input type="hidden" name="address" value="${pageContext.request.getParameter("address")}"/>
+                <input type="hidden" name="query" value="${pageContext.request.getParameter("query")}"/>
                 <p id="button" align="center">
 
                     <input type="submit" value="${signinButton}">

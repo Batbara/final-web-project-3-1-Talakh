@@ -16,6 +16,7 @@
 <fmt:message bundle="${loc}" key="local.navButton.admin" var="administration"/>
 
 <header>
+    <div id="loggedUser" data-logged-user="${sessionScope.user}"></div>
     <nav class="top-navbar">
         <ul class="main-nav">
 
@@ -123,9 +124,17 @@
                         </a>
                     </li>
                     <li>
-                        <a href="${pageContext.request.contextPath}/login">
-                            <c:out value="${login}"/>
-                        </a>
+                        <form id="to-login-form" action="${pageContext.request.contextPath}/login" method="post">
+
+                            <input type="hidden" name="address" value="${pageContext.request.requestURL}"/>
+                            <input type="hidden" name="query" value="${pageContext.request.queryString}"/>
+                            <a href="javascript:{}"
+                               onclick="$('#to-login-form').submit(); return false;">
+                                <span class="nav_button"> <c:out value="${login}"/></span>
+                            </a>
+                        </form>
+
+
                     </li>
                 </c:otherwise>
             </c:choose>

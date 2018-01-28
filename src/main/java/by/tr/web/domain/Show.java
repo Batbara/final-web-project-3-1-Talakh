@@ -100,7 +100,7 @@ public class Show implements Serializable {
 
     public void addReview(UserReview review) {
         this.reviewList.add(review);
-        userRating = calculateAvgRating();
+        //userRating = calculateAvgRating();
     }
 
     public String getTitle() {

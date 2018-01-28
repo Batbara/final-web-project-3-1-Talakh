@@ -32,6 +32,9 @@ public final class LocalizationPropertyKey {
     public static final String SHOW_RATING = "local.show.sidenav.rating";
     public static final String USER_CUSTOM_RATE = "local.show.user.custom.rate";
 
+    public static final String SHOW_TOTAL_REVIEWS = "local.show.reviews.total";
+    public static final String NONE_REVIEWS = "local.show.reviews.none";
+    public static final String SHOWING_MESSAGE = "local.message.showing";
     public static String getUserStatusProperty(User.UserStatus userStatus) {
         return userStatusMap.get(userStatus);
     }
