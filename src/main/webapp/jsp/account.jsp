@@ -41,7 +41,7 @@
 
                 </tbody>
             </table>
-        <div class="container ">
+        <div class="fluid-container ">
             <div class="row">
                 <div class="col-sm-2 col-lg-offset-2">
                     <img class="img-responsive user-avatar" src="${pageContext.request.contextPath}/images/avatar.jpg">

@@ -21,7 +21,7 @@
         <ul class="main-nav">
 
             <li>
-                <a href="${pageContext.request.contextPath}/index.jsp">
+                <a href="${pageContext.request.contextPath}/index.jsp" class="logo">
                     <img src="${pageContext.request.contextPath}/images/logo.png">
                 </a>
             </li>

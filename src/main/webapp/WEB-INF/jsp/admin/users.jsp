@@ -35,7 +35,7 @@
 <body>
 <c:import url="/WEB-INF/jsp/header/header.jsp"/>
 <div class="main">
-    <c:import url="/WEB-INF/jsp/adminNav.jsp"/>
+    <c:import url="/WEB-INF/jsp/admin/adminNav.jsp"/>
     <article>
         <div class="fluid-container">
         <div class="row">

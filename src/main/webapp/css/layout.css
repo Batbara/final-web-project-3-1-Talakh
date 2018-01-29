@@ -64,7 +64,7 @@ body {
     background: #F0D399;
 }
 
-@media all and (max-width: 640px) {
+@media all and (max-width: 780px) {
 
     .main {
         -webkit-flex-flow: column;
@@ -77,14 +77,9 @@ body {
         order: 0;
     }
 
-    .side-nav li {
-        padding-top: 1%;
-    }
 
     .main > nav {
-        display: flex;
-        flex-direction: column;
-        font-size: 20px;
+        display: none;
     }
 
     .main > nav, .main > aside, header, footer {
