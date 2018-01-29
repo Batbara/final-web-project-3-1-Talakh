@@ -7,18 +7,24 @@
 <html>
 <head>
     <c:import url="/WEB-INF/jsp/styling.jsp"/>
+
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/user-form.css">
     <fmt:setLocale value="${sessionScope.local}"/>
     <fmt:setBundle basename="localization.local" var="loc"/>
     <fmt:message bundle="${loc}" key="local.message.signin" var="signinMessage"/>
-    <fmt:message bundle="${loc}" key="local.message.login" var="logout"/>
+    <fmt:message bundle="${loc}" key="local.navButton.login" var="login"/>
     <fmt:message bundle="${loc}" key="local.message.password" var="password"/>
     <fmt:message bundle="${loc}" key="local.message.oops" var="oops"/>
     <fmt:message bundle="${loc}" key="local.submit.signin" var="signinButton"/>
     <fmt:message bundle="${loc}" key="local.error.login.user" var="loginUserError"/>
     <fmt:message bundle="${loc}" key="local.error.login" var="loginError"/>
     <fmt:message bundle="${loc}" key="local.error.login.password" var="loginPasswordError"/>
-    <fmt:message bundle="${loc}" key="local.placeholder.password" var="passwordPlaceholder"/>
-    <fmt:message bundle="${loc}" key="local.placeholder.username" var="userNamePlaceholder"/>
+    <fmt:message bundle="${loc}" key="local.error.username" var="usernamePatternMismatch"/>
+    <fmt:message bundle="${loc}" key="local.error.password" var="passwordPatternMismatch"/>
+    <fmt:message bundle="${loc}" key="local.error.password.empty" var="passwordEmpty"/>
+    <fmt:message bundle="${loc}" key="local.error.username.empty" var="usernameEmpty"/>
+    <fmt:message bundle="${loc}" key="local.message.password" var="passwordPlaceholder"/>
+    <fmt:message bundle="${loc}" key="local.message.username" var="userNamePlaceholder"/>
     <title><c:out value="${signinButton}"/> | MotionPicture Bank [MPB]</title>
 
 </head>
@@ -27,90 +33,65 @@
 <div class="main">
     <nav class="side-nav"></nav>
     <article>
-        <c:if test="${requestScope.loginError == 'userIsBanned'}">
-            <script>
+        <div class="container-fluid">
+            <div class="row-fluid">
 
-                    $("#userIsBannedDialog").modal("show");
+                <div class="col-md-offset-4 col-md-4" id="box">
+                    <h2>${signinMessage}</h2>
+                    <hr>
+                    <form class="form-horizontal" action="${pageContext.request.contextPath}/mpb" method="post"
+                          id="contact_form" data-toggle="validator" role="form">
+                        <fieldset>
+                            <input type="hidden" name="command" value="login">
+
+                            <input type="hidden" name="address" value="${pageContext.request.getParameter("address")}"/>
+                            <input type="hidden" name="query" value="${pageContext.request.getParameter("query")}"/>
+
+                            <c:import url="/WEB-INF/jsp/form/usernameField.jsp"/>
+
+                            <c:import url="/WEB-INF/jsp/form/passwordField.jsp"/>
 
 
-            </script>
-        </c:if>
-        <div class="loginForm">
-            <h4 align="center"><c:out value="${signinMessage}"/></h4>
+                            <div class="form-group">
 
-            <form id="form-login" action="${pageContext.request.contextPath}/mpb" method="post">
-                <input type="hidden" name="command" value="login">
-
-                <p align="right">
-                    <label for="login"><c:out value="${logout}"/>:</label>
-                    <input id="login" type="text" name="login" value=""
-                           pattern="^[a-zA-Z0-9_]{3,}$" placeholder="${userNamePlaceholder}" required>
-
-                </p>
-                <p align="right">
-                    <label for="password"><c:out value="${password}"/>:</label>
-                    <input id="password" type="password" name="password" value=""
-                           pattern="^[a-zA-Z0-9!*_?@#$%^&]{5,}$" placeholder="${passwordPlaceholder}" required>
-
-                </p>
-                <input type="hidden" name="address" value="${pageContext.request.getParameter("address")}"/>
-                <input type="hidden" name="query" value="${pageContext.request.getParameter("query")}"/>
-                <p id="button" align="center">
-
-                    <input type="submit" value="${signinButton}">
-                </p>
-            </form>
-
-            <p id="error">
-                <c:if test="${not empty requestScope.loginError}">
-                    <c:choose>
-                        <c:when test="${requestScope.loginError == 'user'}">
-                            <c:out value="${loginUserError}"/>
-                        </c:when>
-                        <c:when test="${requestScope.loginError == 'login'}">
-                            <c:out value="${loginError}"/>
-                        </c:when>
-                        <c:when test="${requestScope.loginError == 'password'}">
-                            <c:out value="${loginPasswordError}"/>
-                        </c:when>
-                        <c:when test="${requestScope.loginError == 'userIsBanned'}">
-
-                            <mpb:ban-info user="${requestScope.user}"/>
-                        </c:when>
-                    </c:choose>
-
-                </c:if>
-            </p>
-        </div>
-        <div class="modal fade" id="useIsBannedDialog" role="dialog">
-            <div class="modal-dialog modal-sm">
-
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;
-                        </button>
-                        <h5 class="modal-title">${oops}</h5>
-                    </div>
-                    <div class="modal-body">
-                        <div class="container">
-                            <div class="row">
-
+                                <div class="col-md-12">
+                                    <button type="submit" class="btn btn-md btn-danger pull-right">${login}</button>
+                                </div>
                             </div>
-                            <div class="row">
-                                <c:if test="${not empty requestScope.user}">
+
+                        </fieldset>
+                    </form>
+                    <c:if test="${not empty requestScope.loginError}">
+                        <div class="alert alert-warning alert-dismissable fade in">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                            <c:choose>
+                                <c:when test="${requestScope.loginError == 'user'}">
+                                    <c:out value="${loginUserError}"/>
+                                </c:when>
+                                <c:when test="${requestScope.loginError == 'login'}">
+                                    <c:out value="${loginError}"/>
+                                </c:when>
+                                <c:when test="${requestScope.loginError == 'password'}">
+                                    <c:out value="${loginPasswordError}"/>
+                                </c:when>
+                                <c:when test="${requestScope.loginError == 'userIsBanned'}">
+
                                     <mpb:ban-info user="${requestScope.user}"/>
-                                </c:if>
-                            </div>
+                                </c:when>
+                            </c:choose>
                         </div>
-                    </div>
+                    </c:if>
+
                 </div>
             </div>
+
         </div>
     </article>
-    <aside></aside>
+    <aside>
+
+    </aside>
 
 </div>
 <c:import url="/WEB-INF/jsp/footer.jsp"/>
-
 </body>
 </html>

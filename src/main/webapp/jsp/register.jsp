@@ -6,18 +6,17 @@
 <html>
 <head>
     <c:import url="/WEB-INF/jsp/styling.jsp"/>
+
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/user-form.css">
     <fmt:setLocale value="${sessionScope.local}"/>
     <fmt:setBundle basename="localization.local" var="loc"/>
     <fmt:message bundle="${loc}" key="local.message.signup" var="signupMessage"/>
-    <fmt:message bundle="${loc}" key="local.message.username" var="username"/>
-    <fmt:message bundle="${loc}" key="local.message.password" var="password"/>
     <fmt:message bundle="${loc}" key="local.submit.signup" var="signupButton"/>
     <fmt:message bundle="${loc}" key="local.error.register.user" var="regUserError"/>
     <fmt:message bundle="${loc}" key="local.error.login" var="regLoginError"/>
     <fmt:message bundle="${loc}" key="local.error.register.email" var="regEmailError"/>
     <fmt:message bundle="${loc}" key="local.error.register.password" var="regPasswordError"/>
-    <fmt:message bundle="${loc}" key="local.placeholder.password" var="passwordPlaceholder"/>
-    <fmt:message bundle="${loc}" key="local.placeholder.username" var="userNamePlaceholder"/>
+    <fmt:message bundle="${loc}" key="local.error.email.empty" var="emailEmpty"/>
 
     <title><c:out value="${signupButton}"/> | MotionPicture Bank [MPB]</title>
 </head>
@@ -26,48 +25,71 @@
 <div class="main">
     <nav class="side-nav"></nav>
     <article>
-        <div class="registerForm">
-            <h4><c:out value="${signupMessage}"/></h4>
-            <form action="${pageContext.request.contextPath}/mpb" method="post">
-                <input type="hidden" name="command" value="register">
-                <p align="right">
-                    <label for="login" ><c:out value="${username}"/>:</label>
-                    <input id="login" type="text" name="login" value=""
-                           pattern="^[a-zA-Z0-9_]{3,}$" placeholder="${userNamePlaceholder}" required>
-                </p>
+        <div class="container-fluid">
+            <div class="row-fluid">
 
-                <p align="right">
-                    <label for="password" ><c:out value="${password}"/>:</label>
-                    <input id="password" type="password" name="password" value=""
-                           pattern="^[a-zA-Z0-9!*_?@#$%^&]{5,}$" placeholder="${passwordPlaceholder}" required>
-                </p>
+                <div class="col-md-offset-4 col-md-4" id="box">
+                    <h2>${signupMessage}</h2>
+                    <hr>
+                    <form class="form-horizontal" action="${pageContext.request.contextPath}/mpb" method="post"
+                          id="contact_form" data-toggle="validator" role="form">
+                        <fieldset>
+                            <input type="hidden" name="command" value="register">
 
-                <p align="right">
-                    <label for="email" >E-mail:</label>
-                    <input id="email" type="email" name="email" value="" required>
-                </p>
+                            <c:import url="/WEB-INF/jsp/form/usernameField.jsp"/>
+                            <div class="form-group">
 
-                <p id="button" align="center"><input type="submit" value="${signupButton}"></p>
-                <p id="error"><c:if test="${not empty requestScope.registerError}">
-                    <c:choose>
-                        <c:when test="${requestScope.registerError == 'login'}">
-                            <c:out value="${regLoginError}"/>
-                        </c:when>
-                        <c:when test="${requestScope.registerError == 'user'}">
-                            <c:out value="${regUserError}"/>
-                        </c:when>
-                        <c:when test="${requestScope.registerError == 'email'}">
-                            <c:out value="${regEmailError}"/>
-                        </c:when>
-                        <c:when test="${requestScope.registerError == 'password'}">
-                            <c:out value="${regPasswordError}"/>
-                        </c:when>
+                                <div class="col-md-12">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i
+                                                class="glyphicon glyphicon-envelope"></i></span>
+                                        <input name="email" placeholder="E-mail" class="form-control"
+                                               type="email"
 
-                    </c:choose>
+                                               data-required-error="${emailEmpty}" required>
+                                    </div>
 
-                </c:if>
-                </p>
-            </form>
+                                    <div class="help-block with-errors"></div>
+                                </div>
+                            </div>
+                            <c:import url="/WEB-INF/jsp/form/passwordField.jsp"/>
+
+
+                            <div class="form-group">
+
+                                <div class="col-md-12">
+                                    <button type="submit"
+                                            class="btn btn-md btn-danger pull-right">${signupButton}</button>
+                                </div>
+                            </div>
+
+                        </fieldset>
+                    </form>
+                    <c:if test="${not empty requestScope.registerError}">
+                        <div class="alert alert-warning alert-dismissable fade in">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+
+                            <c:choose>
+                                <c:when test="${requestScope.registerError == 'login'}">
+                                    <c:out value="${regLoginError}"/>
+                                </c:when>
+                                <c:when test="${requestScope.registerError == 'user'}">
+                                    <c:out value="${regUserError}"/>
+                                </c:when>
+                                <c:when test="${requestScope.registerError == 'email'}">
+                                    <c:out value="${regEmailError}"/>
+                                </c:when>
+                                <c:when test="${requestScope.registerError == 'password'}">
+                                    <c:out value="${regPasswordError}"/>
+                                </c:when>
+
+                            </c:choose>
+                        </div>
+                    </c:if>
+
+                </div>
+            </div>
+
         </div>
     </article>
     <aside></aside>
