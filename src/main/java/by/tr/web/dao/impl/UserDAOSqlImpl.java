@@ -367,6 +367,7 @@ public class UserDAOSqlImpl implements UserDAO {
                 int userRate = resultSet.getInt(2);
                 String reviewContent = resultSet.getString(3);
                 Timestamp reviewPostDate = resultSet.getTimestamp(4);
+                String reviewStatus = resultSet.getString(5);
 
                 review = new UserReviewBuilder()
                         .addShowId(showId)
@@ -374,6 +375,7 @@ public class UserDAOSqlImpl implements UserDAO {
                         .addUserRate(userRate)
                         .addReviewContent(reviewContent)
                         .addPostDate(reviewPostDate)
+                        .addReviewStatus(reviewStatus)
                         .create();
 
                 reviewList.add(review);

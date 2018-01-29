@@ -14,6 +14,8 @@
 <fmt:message bundle="${loc}" key="local.message.to.register" var="toRegisterMessage"/>
 <fmt:message bundle="${loc}" key="local.message.add.review" var="toAddReivewMessage"/>
 <fmt:message bundle="${loc}" key="local.message.or" var="orMessage"/>
+<fmt:message bundle="${loc}" key="local.message.review.moderated" var="reviewOnModeration"/>
+<fmt:message bundle="${loc}" key="local.message.review.posted" var="reviewPosted"/>
 
 <fmt:message bundle="${loc}" key="local.message.success" var="successMessage"/>
 <fmt:message bundle="${loc}" key="local.message.reviewSent" var="reviewSentMessage"/>
@@ -21,6 +23,7 @@
 <fmt:message bundle="${loc}" key="local.message.reviewDenied" var="reviewDeniedMessage"/>
 <fmt:message bundle="${loc}" key="local.show.reviews.none" var="noneReviewsMessage"/>
 <fmt:message bundle="${loc}" key="local.show.reviews.total" var="totalReviewsNumMessage"/>
+
 <jsp:useBean id="show" class="by.tr.web.domain.Show" type="by.tr.web.domain.Show" scope="request"/>
 
 <div class="reviews">
@@ -73,43 +76,63 @@
 </div>
 <div class="addReview">
     <h3 id="addReview"><c:out value="${addReview}"/></h3>
-    <div class="add-form-wrapper">
-        <c:if test="${empty sessionScope.user}">
 
-            <div class="alert alert-warning">${toAddReivewMessage}
-                <form id="to-login-form" action="${pageContext.request.contextPath}/login" method="post"
-                      class="inline-form">
+    <mpb:set-review-status showId="${show.showID}" user="${sessionScope.user}" var="userReviewStatus"/>
+    <c:choose>
+        <c:when test="${userReviewStatus == 'POSTED'}">
+            <div class="alert alert-success center-text user-review-info">
 
-                    <input type="hidden" name="address" value="${pageContext.request.requestURL}"/>
-                    <input type="hidden" name="query" value="${pageContext.request.queryString}"/>
-                    <a href="javascript:{}"
-                       onclick="$('#to-login-form').submit(); return false;" class="alert-link">
-                        <c:out value="${toLogInMessage}"/>
-                    </a>
+                <strong>${reviewPosted}</strong>
+            </div>
+        </c:when>
+        <c:when test="${userReviewStatus == 'MODERATED'}">
+            <div class="alert alert-info center-text user-review-info">
+
+                <strong>${reviewOnModeration}</strong>
+            </div>
+        </c:when>
+        <c:otherwise>
+            <div class="add-form-wrapper" id="reviewFormWrapper">
+                <c:if test="${empty sessionScope.user}">
+
+                    <div class="alert alert-warning">${toAddReivewMessage}
+                        <form id="to-login-form" action="${pageContext.request.contextPath}/login" method="post"
+                              class="inline-form">
+
+                            <input type="hidden" name="address" value="${pageContext.request.requestURL}"/>
+                            <input type="hidden" name="query" value="${pageContext.request.queryString}"/>
+                            <a href="javascript:{}"
+                               onclick="$('#to-login-form').submit(); return false;" class="alert-link">
+                                <c:out value="${toLogInMessage}"/>
+                            </a>
+                        </form>
+                            ${orMessage}
+
+                        <a href="${pageContext.request.contextPath}/register" class="alert-link">${toRegisterMessage}</a>.
+                    </div>
+                </c:if>
+
+                <form method="post" action="${pageContext.request.contextPath}/mpb" id="add-review-form">
+                    <input type="hidden" name="command" value="add_review">
+                    <input type="hidden" name="showId" value="${show.showID}">
+
+                    <div class="form-group add-review-form center-block">
+                        <fieldset id="addReviewFields">
+                            <label for="reviewTitle">${reviewTitle}:</label>
+                            <input type="text" name="reviewTitle" class="form-control" id="reviewTitle" required>
+                            <label for="reviewContent">${reviewContent}:</label>
+                            <textarea class="form-control" rows="5" id="reviewContent" name="reviewContent" required></textarea>
+                            <button id="addReviewButton" type="submit"
+                                    class="btn btn-default center-block add-review-button">${addReview}</button>
+
+                        </fieldset>
+                    </div>
                 </form>
-                    ${orMessage}
 
-                <a href="${pageContext.request.contextPath}/register" class="alert-link">${toRegisterMessage}</a>.
             </div>
-        </c:if>
+        </c:otherwise>
+    </c:choose>
 
-        <form method="post" action="${pageContext.request.contextPath}/mpb" id="add-review-form">
-            <input type="hidden" name="command" value="add_review">
-            <input type="hidden" name="showId" value="${show.showID}">
-
-            <div class="form-group add-review-form center-block">
-                <fieldset id="addReviewFields">
-                    <label for="reviewTitle">${reviewTitle}:</label>
-                    <input type="text" name="reviewTitle" class="form-control" id="reviewTitle" required>
-                    <label for="reviewContent">${reviewContent}:</label>
-                    <textarea class="form-control" rows="5" id="reviewContent" name="reviewContent" required></textarea>
-                    <button id="addReviewButton" type="submit"
-                            class="btn btn-default center-block add-review-button">${addReview}</button>
-
-                </fieldset>
-            </div>
-        </form>
-    </div>
 </div>
 <div class="modal fade" id="reviewPostSuccessful" role="dialog">
     <div class="modal-dialog modal-md">

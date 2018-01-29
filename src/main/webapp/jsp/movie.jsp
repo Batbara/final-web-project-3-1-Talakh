@@ -28,7 +28,7 @@
     <article>
         <div class="fluid-container">
 
-            <div class="fluid-container infoWrapper">
+            <div class="fluid-container infoWrapper" id="info">
 
 
                 <div class="col-md-4">

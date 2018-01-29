@@ -15,7 +15,7 @@ public class UserReview implements Serializable {
     private Timestamp postDate;
     private ReviewStatus reviewStatus;
     public enum ReviewStatus {
-        POSTED, MODERATED, DELETED
+        POSTED, MODERATED, DELETED, NONE
     }
     public UserReview() {
         reviewStatus = ReviewStatus.MODERATED;
@@ -111,6 +111,7 @@ public class UserReview implements Serializable {
                 ", userRate=" + userRate +
                 ", reviewContent='" + reviewContent + '\'' +
                 ", postDate=" + postDate +
+                ", status=" + reviewStatus +
                 '}';
     }
 }

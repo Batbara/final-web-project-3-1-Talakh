@@ -4,11 +4,13 @@ import by.tr.web.controller.command.Command;
 import by.tr.web.controller.constant.JspAttribute;
 import by.tr.web.controller.constant.TableParameter;
 import by.tr.web.domain.Movie;
+import by.tr.web.domain.User;
 import by.tr.web.domain.UserReview;
 import by.tr.web.exception.service.common.ServiceException;
 import by.tr.web.service.MovieService;
 import by.tr.web.service.ShowService;
 import by.tr.web.service.TableService;
+import by.tr.web.service.UserService;
 import by.tr.web.service.factory.ServiceFactory;
 import by.tr.web.util.Util;
 import org.apache.log4j.Logger;
@@ -16,6 +18,7 @@ import org.apache.log4j.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
@@ -48,6 +51,8 @@ public class TakeMovieImpl implements Command {
             request.setAttribute(JspAttribute.SHOW_REVIEWS_NUMBER, numberOfReviews);
             request.setAttribute(JspAttribute.SHOW, movie);
 
+            updateUserReviewList(request);
+
             request.getRequestDispatcher("/m").forward(request, response);
         } catch (ServiceException e) {
             logger.error("Error while taking movie", e);
@@ -77,5 +82,18 @@ public class TakeMovieImpl implements Command {
         movie.setReviewList(movieReviews);
         int numOfPages = (int) Math.ceil((double) numberOfReviews / recordsOnPage);
         request.setAttribute(TableParameter.NUMBER_OF_PAGES, numOfPages);
+    }
+
+    private void updateUserReviewList(HttpServletRequest request) throws ServiceException {
+        HttpSession session = request.getSession();
+        if (session.getAttribute(JspAttribute.USER) == null) {
+            return;
+        }
+        User user = (User) session.getAttribute(JspAttribute.USER);
+
+        UserService userService = ServiceFactory.getInstance().getUserService();
+        User updatedUser = userService.updateReviewList(user);
+
+        session.setAttribute(JspAttribute.USER, updatedUser);
     }
 }

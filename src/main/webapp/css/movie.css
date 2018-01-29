@@ -121,7 +121,10 @@ a.fa.fa-star, a.fa.fa-star-o {
 .inline-form{
     display: inline;
 }
-
+.user-review-info{
+    text-align: center;
+    font-size: 18px;
+}
 .synopsis-content, .rating-content, .add-form-wrapper, .reviews-info {
     margin-right: 10%;
     margin-left: 5%;

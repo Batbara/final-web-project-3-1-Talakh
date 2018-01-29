@@ -16,13 +16,13 @@ $(document).ready(function () {
     $("#add-review-form").on("submit", function (event) {
         var form = $(this);
         event.preventDefault();
-        var newContent = $('#reviewContent').val().replace(/\r\n|\r|\n/g,"<br />");
+        var newContent = $('#reviewContent').val().replace(/\r\n|\r|\n/g,"\\n");
         alert(newContent);
         $('#reviewContent').val(newContent);
         $.ajax({
             type: form.attr('method'),
             url: form.attr('action'),
-            data: form.serialize().replace(/\\n/g, "<br/><br/>"),
+            data: form.serialize(),
             success: function (data) {
                 if (data === 'success') {
                     $('#reviewPostSuccessful').modal('show');
