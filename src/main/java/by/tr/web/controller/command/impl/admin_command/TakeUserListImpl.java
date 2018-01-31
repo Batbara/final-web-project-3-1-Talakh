@@ -5,6 +5,7 @@ import by.tr.web.controller.constant.FrontControllerParameter;
 import by.tr.web.controller.constant.JspAttribute;
 import by.tr.web.controller.constant.JspPagePath;
 import by.tr.web.controller.constant.TableParameter;
+import by.tr.web.controller.util.RequestUtil;
 import by.tr.web.cookie.CookieManager;
 import by.tr.web.cookie.CookieName;
 import by.tr.web.domain.BanReason;
@@ -14,13 +15,13 @@ import by.tr.web.exception.service.user.CountingUserException;
 import by.tr.web.service.TableService;
 import by.tr.web.service.UserService;
 import by.tr.web.service.factory.ServiceFactory;
-import by.tr.web.util.Util;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 public class TakeUserListImpl implements Command {
@@ -29,7 +30,7 @@ public class TakeUserListImpl implements Command {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
-        String lang = Util.getLanguage(request);
+        String lang = RequestUtil.getLanguage(request);
         UserService userService = ServiceFactory.getInstance().getUserService();
         TableService tableService = ServiceFactory.getInstance().getTableService();
 
@@ -54,6 +55,9 @@ public class TakeUserListImpl implements Command {
 
             List<BanReason> banReasonList = takeBanReasonList(lang);
             request.setAttribute(JspAttribute.BAN_REASON_LIST, banReasonList);
+
+            List<User.UserStatus> userStatusList = Arrays.asList(User.UserStatus.values());
+            request.setAttribute(JspAttribute.USER_STATUS_LIST, userStatusList);
 
             int numOfPages = (int) Math.ceil((double) numberOfRecords / recordsOnPage);
             request.setAttribute(TableParameter.NUMBER_OF_PAGES, numOfPages);

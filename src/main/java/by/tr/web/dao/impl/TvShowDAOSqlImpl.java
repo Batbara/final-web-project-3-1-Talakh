@@ -1,20 +1,24 @@
 package by.tr.web.dao.impl;
 
+import by.tr.web.controller.util.DateTimeUtil;
 import by.tr.web.dao.Configuration;
 import by.tr.web.dao.TvShowDAO;
 import by.tr.web.dao.factory.ConfigurationFactory;
 import by.tr.web.dao.impl.connection_pool.ConnectionPool;
 import by.tr.web.dao.parameter.SqlQueryName;
+import by.tr.web.dao.util.ShowDaoUtil;
 import by.tr.web.domain.TvShow;
 import by.tr.web.domain.builder.TvShowBuilder;
 import by.tr.web.exception.dao.common.DAOException;
 import by.tr.web.exception.dao.movie.CounterDAOException;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,7 +60,7 @@ public class TvShowDAOSqlImpl implements TvShowDAO {
                         .addYear(year)
                         .addUserRating(rating)
                         .addSeasonsNum(seasonsNum)
-                        .addShowStatus(TvShow.ShowStatus.valueOf(tvShowStatus.toUpperCase()))
+                        .addShowStatus(tvShowStatus)
                         .create();
 
                 tvShows.add(tvShow);
@@ -72,7 +76,38 @@ public class TvShowDAOSqlImpl implements TvShowDAO {
 
     @Override
     public TvShow takeTvShow(int id, String lang) throws DAOException {
-        return null;
+        Connection connection = null;
+        ResultSet resultSet = null;
+        PreparedStatement preparedStatement = null;
+
+        try {
+            connection = connectionPool.takeConnection();
+
+            Configuration queryConfig = ConfigurationFactory.getInstance().getTvShowConfig();
+            String takeMovieInfoQuery = queryConfig.getSqlQuery(SqlQueryName.TAKE_TV_SHOW);
+
+            preparedStatement = connection.prepareStatement(takeMovieInfoQuery);
+
+            preparedStatement.setInt(1, id);
+            preparedStatement.setString(2, lang);
+
+            resultSet = preparedStatement.executeQuery();
+            if (!resultSet.next()) {
+                throw new DAOException("Tv-show with id " + id + " not found");
+            }
+
+            TvShow tvShow = setTvShowInfo(id, resultSet);
+
+            tvShow = (TvShow) ShowDaoUtil.setShowGenres(tvShow, lang, connection);
+            tvShow = (TvShow) ShowDaoUtil.setShowCountries(tvShow, lang, connection);
+
+
+            return tvShow;
+        } catch (SQLException e) {
+            throw new DAOException("Error while executing SQL query", e);
+        } finally {
+            connectionPool.closeConnection(connection, preparedStatement, resultSet);
+        }
     }
 
     @Override
@@ -100,11 +135,49 @@ public class TvShowDAOSqlImpl implements TvShowDAO {
             connectionPool.closeConnection(connection, statement, resultSet);
         }
     }
+
     private String formTvShowListQuery(String orderType) {
 
         Configuration queryConfig = ConfigurationFactory.getInstance().getTvShowConfig();
         String takeTvShowListQuery = queryConfig.getSqlQuery(SqlQueryName.TAKE_TVSHOW_LIST_QUERY);
 
         return String.format(takeTvShowListQuery, orderType);
+    }
+
+    private TvShow setTvShowInfo(int tvShowId, ResultSet resultSet) throws SQLException {
+        String title = resultSet.getString(1);
+        Date premiereDate = resultSet.getDate(2);
+        Time runtime = resultSet.getTime(3);
+        int seasons = resultSet.getInt(4);
+        int episodesNumber = resultSet.getInt(5);
+        String tvChannel = resultSet.getString(6);
+        String showStatus = resultSet.getString(7);
+        Date finishedYearDate = resultSet.getDate(8);
+
+        String synopsis = resultSet.getString(9);
+        String poster = resultSet.getString(10);
+
+        int premiereYear = DateTimeUtil.getYearFromDate(premiereDate);
+        int finishedYear = 0;
+        if (finishedYearDate != null) {
+            finishedYear = DateTimeUtil.getYearFromDate(finishedYearDate);
+        }
+
+        TvShow tvShow = new TvShowBuilder()
+                .addId(tvShowId)
+                .addTitle(title)
+                .addYear(premiereYear)
+                .addPremiereDate(premiereDate)
+                .addRuntime(runtime)
+                .addSeasonsNum(seasons)
+                .addEpisodesNum(episodesNumber)
+                .addChannel(tvChannel)
+                .addShowStatus(showStatus)
+                .addFinishedYear(finishedYear)
+                .addSynopsis(synopsis)
+                .addPoster(poster)
+                .create();
+        return tvShow;
+
     }
 }

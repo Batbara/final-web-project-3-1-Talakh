@@ -44,17 +44,18 @@ body {
     margin-top: 50px;
 }
 
-.nav>li>a:hover, .nav>li>a:focus {
+.side-nav-button:hover, .side-nav-button:focus, .nav>li>a:focus, .nav>li>a:hover {
     background-color: #F0D399;
     color: #494141;
+    text-decoration: none;
 }
-.nav>li>a{
+.side-nav-button{
     font-family: 'Tinos', serif;
     font-size: 17px;
     color: #B8C99D;
-}
-.nav>li {
-    padding-bottom: 20px;
+    position: relative;
+    display: block;
+    padding: 10px 15px;
 }
 
 .main > aside {

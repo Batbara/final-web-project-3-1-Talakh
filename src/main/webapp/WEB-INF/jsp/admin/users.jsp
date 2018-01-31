@@ -15,16 +15,18 @@
     <fmt:message bundle="${loc}" key="local.info.user.banReason" var="banReason"/>
     <fmt:message bundle="${loc}" key="local.info.user.ban" var="ban"/>
     <fmt:message bundle="${loc}" key="local.info.user.unban" var="unban"/>
-    <fmt:message bundle="${loc}" key="local.info.user.unbanTime" var="unbanTime"/>
     <fmt:message bundle="${loc}" key="local.info.user.banTime" var="banTime"/>
+    <fmt:message bundle="${loc}" key="local.info.user.select.status" var="selectStatusMessage"/>
     <fmt:message bundle="${loc}" key="local.table.onPage" var="onPage"/>
     <fmt:message bundle="${loc}" key="local.message.errorMessage" var="errorMessage"/>
     <fmt:message bundle="${loc}" key="local.message.banSuccessful" var="banSuccesful"/>
+    <fmt:message bundle="${loc}" key="local.message.change.status.successful" var="changeStatusSuccess"/>
     <fmt:message bundle="${loc}" key="local.message.success" var="successMessage"/>
     <fmt:message bundle="${loc}" key="local.message.failure" var="failureMessage"/>
     <fmt:message bundle="${loc}" key="local.message.confirm" var="confirm"/>
     <fmt:message bundle="${loc}" key="local.message.unbanConfirmation" var="unbanConfirmation"/>
     <fmt:message bundle="${loc}" key="local.message.cancel" var="cancel"/>
+    <fmt:message bundle="${loc}" key="local.message.change" var="change"/>
 
     <title>${title} | MotionPicture Bank [MPB]</title>
 
@@ -35,7 +37,12 @@
 <body>
 <c:import url="/WEB-INF/jsp/header/header.jsp"/>
 <div class="main">
-    <c:import url="/WEB-INF/jsp/admin/adminNav.jsp"/>
+    <nav>
+        <div data-spy="affix">
+            <c:import url="/WEB-INF/jsp/admin/adminNav.jsp"/>
+        </div>
+
+    </nav>
     <article>
         <div class="fluid-container">
         <div class="row">
@@ -71,7 +78,7 @@
                         <form class="form-horizontal" method="get" action="${pageContext.request.contextPath}/mpb"
                               id="banForm">
                             <input type="hidden" name="command" value="ban_user">
-                            <input type="hidden" name="userBanID" value="" id="userBanID">
+                            <input type="hidden" name="userBanId" value="" id="userBanId">
                             <c:set var="banReasonList" value="${requestScope.banReasonList}" scope="session"/>
                             <c:set var="userList" value="${requestScope.userList}" scope="session"/>
                             <div class="form-group">
@@ -82,14 +89,6 @@
                                 </div>
                             </div>
 
-                            <div class="form-group">
-
-                                <label class="control-label col-sm-4"
-                                       for="unbanTime">${unbanTime}:</label>
-                                <div class="col-sm-6">
-                                    <input type="datetime-local" class="form-control" id="unbanTime" name="unbanTime">
-                                </div>
-                            </div>
                             <div class="form-group">
                                 <label class="control-label col-sm-4" for="sel1">${banReason}:</label>
                                 <div class="col-xs-5">
@@ -133,18 +132,68 @@
                         <form class="form-horizontal" method="get" action="${pageContext.request.contextPath}/mpb"
                               id="unbanForm">
                             <input type="hidden" name="command" value="unban_user">
-                            <input type="hidden" name="userUnbanID" value="" id="userUnbanID">
+                            <input type="hidden" name="userUnbanId" value="" id="userUnbanId">
                             <div class="alert alert-danger alert-dismissable" id="unbanFailureAlert">
                                 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                                 <strong>${failureMessage}!</strong> ${errorMessage}
                             </div>
                             <div class="form-group">
-                                <div class="col-sm-offset-5 col-sm-7">
+                                <div class="col-sm-offset-2 col-md-10">
                                     <button type="submit" class="btn btn-default" data-dismiss="modal">${cancel}</button>
                                     <button type="submit" class="btn btn-primary">${unban}</button>
                                 </div>
                             </div>
                         </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="changeStatusDialog" role="dialog">
+            <div class="modal-dialog">
+
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;
+                        </button>
+                        <h5 class="modal-title" id="changeUserStatusTitle"></h5>
+                    </div>
+                    <div class="modal-body">
+                        <form class="form-horizontal" method="get" action="${pageContext.request.contextPath}/mpb"
+                              id="changeStatusForm">
+                            <input type="hidden" name="command" value="change_user_status">
+                            <input type="hidden" name="userChangeStatusId" value="" id="userChangeStatusId">
+
+                            <c:set var="banReasonList" value="${requestScope.banReasonList}" scope="session"/>
+                            <c:set var="userList" value="${requestScope.userList}" scope="session"/>
+                            <c:set var="userStatusList" value="${requestScope.userStatusList}" scope="session"/>
+
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-4" for="statusSelection">${selectStatusMessage}:</label>
+                                <div class="col-xs-5">
+                                    <select class="form-control" id="statusSelection" name="newUserStatus">
+                                        <c:forEach items="${userStatusList}" var="currUserStatus">
+                                            <option value="<c:out value="${currUserStatus}"/>">
+                                                <mpb:user-status userStatus="${currUserStatus}"/></option>
+                                        </c:forEach>
+
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-offset-5 col-sm-1">
+                                    <button type="submit" class="btn btn-primary">${change}</button>
+                                </div>
+                            </div>
+                        </form>
+                        <div class="alert alert-success alert-dismissable" id="statusChangeSuccessAlert">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                            <strong>${successMessage}!</strong> ${changeStatusSuccess}
+                        </div>
+                        <div class="alert alert-danger alert-dismissable" id="statusChangeFailureAlert">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                            <strong>${failureMessage}!</strong> ${errorMessage}
+                        </div>
                     </div>
                 </div>
             </div>

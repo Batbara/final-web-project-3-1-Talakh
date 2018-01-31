@@ -26,4 +26,6 @@ public interface UserDAO {
     List<BanReason> getBanReasonList(String lang) throws DAOException;
 
     void unbanUser(int userID) throws DAOException;
+
+    void changeUserStatus (int userId, String newStatus) throws DAOException;
 }

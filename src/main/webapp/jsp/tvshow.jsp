@@ -9,7 +9,9 @@
 <head>
     <c:import url="/WEB-INF/jsp/styling.jsp"/>
 
-    <jsp:useBean id="show" class="by.tr.web.domain.Movie" type="by.tr.web.domain.Movie" scope="request"/>
+    <jsp:useBean id="show" class="by.tr.web.domain.TvShow" type="by.tr.web.domain.TvShow" scope="request"/>
+
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/tv-show.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/show.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/starrr.css">
     <title>
@@ -30,13 +32,12 @@
 
             <div class="fluid-container infoWrapper" id="info">
 
-
                 <div class="col-md-4">
                 <span>
                     <a class="title"
-                       href="${pageContext.request.contextPath}/mpb?command=take_movie&showId=<jsp:getProperty name="show" property="showID"/>">
-                        <jsp:getProperty name="show" property="title"/> (<jsp:getProperty name="show"
-                                                                                          property="year"/>)</a>
+                       href="${pageContext.request.contextPath}/mpb?command=take_tv_show&showId=<jsp:getProperty name="show" property="showID"/>">
+                       <mpb:tv-show-ref tvShow="${show}"/>
+                    </a>
                 </span>
                     <div class="posterBlock"><img src="/images<jsp:getProperty name = "show" property = "poster"/>.jpg"
                                                   class="poster"></div>
@@ -46,7 +47,7 @@
 
                     <table class="table table-hover">
                         <c:import url="/WEB-INF/jsp/show_content/showBasicInfo.jsp"/>
-                        <c:import url="/WEB-INF/jsp/show_content/movieInfo.jsp"/>
+                        <c:import url="/WEB-INF/jsp/show_content/tvShowInfo.jsp"/>
                         <c:import url="/WEB-INF/jsp/show_content/showTimeInfo.jsp"/>
                     </table>
                 </div>
@@ -56,7 +57,7 @@
             <c:import url="/WEB-INF/jsp/show_content/showRating.jsp"/>
             <c:import url="/WEB-INF/jsp/show_content/showSynopsis.jsp"/>
             <c:import url="/WEB-INF/jsp/show_content/showReviews.jsp">
-                <c:param name="command" value="take_movie"/>
+                <c:param name="command" value="take_tv_show"/>
             </c:import>
         </div>
 

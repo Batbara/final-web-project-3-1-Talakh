@@ -13,6 +13,7 @@ public final class FrontControllerParameter {
     public static final String TEXT_HTML_CONTENT_TYPE = "text/html";
     public static final String LOCALISATION_BUNDLE_NAME = "localization.local";
     public static final String DEFAULT_TIME_PATTERN = "yyyy-MM-dd'T'hh:mm:ss";
+    public static final String SIMPLE_DATE_PATTERN = "dd-MM-yyyy HH:mm";
 
     public static final String USER_IS_BANNED = "userIsBanned";
     public static final String REGISTER_ERROR = "registerError";

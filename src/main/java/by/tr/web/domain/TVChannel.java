@@ -8,6 +8,9 @@ public class TVChannel implements Serializable {
 
     public TVChannel() {
     }
+    public TVChannel(String channelName){
+        this.channelName = channelName;
+    }
 
     public String getChannelName() {
         return channelName;
@@ -34,8 +37,6 @@ public class TVChannel implements Serializable {
 
     @Override
     public String toString() {
-        return "TVChannel{" +
-                "channelName='" + channelName + '\'' +
-                '}';
+        return  channelName;
     }
 }

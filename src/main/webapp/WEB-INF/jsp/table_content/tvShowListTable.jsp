@@ -29,7 +29,7 @@
         </td>
         <td class="poster-cell"><img src="/images${currentTvShow.poster}.jpg" class="img-thumbnail poster"></td>
         <td class="show-title-cell">
-            <a href="${pageContext.request.contextPath}/mpb?command=take_tv_show&id=${currentTvShow.showID}">
+            <a href="${pageContext.request.contextPath}/mpb?command=take_tv_show&showId=${currentTvShow.showID}">
                 <c:out value="${currentTvShow.title}"/></a>
             <mpb:tvShow-status status="${currentTvShow.showStatus}"/>
         </td>

@@ -87,4 +87,14 @@
             <rtexprvalue>true</rtexprvalue>
         </attribute>
     </tag>
+    <tag>
+        <name>tv-show-ref</name>
+        <tag-class>by.tr.web.tag.TvShowRefTag</tag-class>
+        <body-content>empty</body-content>
+        <attribute>
+            <name>tvShow</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
 </taglib>

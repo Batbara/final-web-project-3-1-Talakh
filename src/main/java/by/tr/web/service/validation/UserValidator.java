@@ -17,6 +17,8 @@ public interface UserValidator {
 
     boolean checkEmail(String email);
 
+    boolean checkUserStatus(String userStatus) throws ValidationException;
+
     default boolean validateCredentials(String login, String password) throws ValidationException {
         if (!checkLogin(login)) {
             throw new InvalidLoginException("Incorrect login");

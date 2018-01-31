@@ -1,5 +1,6 @@
 package by.tr.web.dao.impl.movie;
 
+import by.tr.web.controller.util.DateTimeUtil;
 import by.tr.web.dao.impl.MovieDAOSqlImpl;
 import by.tr.web.dao.impl.connection_pool.ConnectionPool;
 import by.tr.web.domain.Country;
@@ -12,7 +13,6 @@ import by.tr.web.domain.builder.UserBuilder;
 import by.tr.web.domain.builder.UserReviewBuilder;
 import by.tr.web.exception.dao.common.DAOException;
 import by.tr.web.exception.dao.movie.CounterDAOException;
-import by.tr.web.util.Util;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
@@ -173,10 +173,10 @@ public class MovieDAOSqlImplTest {
                 "участием множества колоритных персонажей лондонского дна — русского гангстера, троих" +
                 " незадачливых грабителей, хитрого боксера и угрюмого громилы грозного мафиози. " +
                 "Каждый норовит в одиночку сорвать Большой Куш.";
-        long runTimeInMillis = Util.getTimeFromString("01:42:00", "hh:mm:ss").getTime();
+        long runTimeInMillis = DateTimeUtil.getTimeFromString("01:42:00", "hh:mm:ss").getTime();
         Time runTime = new Time(runTimeInMillis);
 
-        long premiereDateInMillis = Util.getTimeFromString("2000-08-23", "yyyy-MM-dd").getTime();
+        long premiereDateInMillis = DateTimeUtil.getTimeFromString("2000-08-23", "yyyy-MM-dd").getTime();
         java.sql.Date premiereDate = new Date(premiereDateInMillis);
 
         List<Genre> movieGenres = new ArrayList<>();
@@ -235,7 +235,7 @@ public class MovieDAOSqlImplTest {
                 "Лично для меня «Большой куш» стал настоящим открытием и я могу смело сказать" +
                 " что это мой самый любимый фильм. ";
 
-        Timestamp postDate = Util.getTimeFromString("2018-01-21T19:10:49", DEFAULT_TIME_PATTERN);
+        Timestamp postDate = DateTimeUtil.getTimeFromString("2018-01-21T19:10:49", DEFAULT_TIME_PATTERN);
 
         List<UserReview> reviews = new ArrayList<>();
         UserReview review = new UserReviewBuilder()

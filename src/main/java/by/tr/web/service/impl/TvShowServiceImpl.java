@@ -32,9 +32,22 @@ public class TvShowServiceImpl implements TvShowService {
     }
 
     @Override
-    public TvShow takeTvShow(int id, String lang) throws ServiceException {
-        return null;
+    public TvShow takeTvShow(String id, String lang) throws ServiceException {
+        ValidatorFactory validatorFactory = ValidatorFactory.getInstance();
+        ShowValidator tvShowValidator = validatorFactory.getTvShowValidator();
+
+        tvShowValidator.validateShowIdParameters(id, lang);
+        int tvShowId = Integer.parseInt(id);
+
+        TvShowDAO tvShowDAO = DAOFactory.getInstance().getTvShowDAO();
+        try {
+            return tvShowDAO.takeTvShow(tvShowId, lang);
+        } catch (DAOException e) {
+            throw new ServiceException("Error while taking tv-show", e);
+        }
     }
+
+
 
     @Override
     public int countTvShow() throws ServiceException {

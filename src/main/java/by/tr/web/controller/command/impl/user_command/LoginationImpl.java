@@ -4,6 +4,7 @@ import by.tr.web.controller.command.Command;
 import by.tr.web.controller.constant.FrontControllerParameter;
 import by.tr.web.controller.constant.JspAttribute;
 import by.tr.web.controller.constant.JspPagePath;
+import by.tr.web.controller.util.RequestUtil;
 import by.tr.web.domain.User;
 import by.tr.web.exception.service.common.ServiceException;
 import by.tr.web.exception.service.user.IncorrectPasswordException;
@@ -11,7 +12,6 @@ import by.tr.web.exception.service.user.InvalidLoginException;
 import by.tr.web.exception.service.user.NoSuchUserException;
 import by.tr.web.service.UserService;
 import by.tr.web.service.factory.ServiceFactory;
-import by.tr.web.util.Util;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
@@ -28,7 +28,7 @@ public class LoginationImpl implements Command {
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String login = request.getParameter(JspAttribute.LOGIN);
         String password = request.getParameter(JspAttribute.PASSWORD);
-        String lang = Util.getLanguage(request);
+        String lang = RequestUtil.getLanguage(request);
 
         ServiceFactory serviceFactory = ServiceFactory.getInstance();
         UserService userService = serviceFactory.getUserService();
@@ -44,7 +44,7 @@ public class LoginationImpl implements Command {
                 HttpSession session = request.getSession(true);
 
                 session.setAttribute(JspAttribute.USER, user);
-                String address = Util.formRedirectAddress(request);
+                String address = RequestUtil.formRedirectAddress(request);
                 response.sendRedirect(address);
             }
         } catch (InvalidLoginException ex) {

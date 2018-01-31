@@ -14,7 +14,8 @@
         <c:out value="${premiereType}"/>
     </td>
     <td>
-        <jsp:getProperty name="show" property="premiereDate"/>
+        <fmt:formatDate type="date" dateStyle="long"
+                       value="${show.premiereDate}"/>
     </td>
 </tr>
 <tr>
@@ -22,6 +23,7 @@
         <c:out value="${runtimeType}"/>
     </td>
     <td>
-        <jsp:getProperty name="show" property="runtime"/>
+        <fmt:formatDate pattern="HH:mm"
+                        value="${show.runtime}"/>
     </td>
 </tr>

@@ -3,10 +3,10 @@ package by.tr.web.tag;
 import by.tr.web.controller.constant.CustomTagLibParameter;
 import by.tr.web.controller.constant.FrontControllerParameter;
 import by.tr.web.controller.constant.LocalizationPropertyKey;
+import by.tr.web.controller.util.RequestUtil;
 import by.tr.web.domain.BanInfo;
 import by.tr.web.domain.User;
 import by.tr.web.exception.controller.CustomTagLibException;
-import by.tr.web.util.Util;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,12 +14,15 @@ import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.TagSupport;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class BanInfoTag extends TagSupport {
     private static final long serialVersionUID = 8345449844325563639L;
     private final static Logger logger = Logger.getLogger(BanInfoTag.class);
+    private final static String BAN_INFO_TAG = "<p>%s</p>";
+    private final static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat(FrontControllerParameter.SIMPLE_DATE_PATTERN);
     private User user;
 
     public void setUser(User user) {
@@ -32,7 +35,7 @@ public class BanInfoTag extends TagSupport {
             return SKIP_BODY;
         }
 
-        String lang = Util.getLanguage((HttpServletRequest) pageContext.getRequest());
+        String lang = RequestUtil.getLanguage((HttpServletRequest) pageContext.getRequest());
         ResourceBundle resourceBundle = ResourceBundle.getBundle(FrontControllerParameter.LOCALISATION_BUNDLE_NAME,
                                                                   Locale.forLanguageTag(lang));
         String tag = formTag(resourceBundle);
@@ -50,27 +53,21 @@ public class BanInfoTag extends TagSupport {
     private String formTag(ResourceBundle resourceBundle) {
         BanInfo banInfo = user.getBanInfo();
         StringBuilder tagBuilder = new StringBuilder();
-        tagBuilder.append(CustomTagLibParameter.P_OPEN_TAG);
 
-        String ban = resourceBundle.getString(LocalizationPropertyKey.USER_BAN_INFO);
-        String banTime = banInfo.getBanTime().toString();
-        appendPair(ban, banTime, tagBuilder);
-
-        String unban = resourceBundle.getString(LocalizationPropertyKey.USER_UNBAN_INFO);
-        String unbanTime = banInfo.getUnbanTime().toString();
-        appendPair(unban, unbanTime, tagBuilder);
+        String banMessage = resourceBundle.getString(LocalizationPropertyKey.USER_BAN_INFO);
+        String banTime = DATE_FORMAT.format(banInfo.getBanTime());
+        appendPair(banMessage, banTime, tagBuilder);
 
         String reasonMessage = resourceBundle.getString(LocalizationPropertyKey.USER_BAN_REASON);
         String banReason = banInfo.getBanReason().getReason();
         appendPair(reasonMessage, banReason, tagBuilder);
 
-        tagBuilder.append(CustomTagLibParameter.P_CLOSE_TAG);
-        return tagBuilder.toString();
+        return String.format(BAN_INFO_TAG, tagBuilder.toString());
     }
 
     private void appendPair(String message, String value, StringBuilder builder) {
         builder.append(message);
-        builder.append(CustomTagLibParameter.COLON_DELIMETER);
+        builder.append(CustomTagLibParameter.COLON_DELIMITER);
         builder.append(value);
         builder.append(CustomTagLibParameter.BREAK_LINE_TAG);
     }

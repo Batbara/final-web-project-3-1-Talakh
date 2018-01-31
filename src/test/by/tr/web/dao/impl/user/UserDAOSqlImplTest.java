@@ -1,5 +1,6 @@
 package by.tr.web.dao.impl.user;
 
+import by.tr.web.controller.util.DateTimeUtil;
 import by.tr.web.dao.impl.UserDAOSqlImpl;
 import by.tr.web.dao.impl.connection_pool.ConnectionPool;
 import by.tr.web.domain.BanInfo;
@@ -8,7 +9,6 @@ import by.tr.web.domain.User;
 import by.tr.web.domain.builder.UserBuilder;
 import by.tr.web.exception.dao.common.DAOException;
 import by.tr.web.exception.dao.user.PasswordDAOException;
-import by.tr.web.util.Util;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
@@ -43,10 +43,9 @@ public class UserDAOSqlImplTest {
     private static final String SET_BAN_QUERY = "UPDATE  user" +
             " SET user_is_banned = 1," +
             "    user_ban_time = ?," +
-            "    user_unban_time = ?, " +
             "    user_ban_reason_id = ?" +
             "  WHERE user_id = ?";
-    private static final String TAKE_BAN_INFO = "SELECT user_ban_time, user_unban_time," +
+    private static final String TAKE_BAN_INFO = "SELECT user_ban_time, " +
             "                            ban_reason_id, banned_user_ban_reason " +
             "                      FROM  user" +
             "                       INNER JOIN  ban_reason" +
@@ -98,13 +97,13 @@ public class UserDAOSqlImplTest {
         String userName = "Maggie";
         String password = "12345";
         String lang = "ru";
-        Timestamp regDate = Util.getTimeFromString("2018-01-19T19:19:36", DEFAULT_TIME_PATTERN);
+        Timestamp regDate = DateTimeUtil.getTimeFromString("2018-01-19T19:19:36", DEFAULT_TIME_PATTERN);
 
         User expectedUser = new UserBuilder()
                 .addId(37)
                 .addUserName(userName)
                 .addEmail("maggie.simpson@gmail.com")
-                .addUserStatus(User.UserStatus.CASUAL_VIEWER)
+                .addUserStatus("CASUAL_VIEWER")
                 .addRegistrationDate(regDate)
                 .addBanStatus(false)
                 .create();
@@ -154,7 +153,6 @@ public class UserDAOSqlImplTest {
         BanInfo banInfo = new BanInfo();
         banInfo.setBanReason(new BanReason(3));
         banInfo.setBanTime(new Timestamp(System.currentTimeMillis()));
-        banInfo.setUnbanTime(new Timestamp(System.currentTimeMillis() + 100000000L));
 
         User user = new UserBuilder()
                 .addId(27)
@@ -212,12 +210,11 @@ public class UserDAOSqlImplTest {
                 boolean isBanned = resultSet.getShort(4) == 1;
                 Timestamp regDate = resultSet.getTimestamp(5);
 
-             //   user = new User(userID, userName, userEmail, userStatus, isBanned, regDate);
                 user = new UserBuilder()
                         .addId(userID)
                         .addUserName(userName)
                         .addEmail(userEmail)
-                        .addUserStatus(User.UserStatus.valueOf(userStatus.toUpperCase()))
+                        .addUserStatus(userStatus)
                         .addBanStatus(isBanned)
                         .addRegistrationDate(regDate)
                         .create();
@@ -244,12 +241,10 @@ public class UserDAOSqlImplTest {
             BanInfo banInfo = new BanInfo();
             while (resultSet.next()) {
                 Timestamp banTime = resultSet.getTimestamp(1);
-                Timestamp unbanTime = resultSet.getTimestamp(2);
-                int banReasonId = resultSet.getInt(3);
-                String banReason = resultSet.getString(4);
+                int banReasonId = resultSet.getInt(2);
+                String banReason = resultSet.getString(3);
 
                 banInfo.setBanTime(banTime);
-                banInfo.setUnbanTime(unbanTime);
                 banInfo.setBanReason(new BanReason(banReasonId, banReason));
             }
             user.setBanInfo(banInfo);
@@ -302,9 +297,8 @@ public class UserDAOSqlImplTest {
             BanInfo banInfo = user.getBanInfo();
 
             preparedStatement.setTimestamp(1, banInfo.getBanTime());
-            preparedStatement.setTimestamp(2, banInfo.getUnbanTime());
-            preparedStatement.setInt(3, banInfo.getBanReason().getId());
-            preparedStatement.setInt(4, user.getId());
+            preparedStatement.setInt(2, banInfo.getBanReason().getId());
+            preparedStatement.setInt(3, user.getId());
 
             preparedStatement.executeUpdate();
 

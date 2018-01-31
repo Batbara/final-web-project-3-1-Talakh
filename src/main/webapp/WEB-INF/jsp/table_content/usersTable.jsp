@@ -10,6 +10,7 @@
 <fmt:message bundle="${loc}" key="local.admin.usertable.action" var="actionHeader"/>
 <fmt:message bundle="${loc}" key="local.admin.usertable.name" var="usernameHeader"/>
 <fmt:message bundle="${loc}" key="local.admin.usertable.status" var="statusHeader"/>
+<fmt:message bundle="${loc}" key="local.info.user.change.status" var="changeStatusMessage"/>
 
 <table class="table">
     <thead>
@@ -32,7 +33,7 @@
                     </td>
                     <td class="userName ${currentUser.id}"><c:out value="${currentUser.userName}"/></td>
                     <td><c:out value="${currentUser.email}"/></td>
-                    <td><c:out value="${currentUser.userStatus}"/></td>
+                    <td> <mpb:user-status userStatus="${currentUser.userStatus}"/></td>
                     <td>
                                 <span data-toggle="tooltip" data-placement="bottom" title="${unban}">
                                      <a data-toggle="modal" data-target="#unbanDialog"
@@ -41,7 +42,13 @@
                                         </a>
                                 </span>
                         <span class="glyphicon glyphicon-trash"></span>
-                        <span class="glyphicon glyphicon-sunglasses"></span>
+                        <span data-toggle="tooltip" data-placement="bottom" title="${changeStatusMessage}">
+                                     <a data-toggle="modal" data-target="#changeStatusDialog"
+                                        class="changeStatusButton ${currentUser.id}" href="#">
+                                         <span class="glyphicon glyphicon-sunglasses"></span>
+                                        </a>
+                                </span>
+
                     </td>
 
                 </tr>
@@ -61,7 +68,7 @@
                     </td>
                     <td class="userName ${currentUser.id}"><c:out value="${currentUser.userName}"/></td>
                     <td><c:out value="${currentUser.email}"/></td>
-                    <td><c:out value="${currentUser.userStatus}"/></td>
+                    <td><mpb:user-status userStatus="${currentUser.userStatus}"/></td>
                     <td>
                         <c:if test="${currentUser.userStatus ne 'ADMIN'}">
                                         <span data-toggle="tooltip" data-placement="bottom" title="${ban}">
@@ -71,7 +78,12 @@
                                         </a>
                                         </span>
                             <span class="glyphicon glyphicon-trash"></span>
-                            <span class="glyphicon glyphicon-sunglasses"></span>
+                            <span data-toggle="tooltip" data-placement="bottom" title="${changeStatusMessage}">
+                                     <a data-toggle="modal" data-target="#changeStatusDialog"
+                                        class="changeStatusButton ${currentUser.id}" href="#">
+                                         <span class="glyphicon glyphicon-sunglasses"></span>
+                                        </a>
+                                </span>
                         </c:if>
                     </td>
                 </tr>

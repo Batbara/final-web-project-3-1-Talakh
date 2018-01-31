@@ -15,6 +15,14 @@
         <cp:commandName>unban_user</cp:commandName>
         <cp:className>by.tr.web.controller.command.impl.admin_command.UnbanUserImpl</cp:className>
     </cp:command>
+    <cp:command scope="admin">
+        <cp:commandName>change_user_status</cp:commandName>
+        <cp:className>by.tr.web.controller.command.impl.admin_command.ChangeUserStatus</cp:className>
+    </cp:command>
+    <cp:command scope="admin">
+        <cp:commandName>take_reviews_on_moder</cp:commandName>
+        <cp:className>by.tr.web.controller.command.impl.admin_command.TakeReviewsOnModeration</cp:className>
+    </cp:command>
     <cp:command>
         <cp:commandName>change_language</cp:commandName>
         <cp:className>by.tr.web.controller.command.impl.user_command.ChangeLanguageImpl</cp:className>

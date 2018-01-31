@@ -118,6 +118,10 @@ a.fa.fa-star, a.fa.fa-star-o {
 .reviews-info {
     margin-bottom: 5%;
 }
+.review-title{
+    text-align: center;
+    font-weight: bold;
+}
 .inline-form{
     display: inline;
 }
@@ -142,6 +146,7 @@ a.fa.fa-star, a.fa.fa-star-o {
 .reviewContent {
     padding: 20px;
     font-family: 'Tinos', serif;
+    text-align: justify;
 }
 
 .post-info {

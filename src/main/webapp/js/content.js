@@ -8,7 +8,7 @@ function replaceLineBreaks() {
     for (i = 0; i < reviews.length; i++) {
         var review = reviews[i];
         var str = review.innerHTML;
-        var res = str.replace(/\\n/g, "<br/><br/>");
+        var res = str.replace(/\\n/g, "<br/>");
         review.innerHTML = res;
     }
 }

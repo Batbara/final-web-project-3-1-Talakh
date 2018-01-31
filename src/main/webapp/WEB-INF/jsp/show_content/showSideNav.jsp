@@ -10,27 +10,27 @@
 <fmt:message bundle="${loc}" key="local.show.sidenav.info" var="infoNav"/>
 <ul class="nav nav-stacked" >
     <li>
-        <a href="#info" class = "nav_button">
+        <a href="#info" class = "side-nav-button">
             <c:out value="${infoNav}"/>
         </a>
     </li>
     <li>
-        <a href="#rating" class = "nav_button">
+        <a href="#rating" class = "side-nav-button">
             <c:out value="${ratingNav}"/>
         </a>
     </li>
     <li>
-        <a href="#synopsis" class = "nav_button">
+        <a href="#synopsis" class = "side-nav-button">
             <c:out value="${synopsisNav}"/>
         </a>
     </li>
     <li>
-        <a href="#reviews" class = "nav_button">
+        <a href="#reviews" class = "side-nav-button">
             <c:out value="${reviewsNav}"/>
         </a>
     </li>
     <li>
-        <a href="#addReview" class = "nav_button">
+        <a href="#addReview" class = "side-nav-button">
             <c:out value="${addReview}"/>
         </a>
     </li>

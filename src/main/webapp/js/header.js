@@ -1,19 +1,7 @@
 function showProfileMenu() {
     var profileDropdown  = document.getElementById("profileDropdown");
     profileDropdown.classList.toggle("showProfile");
-   /* profileButton.onmouseover = profileButton.onmouseout = function (event) {
-        if (event.type == 'mouseover') {
 
-            event.target.style.background = "#494141"
-        }
-        if (event.type == 'mouseout') {
-            event.relatedTarget.style.background = "#595151"
-        }
-    }
-    if(profileDropdown.classList.contains("show")){
-
-        profileButton[0].style.backgroundColor="#494141";
-    }*/
     window.onclick = function(event) {
         event.preventDefault();
             if (!event.target.matches('.profile-button')) {
@@ -34,11 +22,11 @@ function showProfileMenu() {
 }
 $(document).ready(
     function (ev) {
-
+        $('[data-toggle="tooltip"]').tooltip();
         var profileButton = document.getElementsByClassName("profile-button");
         var buttonWidth = $(profileButton).width();
         var showMargin = -buttonWidth/2;
-        $('.profile-content').css('margin-left',showMargin+'px');
+        $('.profile-content').css('margin-left',showMargin+'%');
 
         profileButton.onmouseover = profileButton.onmouseout = function (event) {
             if (event.type === 'mouseover') {
@@ -52,4 +40,3 @@ $(document).ready(
         };
     }
 );
-// Close the dropdown if the user clicks outside of it

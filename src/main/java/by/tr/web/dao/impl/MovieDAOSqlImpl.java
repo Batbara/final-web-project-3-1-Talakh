@@ -5,14 +5,9 @@ import by.tr.web.dao.MovieDAO;
 import by.tr.web.dao.factory.ConfigurationFactory;
 import by.tr.web.dao.impl.connection_pool.ConnectionPool;
 import by.tr.web.dao.parameter.SqlQueryName;
-import by.tr.web.domain.Country;
-import by.tr.web.domain.Genre;
+import by.tr.web.dao.util.ShowDaoUtil;
 import by.tr.web.domain.Movie;
-import by.tr.web.domain.User;
-import by.tr.web.domain.UserReview;
 import by.tr.web.domain.builder.MovieBuilder;
-import by.tr.web.domain.builder.UserBuilder;
-import by.tr.web.domain.builder.UserReviewBuilder;
 import by.tr.web.exception.dao.common.DAOException;
 import by.tr.web.exception.dao.movie.CounterDAOException;
 import by.tr.web.exception.dao.movie.MovieInitializationException;
@@ -24,7 +19,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Time;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -127,10 +121,8 @@ public class MovieDAOSqlImpl implements MovieDAO {
             }
 
             Movie movie = setMovieInfo(id, resultSet);
-
-            setMovieGenres(movie, lang, connection);
-            setMovieCountries(movie, lang, connection);
-           // setMovieReviews(movie, connection);
+            movie = (Movie) ShowDaoUtil.setShowGenres(movie,lang, connection);
+            movie = (Movie) ShowDaoUtil.setShowCountries(movie, lang, connection);
 
             return movie;
         } catch (SQLException e) {
@@ -144,16 +136,15 @@ public class MovieDAOSqlImpl implements MovieDAO {
         try {
 
             String title = resultSet.getString(1);
-            Date yearDate = resultSet.getDate(2);
-            Date premiereDate = resultSet.getDate(3);
-            Time runtime = resultSet.getTime(4);
-            Long boxOffice = resultSet.getLong(5);
-            Long movieBudget = resultSet.getLong(6);
-            String mpaaRating = resultSet.getString(7);
-            String synopsis = resultSet.getString(8);
-            String poster = resultSet.getString(9);
+            Date premiereDate = resultSet.getDate(2);
+            Time runtime = resultSet.getTime(3);
+            Long boxOffice = resultSet.getLong(4);
+            Long movieBudget = resultSet.getLong(5);
+            String mpaaRating = resultSet.getString(6);
+            String synopsis = resultSet.getString(7);
+            String poster = resultSet.getString(8);
 
-            int year = getYearFromDate(yearDate);
+            int year = getYearFromDate(premiereDate);
 
             Movie movie = new MovieBuilder()
                     .addId(movieId)
@@ -175,113 +166,6 @@ public class MovieDAOSqlImpl implements MovieDAO {
 
     }
 
-    private void setMovieGenres(Movie movie, String lang, Connection connection) throws DAOException {
-        ResultSet resultSet = null;
-        PreparedStatement preparedStatement = null;
-
-        try {
-            Configuration queryConfig = ConfigurationFactory.getInstance().getShowQueryConfig();
-            String takeGenreQuery = queryConfig.getSqlQuery(SqlQueryName.TAKE_GENRE_OF_SHOW_QUERY);
-
-            preparedStatement = connection.prepareStatement(takeGenreQuery);
-
-            preparedStatement.setInt(1, movie.getShowID());
-            preparedStatement.setString(2, lang);
-
-            resultSet = preparedStatement.executeQuery();
-            Genre genre;
-            while (resultSet.next()) {
-                String genreName = resultSet.getString(1);
-
-                genre = new Genre(genreName);
-                movie.addGenre(genre);
-            }
-
-        } catch (SQLException e) {
-            throw new MovieInitializationException("Error while initializing genre list", e);
-        } finally {
-            connectionPool.closeResources(preparedStatement, resultSet);
-        }
-    }
-
-    private void setMovieCountries(Movie movie, String lang, Connection connection) throws DAOException {
-        ResultSet resultSet = null;
-        PreparedStatement preparedStatement = null;
-
-        try {
-            Configuration queryConfig = ConfigurationFactory.getInstance().getShowQueryConfig();
-            String takeCountry = queryConfig.getSqlQuery(SqlQueryName.TAKE_COUNTRY_OF_SHOW_QUERY);
-
-            preparedStatement = connection.prepareStatement(takeCountry);
-
-            preparedStatement.setInt(1, movie.getShowID());
-            preparedStatement.setString(2, lang);
-
-            resultSet = preparedStatement.executeQuery();
-            Country country;
-            while (resultSet.next()) {
-                String countryName = resultSet.getString(1);
-
-                country = new Country();
-                country.setCountryName(countryName);
-                movie.addCountry(country);
-            }
-
-        } catch (SQLException e) {
-            throw new MovieInitializationException("Error while initializing country list", e);
-        } finally {
-            connectionPool.closeResources(preparedStatement, resultSet);
-        }
-    }
-
-    private void setMovieRating(Movie movie, Connection connection) throws DAOException {
-        ResultSet resultSet = null;
-        PreparedStatement preparedStatement = null;
-
-        try {
-            Configuration queryConfig = ConfigurationFactory.getInstance().getShowQueryConfig();
-            String takeReviewsQuery = queryConfig.getSqlQuery(SqlQueryName.TAKE_REVIEWS_OF_SHOW_QUERY);
-
-            preparedStatement = connection.prepareStatement(takeReviewsQuery);
-            preparedStatement.setInt(1, movie.getShowID());
-
-            resultSet = preparedStatement.executeQuery();
-
-            UserReview review;
-            User user;
-            while (resultSet.next()) {
-                int userID = resultSet.getInt(1);
-                String userName = resultSet.getString(2);
-                String userAvatar = resultSet.getString(3);
-                int userRate = resultSet.getInt(4);
-                String reviewTitle = resultSet.getString(5);
-                String reviewContent = resultSet.getString(6);
-                Timestamp postDate = resultSet.getTimestamp(7);
-
-                user = new UserBuilder()
-                        .addId(userID)
-                        .addUserName(userName)
-                        .addAvatar(userAvatar)
-                        .create();
-
-                review = new UserReviewBuilder()
-                        .addShowId(movie.getShowID())
-                        .addUser(user)
-                        .addUserRate(userRate)
-                        .addReviewTitle(reviewTitle)
-                        .addReviewContent(reviewContent)
-                        .addPostDate(postDate)
-                        .create();
-
-                movie.addReview(review);
-            }
-
-        } catch (SQLException e) {
-            throw new MovieInitializationException("Error while initializing country list", e);
-        } finally {
-            connectionPool.closeResources(preparedStatement, resultSet);
-        }
-    }
 
     private int getYearFromDate(Date date) {
         Calendar calendar = Calendar.getInstance();

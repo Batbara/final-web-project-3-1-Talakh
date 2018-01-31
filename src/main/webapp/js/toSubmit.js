@@ -59,3 +59,25 @@ $("#unbanForm").on("submit", function(event) {
     event.preventDefault();
 
 });
+$("#changeStatusForm").on("submit", function(event) {
+    var form = $(this);
+
+    $.ajax({
+        type: form.attr('method'),
+        url: form.attr('action'),
+        data: form.serialize(),
+        success: function (data) {
+            if(data === 'success') {
+                $('#statusChangeSuccessAlert').show();
+            } else {
+                $('#statusChangeFailureAlert').show();
+            }
+        },
+        error: function (data) {
+            $('#statusChangeFailureAlert').show();
+        }
+    });
+
+    event.preventDefault();
+
+});

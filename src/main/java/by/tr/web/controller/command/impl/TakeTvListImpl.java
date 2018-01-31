@@ -5,6 +5,7 @@ import by.tr.web.controller.constant.FrontControllerParameter;
 import by.tr.web.controller.constant.JspAttribute;
 import by.tr.web.controller.constant.JspPagePath;
 import by.tr.web.controller.constant.TableParameter;
+import by.tr.web.controller.util.RequestUtil;
 import by.tr.web.cookie.CookieManager;
 import by.tr.web.cookie.CookieName;
 import by.tr.web.domain.TvShow;
@@ -13,7 +14,6 @@ import by.tr.web.exception.service.show.CountingServiceException;
 import by.tr.web.service.TableService;
 import by.tr.web.service.TvShowService;
 import by.tr.web.service.factory.ServiceFactory;
-import by.tr.web.util.Util;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
@@ -51,7 +51,7 @@ public class TakeTvListImpl implements Command {
             int recordsToTake = tableService.calcRecordsToTake(recordsOnPage, currentPage, numberOfRecords);
 
             int startRecordNum = (currentPage - 1) * recordsOnPage;
-            String lang = Util.getLanguage(request);
+            String lang = RequestUtil.getLanguage(request);
             List<TvShow> tvShows = tvShowService.takeOrderedTvShowList(startRecordNum, recordsToTake, orderType, lang);
             request.setAttribute(JspAttribute.TV_SHOWS, tvShows);
 

@@ -3,6 +3,7 @@ package by.tr.web.controller.command.impl.admin_command;
 import by.tr.web.controller.command.Command;
 import by.tr.web.controller.constant.FrontControllerParameter;
 import by.tr.web.controller.constant.JspAttribute;
+import by.tr.web.controller.util.DateTimeUtil;
 import by.tr.web.domain.BanInfo;
 import by.tr.web.domain.BanReason;
 import by.tr.web.domain.User;
@@ -10,7 +11,6 @@ import by.tr.web.exception.service.common.ServiceException;
 import by.tr.web.exception.service.user.NoSuchUserException;
 import by.tr.web.service.UserService;
 import by.tr.web.service.factory.ServiceFactory;
-import by.tr.web.util.Util;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
@@ -33,13 +33,13 @@ public class BanUserImpl implements Command {
         response.setCharacterEncoding(request.getCharacterEncoding());
         PrintWriter out = response.getWriter();
 
+        UserService userService = ServiceFactory.getInstance().getUserService();
         try {
-            User userToBan = retrieveUserToBan(request);
+            User userToBan = userService.retrieveUserFromRequest(request, JspAttribute.USER_BAN_ID);
 
             BanInfo banInfo = formBanInfo(request);
             userToBan.setBanInfo(banInfo);
 
-            UserService userService = ServiceFactory.getInstance().getUserService();
             userService.banUser(userToBan);
 
             out.print(FrontControllerParameter.SUCCESS_RESPONSE);
@@ -56,17 +56,6 @@ public class BanUserImpl implements Command {
 
     }
 
-    private User retrieveUserToBan(HttpServletRequest request) throws ServiceException {
-        List<User> userList = (List<User>) request.getSession().getAttribute(JspAttribute.USER_LIST);
-        int userBanID = Integer.parseInt(request.getParameter(JspAttribute.USER_BAN_ID));
-        for (User user : userList) {
-            if (user.getId() == userBanID) {
-                return user;
-            }
-        }
-        throw new NoSuchUserException("Cannot find user with id " + userBanID);
-    }
-
     private BanReason getBanReason(HttpServletRequest request) throws ServiceException {
         String inputReason = request.getParameter(JspAttribute.BAN_REASON);
         List<BanReason> banReasonList = (List<BanReason>) request.getSession().getAttribute(JspAttribute.BAN_REASON_LIST);
@@ -80,18 +69,14 @@ public class BanUserImpl implements Command {
 
     private BanInfo formBanInfo(HttpServletRequest request) throws ServiceException, ParseException {
         String banTimeParameter = request.getParameter(JspAttribute.BAN_TIME);
-        String unbanTimeParameter = request.getParameter(JspAttribute.UNBAN_TIME);
 
         BanInfo banInfo = new BanInfo();
 
         BanReason banReason = getBanReason(request);
         banInfo.setBanReason(banReason);
 
-        Timestamp banTime = Util.getTimeFromString(banTimeParameter, FrontControllerParameter.DEFAULT_TIME_PATTERN);
+        Timestamp banTime = DateTimeUtil.getTimeFromString(banTimeParameter, FrontControllerParameter.DEFAULT_TIME_PATTERN);
         banInfo.setBanTime(banTime);
-
-        Timestamp unbanTime = Util.getTimeFromString(unbanTimeParameter, FrontControllerParameter.DEFAULT_TIME_PATTERN);
-        banInfo.setUnbanTime(unbanTime);
 
         return banInfo;
     }

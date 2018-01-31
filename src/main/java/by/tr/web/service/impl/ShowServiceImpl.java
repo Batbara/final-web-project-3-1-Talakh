@@ -18,17 +18,24 @@ public class ShowServiceImpl implements ShowService {
 
 
     @Override
-    public List<UserReview> takeReviewList(int startNumber, int reviewsNumber, String reviewStatus, int showId)
+    public List<UserReview> takeShowReviewList(int startNumber, int reviewsNumber, int showId)
             throws ServiceException {
-        ValidatorFactory factory = ValidatorFactory.getInstance();
-        UserReviewValidator reviewValidator = factory.getUserReviewValidator();
-        reviewValidator.checkReviewStatus(reviewStatus);
 
         ShowDAO showDAO = DAOFactory.getInstance().getShowDAO();
         try {
-            return showDAO.takeReviewList(startNumber, reviewsNumber, reviewStatus, showId);
+            return showDAO.takeShowReviewList(startNumber, reviewsNumber, showId);
         } catch (DAOException e) {
             throw new ServiceException("Cannot take reviews list from data base", e);
+        }
+    }
+
+    @Override
+    public List<UserReview> takeReviewsOnModeration(int startReview, int reviewsNumber) throws ServiceException {
+        ShowDAO showDAO = DAOFactory.getInstance().getShowDAO();
+        try {
+            return showDAO.takeReviewsOnModeration(startReview, reviewsNumber);
+        } catch (DAOException e) {
+            throw new ServiceException("Cannot take reviews on moderation from data base", e);
         }
     }
 
@@ -111,7 +118,7 @@ public class ShowServiceImpl implements ShowService {
     }
 
     @Override
-    public int countReviews(String showId) throws ServiceException {
+    public int countShowReviews(String showId) throws ServiceException {
         DataTypeValidator validator = ValidatorFactory.getInstance().getDataTypeValidator();
         validator.checkForPositive(showId);
 
@@ -120,6 +127,16 @@ public class ShowServiceImpl implements ShowService {
             return showDAO.countShowReviews(Integer.parseInt(showId));
         } catch (DAOException e) {
             throw new ServiceException("Cannot count show reviews", e);
+        }
+    }
+
+    @Override
+    public int countReviewsOnModeration() throws ServiceException {
+        ShowDAO showDAO = DAOFactory.getInstance().getShowDAO();
+        try {
+            return showDAO.countReviewsOnModeration();
+        } catch (DAOException e) {
+            throw new ServiceException("Cannot count reviews on moderation", e);
         }
     }
 

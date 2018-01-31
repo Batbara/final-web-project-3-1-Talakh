@@ -47,11 +47,12 @@
 
         </div>
         <c:forEach var="review" items="${show.reviewList}">
-
             <div class="review">
                 <div class="post-info">
                     <div class="author">
-                        <span class="glyphicon glyphicon-user"></span>
+
+                        <span data-toggle="tooltip" data-placement="left" title="<mpb:user-status userStatus="${review.user.userStatus}"/>"
+                              class="glyphicon glyphicon-user"></span>
                         <span class="name"><c:out value="${review.user.userName}"/></span>
 
                     </div>
@@ -63,7 +64,7 @@
                     </div>
                 </div>
 
-                <h4 align="center">${review.reviewTitle}</h4>
+                <h4 class="review-title">${review.reviewTitle}</h4>
                 <div class="reviewContent">
                     <p>
                         <c:out value="${review.reviewContent}"/>

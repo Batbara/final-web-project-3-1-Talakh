@@ -17,6 +17,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -79,7 +80,7 @@ public class ShowDAOSqlImpl implements ShowDAO {
     }
 
     @Override
-    public List<UserReview> takeReviewList(int startNum, int reviewsNum, String reviewStatus, int showId)
+    public List<UserReview> takeShowReviewList(int startNum, int reviewsNum, int showId)
             throws DAOException {
         Connection connection = null;
         ResultSet resultSet = null;
@@ -87,14 +88,13 @@ public class ShowDAOSqlImpl implements ShowDAO {
         try {
             connection = connectionPool.takeConnection();
             Configuration queryConfig = ConfigurationFactory.getInstance().getShowQueryConfig();
-            String reviewListQuery = queryConfig.getSqlQuery(SqlQueryName.TAKE_CONTENT_REVIEW_LIST);
+            String reviewListQuery = queryConfig.getSqlQuery(SqlQueryName.TAKE_POSTED_REVIEW_LIST);
 
             preparedStatement = connection.prepareStatement(reviewListQuery);
 
-            preparedStatement.setString(1, reviewStatus);
-            preparedStatement.setInt(2, showId);
-            preparedStatement.setInt(3, startNum);
-            preparedStatement.setInt(4, reviewsNum);
+            preparedStatement.setInt(1, showId);
+            preparedStatement.setInt(2, startNum);
+            preparedStatement.setInt(3, reviewsNum);
 
             resultSet = preparedStatement.executeQuery();
 
@@ -108,10 +108,12 @@ public class ShowDAOSqlImpl implements ShowDAO {
                 Timestamp postDate = resultSet.getTimestamp(3);
                 int userId = resultSet.getInt(4);
                 String userName = resultSet.getString(5);
+                String userStatus = resultSet.getString(6);
 
                 user = new UserBuilder()
                         .addId(userId)
                         .addUserName(userName)
+                        .addUserStatus(userStatus)
                         .create();
 
                 review = new UserReviewBuilder()
@@ -127,7 +129,62 @@ public class ShowDAOSqlImpl implements ShowDAO {
             return reviews;
 
         } catch (SQLException e) {
-            throw new DAOException("SQL eError while taking movie list from DB", e);
+            throw new DAOException("SQL eError while taking show reviews from DB", e);
+        } finally {
+            connectionPool.closeConnection(connection, preparedStatement, resultSet);
+        }
+    }
+
+    @Override
+    public List<UserReview> takeReviewsOnModeration(int startReview, int reviewsNum) throws DAOException {
+        Connection connection = null;
+        ResultSet resultSet = null;
+        PreparedStatement preparedStatement = null;
+        try {
+            connection = connectionPool.takeConnection();
+            Configuration queryConfig = ConfigurationFactory.getInstance().getShowQueryConfig();
+            String reviewListQuery = queryConfig.getSqlQuery(SqlQueryName.TAKE_MODERATED_REVIEW_LIST_QUERY);
+
+            preparedStatement = connection.prepareStatement(reviewListQuery);
+
+            preparedStatement.setInt(1, startReview);
+            preparedStatement.setInt(2, reviewsNum);
+
+            resultSet = preparedStatement.executeQuery();
+
+            List<UserReview> reviews = new ArrayList<>();
+            UserReview review;
+            User user;
+            while (resultSet.next()) {
+
+                int showId = resultSet.getInt(1);
+                String reviewTitle = resultSet.getString(2);
+                String reviewContent = resultSet.getString(3);
+                Timestamp postDate = resultSet.getTimestamp(4);
+                int userId = resultSet.getInt(5);
+                String userName = resultSet.getString(6);
+                String userStatus = resultSet.getString(7);
+
+                user = new UserBuilder()
+                        .addId(userId)
+                        .addUserName(userName)
+                        .addUserStatus(userStatus)
+                        .create();
+
+                review = new UserReviewBuilder()
+                        .addShowId(showId)
+                        .addUser(user)
+                        .addReviewTitle(reviewTitle)
+                        .addReviewContent(reviewContent)
+                        .addPostDate(postDate)
+                        .create();
+
+                reviews.add(review);
+            }
+            return reviews;
+
+        } catch (SQLException e) {
+            throw new DAOException("SQL eError while taking moderating reviews from DB", e);
         } finally {
             connectionPool.closeConnection(connection, preparedStatement, resultSet);
         }
@@ -158,6 +215,32 @@ public class ShowDAOSqlImpl implements ShowDAO {
             throw new CounterDAOException("Error while executing reviews counter query", e);
         } finally {
             connectionPool.closeConnection(connection, preparedStatement, resultSet);
+        }
+    }
+
+    @Override
+    public int countReviewsOnModeration() throws DAOException {
+        Connection connection = null;
+        ResultSet resultSet = null;
+        Statement statement = null;
+        try {
+            connection = connectionPool.takeConnection();
+
+            Configuration queryConfig = ConfigurationFactory.getInstance().getShowQueryConfig();
+            String reviewsCounterQuery = queryConfig.getSqlQuery(SqlQueryName.COUNT_MODERATED_REVIEWS_QUERY);
+
+            statement = connection.createStatement();
+            resultSet = statement.executeQuery(reviewsCounterQuery);
+
+            int reviewsCounter = 0;
+            if (resultSet.next()) {
+                reviewsCounter = resultSet.getInt(1);
+            }
+            return reviewsCounter;
+        } catch (SQLException e) {
+            throw new CounterDAOException("Error while counting reviews on moderation", e);
+        } finally {
+            connectionPool.closeConnection(connection, statement, resultSet);
         }
     }
 

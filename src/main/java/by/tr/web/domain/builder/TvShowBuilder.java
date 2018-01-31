@@ -8,6 +8,7 @@ import by.tr.web.domain.UserReview;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.util.ArrayList;
 import java.util.List;
 
 public class TvShowBuilder extends ShowBuilder {
@@ -21,6 +22,9 @@ public class TvShowBuilder extends ShowBuilder {
     public TvShowBuilder(){
         showStatus = TvShow.ShowStatus.RETURNING;
         channel = new TVChannel();
+        reviews = new ArrayList<>();
+        genres = new ArrayList<>();
+        countries = new ArrayList<>();
     }
 
 
@@ -90,8 +94,8 @@ public class TvShowBuilder extends ShowBuilder {
         return this;
     }
 
-    public TvShowBuilder addShowStatus(TvShow.ShowStatus showStatus) {
-        this.showStatus = showStatus;
+    public TvShowBuilder addShowStatus(String showStatus) {
+        this.showStatus = TvShow.ShowStatus.valueOf(showStatus.toUpperCase());
         return this;
     }
 
@@ -110,8 +114,8 @@ public class TvShowBuilder extends ShowBuilder {
         return this;
     }
 
-    public TvShowBuilder addChannel(TVChannel channel) {
-        this.channel = channel;
+    public TvShowBuilder addChannel(String channel) {
+        this.channel = new TVChannel(channel);
         return this;
     }
 

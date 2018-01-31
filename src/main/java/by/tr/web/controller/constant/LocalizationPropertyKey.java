@@ -35,6 +35,8 @@ public final class LocalizationPropertyKey {
     public static final String SHOW_TOTAL_REVIEWS = "local.show.reviews.total";
     public static final String NONE_REVIEWS = "local.show.reviews.none";
     public static final String SHOWING_MESSAGE = "local.message.showing";
+
+    public static final String TV_SERIES = "local.show.tv.series";
     public static String getUserStatusProperty(User.UserStatus userStatus) {
         return userStatusMap.get(userStatus);
     }

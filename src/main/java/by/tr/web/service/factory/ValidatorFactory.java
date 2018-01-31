@@ -5,17 +5,15 @@ import by.tr.web.service.validation.ShowValidator;
 import by.tr.web.service.validation.UserReviewValidator;
 import by.tr.web.service.validation.UserValidator;
 import by.tr.web.service.validation.impl.DataTypeValidatorImpl;
-import by.tr.web.service.validation.impl.LoginValidatorImpl;
 import by.tr.web.service.validation.impl.MovieValidatorImpl;
-import by.tr.web.service.validation.impl.RegisterValidatorImpl;
 import by.tr.web.service.validation.impl.TvShowValidatorImpl;
 import by.tr.web.service.validation.impl.UserReviewValidatorImpl;
+import by.tr.web.service.validation.impl.UserValidatorImpl;
 
 public class ValidatorFactory {
     private static ValidatorFactory instance = new ValidatorFactory();
 
-    private UserValidator registerValidator = new RegisterValidatorImpl();
-    private UserValidator loginValidator = new LoginValidatorImpl();
+    private UserValidator userValidator = new UserValidatorImpl();
 
     private DataTypeValidator dataTypeValidator = new DataTypeValidatorImpl();
     private UserReviewValidator userReviewValidator = new UserReviewValidatorImpl();
@@ -24,6 +22,10 @@ public class ValidatorFactory {
     private ShowValidator tvShowValidator = new TvShowValidatorImpl();
 
     private ValidatorFactory() {
+    }
+
+    public UserValidator getUserValidator() {
+        return userValidator;
     }
 
     public static ValidatorFactory getInstance() {
@@ -38,13 +40,6 @@ public class ValidatorFactory {
         return tvShowValidator;
     }
 
-    public UserValidator getRegisterValidator() {
-        return registerValidator;
-    }
-
-    public UserValidator getLoginValidator() {
-        return loginValidator;
-    }
 
     public DataTypeValidator getDataTypeValidator() {
         return dataTypeValidator;

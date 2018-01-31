@@ -98,7 +98,7 @@ public class UserDAOSqlImpl implements UserDAO {
                         .addId(userID)
                         .addUserName(login)
                         .addEmail(email)
-                        .addUserStatus(User.UserStatus.valueOf(status.toUpperCase()))
+                        .addUserStatus(status)
                         .addBanStatus(isBanned)
                         .addRegistrationDate(regDate)
                         .addAvatar(userAvatar)
@@ -179,7 +179,7 @@ public class UserDAOSqlImpl implements UserDAO {
                         .addId(userID)
                         .addUserName(userName)
                         .addEmail(userEmail)
-                        .addUserStatus(User.UserStatus.valueOf(userStatus.toUpperCase()))
+                        .addUserStatus(userStatus)
                         .addBanStatus(isBanned)
                         .addRegistrationDate(regDate)
                         .create();
@@ -237,9 +237,8 @@ public class UserDAOSqlImpl implements UserDAO {
 
             BanInfo banInfo = user.getBanInfo();
             preparedStatement.setTimestamp(1, banInfo.getBanTime());
-            preparedStatement.setTimestamp(2, banInfo.getUnbanTime());
-            preparedStatement.setInt(3, banInfo.getBanReason().getId());
-            preparedStatement.setInt(4, user.getId());
+            preparedStatement.setInt(2, banInfo.getBanReason().getId());
+            preparedStatement.setInt(3, user.getId());
 
             int rowsAffected = preparedStatement.executeUpdate();
             if (rowsAffected == 0) {
@@ -312,6 +311,31 @@ public class UserDAOSqlImpl implements UserDAO {
         }
     }
 
+    @Override
+    public void changeUserStatus(int userId, String newStatus) throws DAOException {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        try {
+            connection = connectionPool.takeConnection();
+
+            Configuration queryConfig = ConfigurationFactory.getInstance().getUserQueryConfig();
+            String changeUserStatusQuery = queryConfig.getSqlQuery(SqlQueryName.CHANGE_USER_STATUS_QUERY);
+
+            preparedStatement = connection.prepareStatement(changeUserStatusQuery);
+            preparedStatement.setString(1, newStatus);
+            preparedStatement.setInt(2, userId);
+
+            int rowsAffected = preparedStatement.executeUpdate();
+            if (rowsAffected == 0) {
+                throw new DAOException("Unexpected result from update query");
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Error while trying to execute user change status query", e);
+        } finally {
+            connectionPool.closeConnection(connection, preparedStatement);
+        }
+    }
+
     private void setBanInfo(Connection connection, User user, String lang) throws DAOException {
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
@@ -330,11 +354,9 @@ public class UserDAOSqlImpl implements UserDAO {
             BanInfo banInfo = new BanInfo();
             while (resultSet.next()) {
                 Timestamp banTime = resultSet.getTimestamp(1);
-                Timestamp unbanTime = resultSet.getTimestamp(2);
-                String banReason = resultSet.getString(3);
+                String banReason = resultSet.getString(2);
 
                 banInfo.setBanTime(banTime);
-                banInfo.setUnbanTime(unbanTime);
                 banInfo.setBanReason(new BanReason(banReason));
             }
             user.setBanInfo(banInfo);

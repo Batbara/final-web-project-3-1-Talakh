@@ -15,7 +15,7 @@ $(document).ready(function () {
     $('[data-toggle="tooltip"]').tooltip();
 
     $('.alert').hide();
-    $('#banDialog, #unbanDialog, #ratingSetFailed, #ratingSetSuccessful').on('hidden.bs.modal', function () {
+    $('#banDialog, #unbanDialog, #ratingSetFailed, #ratingSetSuccessful, #changeStatusDialog').on('hidden.bs.modal', function () {
         location.reload(true);
     });
     setUpMovieTableSelection();
@@ -72,14 +72,16 @@ function setUpTvShowTableSelection() {
 
 $("#banTime").val(new Date().toJSON().slice(0, 19));
 $("#banTime").attr("min", new Date().toJSON().slice(0, 19));
-$("#unbanTime").attr("min", new Date().toJSON().slice(0, 19));
 
 $(".banButton").on("click", function () {
-    return retrieveUserNameAndID("#banDialog", this, "#userBanID", "#banUserTitle");
+    return retrieveUserNameAndID("#banDialog", this, "#userBanId", "#banUserTitle");
 
 });
 $(".unbanButton").on("click", function () {
-    return retrieveUserNameAndID("#unbanDialog", this, "#userUnbanID", "#unbanUserName");
+    return retrieveUserNameAndID("#unbanDialog", this, "#userUnbanId", "#unbanUserName");
+});
+$(".changeStatusButton").on("click", function () {
+    return retrieveUserNameAndID("#changeStatusDialog", this, "#userChangeStatusId", "#changeUserStatusTitle");
 });
 
 

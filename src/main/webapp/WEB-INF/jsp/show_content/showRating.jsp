@@ -17,3 +17,4 @@
     </div>
 
 </div>
+<c:import url="/WEB-INF/jsp/table_content/ratingDialogs.jsp"/>

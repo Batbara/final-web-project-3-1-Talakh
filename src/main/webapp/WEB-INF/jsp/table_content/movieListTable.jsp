@@ -28,7 +28,7 @@
             </td>
             <td class="poster-cell"><img src="/images${currentMovie.poster}.jpg" class="img-thumbnail poster"></td>
             <td class="show-title-cell">
-                <a href="${pageContext.request.contextPath}/mpb?command=take_movie&showId=${currentMovie.showID}&reviewStatus=posted">
+                <a href="${pageContext.request.contextPath}/mpb?command=take_movie&showId=${currentMovie.showID}">
                     <c:out value="${currentMovie.title}"/></a></td>
             <td class="year-cell"><c:out value="${currentMovie.year}"/></td>
             <td class="rating-cell">

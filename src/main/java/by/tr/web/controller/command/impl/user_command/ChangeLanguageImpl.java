@@ -2,7 +2,7 @@ package by.tr.web.controller.command.impl.user_command;
 
 import by.tr.web.controller.command.Command;
 import by.tr.web.controller.constant.FrontControllerParameter;
-import by.tr.web.util.Util;
+import by.tr.web.controller.util.RequestUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,7 +13,7 @@ public class ChangeLanguageImpl implements Command {
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String currentLocale = request.getParameter(FrontControllerParameter.LOCALE);
         request.getSession().setAttribute(FrontControllerParameter.LOCALE, currentLocale);
-        String address = Util.formRedirectAddress(request);
+        String address = RequestUtil.formRedirectAddress(request);
         response.sendRedirect(address);
     }
 

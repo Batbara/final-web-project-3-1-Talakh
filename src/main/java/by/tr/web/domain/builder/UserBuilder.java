@@ -48,8 +48,8 @@ public class UserBuilder {
         return this;
     }
 
-    public UserBuilder addUserStatus(User.UserStatus userStatus) {
-        this.userStatus = userStatus;
+    public UserBuilder addUserStatus(String userStatus) {
+        this.userStatus = User.UserStatus.valueOf(userStatus.toUpperCase());
         return this;
     }
 

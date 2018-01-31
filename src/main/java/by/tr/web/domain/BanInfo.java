@@ -5,16 +5,14 @@ import java.sql.Timestamp;
 
 public class BanInfo implements Serializable {
     private Timestamp banTime;
-    private Timestamp unbanTime;
     private BanReason banReason;
 
     public BanInfo() {
         banReason = new BanReason();
     }
 
-    public BanInfo(Timestamp banTime, Timestamp unbanTime, BanReason banReason) {
+    public BanInfo(Timestamp banTime, BanReason banReason) {
         this.banTime = banTime;
-        this.unbanTime = unbanTime;
         this.banReason = banReason;
     }
 
@@ -26,14 +24,12 @@ public class BanInfo implements Serializable {
         BanInfo banInfo = (BanInfo) o;
 
         if (banTime != null ? !banTime.equals(banInfo.banTime) : banInfo.banTime != null) return false;
-        if (unbanTime != null ? !unbanTime.equals(banInfo.unbanTime) : banInfo.unbanTime != null) return false;
         return banReason != null ? banReason.equals(banInfo.banReason) : banInfo.banReason == null;
     }
 
     @Override
     public int hashCode() {
         int result = banTime != null ? banTime.hashCode() : 0;
-        result = 31 * result + (unbanTime != null ? unbanTime.hashCode() : 0);
         result = 31 * result + (banReason != null ? banReason.hashCode() : 0);
         return result;
     }
@@ -42,7 +38,6 @@ public class BanInfo implements Serializable {
     public String toString() {
         return "BanInfo{" +
                 "banTime=" + banTime +
-                ", unbanTime=" + unbanTime +
                 ", banReason=" + banReason +
                 '}';
     }
@@ -53,14 +48,6 @@ public class BanInfo implements Serializable {
 
     public void setBanTime(Timestamp banTime) {
         this.banTime = banTime;
-    }
-
-    public Timestamp getUnbanTime() {
-        return unbanTime;
-    }
-
-    public void setUnbanTime(Timestamp unbanTime) {
-        this.unbanTime = unbanTime;
     }
 
     public BanReason getBanReason() {

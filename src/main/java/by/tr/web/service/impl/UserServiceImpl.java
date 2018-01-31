@@ -1,5 +1,6 @@
 package by.tr.web.service.impl;
 
+import by.tr.web.controller.constant.JspAttribute;
 import by.tr.web.dao.UserDAO;
 import by.tr.web.dao.factory.DAOFactory;
 import by.tr.web.domain.BanReason;
@@ -19,6 +20,7 @@ import by.tr.web.service.factory.ValidatorFactory;
 import by.tr.web.service.validation.DataTypeValidator;
 import by.tr.web.service.validation.UserValidator;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 public class UserServiceImpl implements UserService {
@@ -26,9 +28,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public User register(String login, String password, String email) throws ServiceException {
         ValidatorFactory validatorFactory = ValidatorFactory.getInstance();
-        UserValidator registerValidator = validatorFactory.getRegisterValidator();
+        UserValidator userValidator = validatorFactory.getUserValidator();
 
-        boolean isDataValid = registerValidator.validateCredentials(login, password, email);
+        boolean isDataValid = userValidator.validateCredentials(login, password, email);
         if (!isDataValid) {
             throw new ServiceException("Unexpected error while validating user register credentials");
         }
@@ -58,8 +60,8 @@ public class UserServiceImpl implements UserService {
     public User login(String login, String password, String lang) throws ServiceException {
         ValidatorFactory validatorFactory = ValidatorFactory.getInstance();
 
-        UserValidator loginValidator = validatorFactory.getLoginValidator();
-        loginValidator.validateCredentials(login, password);
+        UserValidator userValidator = validatorFactory.getUserValidator();
+        userValidator.validateCredentials(login, password);
 
         DataTypeValidator dataTypeValidator = validatorFactory.getDataTypeValidator();
         dataTypeValidator.checkLanguage(lang);
@@ -170,5 +172,44 @@ public class UserServiceImpl implements UserService {
         } catch (DAOException e) {
             throw new UserServiceException("Unable to ban user " + user.toString(), e);
         }
+    }
+
+    @Override
+    public void changeUserStatus(User user, String newStatus) throws ServiceException {
+        if (user == null) {
+            throw new NoSuchUserException("User is null");
+        }
+        UserValidator validator = ValidatorFactory.getInstance().getUserValidator();
+        validator.checkUserStatus(newStatus);
+
+        UserDAO userDAO = DAOFactory.getInstance().getUserDAO();
+        int userId = user.getId();
+        try {
+            userDAO.changeUserStatus(userId, newStatus.toLowerCase());
+        } catch (DAOException e) {
+            throw new ServiceException("Cannot change user with id=" + Integer.toString(userId)
+                    + ", status='" + user.getUserStatus().toString()+
+                    "' to " + newStatus, e);
+        }
+
+    }
+
+    @Override
+    public User retrieveUserFromRequest(HttpServletRequest request, String userParameter) throws ServiceException {
+        List<User> userList = (List<User>) request.getSession().getAttribute(JspAttribute.USER_LIST);
+        if (userList == null) {
+            throw new ServiceException("User list is empty");
+        }
+        DataTypeValidator validator = ValidatorFactory.getInstance().getDataTypeValidator();
+        String userIdParameter = request.getParameter(userParameter);
+        validator.checkForPositive(userIdParameter);
+
+        int userId = Integer.parseInt(userIdParameter);
+        for (User user : userList) {
+            if (user.getId() == userId) {
+                return user;
+            }
+        }
+        throw new NoSuchUserException("Cannot find user with id " + userId);
     }
 }
