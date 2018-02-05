@@ -12,6 +12,7 @@ import java.util.List;
 public abstract class ShowBuilder {
     protected int showID;
 
+    protected String language;
     protected String title;
     protected String synopsis;
     protected String poster;
@@ -26,6 +27,10 @@ public abstract class ShowBuilder {
     protected double userRating;
     protected List<UserReview> reviews;
 
+    public ShowBuilder addLanguage(String language){
+        this.language = language;
+        return this;
+    }
     public ShowBuilder addTitle(String title){
         this.title = title;
         return this;

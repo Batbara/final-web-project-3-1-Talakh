@@ -11,7 +11,9 @@
     <c:import url="/WEB-INF/jsp/styling.jsp"/>
     <fmt:setLocale value="${sessionScope.local}"/>
     <fmt:setBundle basename="localization.local" var="loc"/>
-    <fmt:message bundle="${loc}" key="local.navButton.admin" var="title"/>
+    <fmt:message bundle="${loc}" key="local.navButton.admin" var="administration"/>
+
+    <fmt:message bundle="${loc}" key="local.admin.sidenav.users" var="usersTitle"/>
     <fmt:message bundle="${loc}" key="local.info.user.banReason" var="banReason"/>
     <fmt:message bundle="${loc}" key="local.info.user.ban" var="ban"/>
     <fmt:message bundle="${loc}" key="local.info.user.unban" var="unban"/>
@@ -28,7 +30,7 @@
     <fmt:message bundle="${loc}" key="local.message.cancel" var="cancel"/>
     <fmt:message bundle="${loc}" key="local.message.change" var="change"/>
 
-    <title>${title} | MotionPicture Bank [MPB]</title>
+    <title>${administration} | ${usersTitle} | MotionPicture Bank [MPB]</title>
 
 
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/table-style.css">
@@ -45,21 +47,21 @@
     </nav>
     <article>
         <div class="fluid-container">
-        <div class="row">
-            <div class="col-sm-12">
-                <div class="onPage pull-left">
-                    <c:import url="/WEB-INF/jsp/table_control/onPageForm.jsp">
-                        <c:param name="command" value="take_user_list"/>
-                    </c:import>
-                </div>
-                <nav class="navigation pull-right">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="onPage pull-left">
+                        <c:import url="/WEB-INF/jsp/table_control/onPageForm.jsp">
+                            <c:param name="command" value="take_user_list"/>
+                        </c:import>
+                    </div>
+                    <nav class="navigation pull-right">
 
-                    <c:import url="/WEB-INF/jsp/table_control/paging.jsp">
-                        <c:param name="command" value="take_user_list"/>
-                    </c:import>
-                </nav>
+                        <c:import url="/WEB-INF/jsp/table_control/paging.jsp">
+                            <c:param name="command" value="take_user_list"/>
+                        </c:import>
+                    </nav>
+                </div>
             </div>
-        </div>
         </div>
         <div class="table-responsive users-table">
             <c:import url="/WEB-INF/jsp/table_content/usersTable.jsp"/>
@@ -139,7 +141,8 @@
                             </div>
                             <div class="form-group">
                                 <div class="col-sm-offset-2 col-md-10">
-                                    <button type="submit" class="btn btn-default" data-dismiss="modal">${cancel}</button>
+                                    <button type="submit" class="btn btn-default"
+                                            data-dismiss="modal">${cancel}</button>
                                     <button type="submit" class="btn btn-primary">${unban}</button>
                                 </div>
                             </div>
@@ -169,7 +172,8 @@
 
 
                             <div class="form-group">
-                                <label class="control-label col-sm-4" for="statusSelection">${selectStatusMessage}:</label>
+                                <label class="control-label col-sm-4"
+                                       for="statusSelection">${selectStatusMessage}:</label>
                                 <div class="col-xs-5">
                                     <select class="form-control" id="statusSelection" name="newUserStatus">
                                         <c:forEach items="${userStatusList}" var="currUserStatus">

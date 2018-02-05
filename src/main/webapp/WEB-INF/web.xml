@@ -12,6 +12,10 @@
     <listener>
         <listener-class>by.tr.web.listener.ServletContextInitializer</listener-class>
     </listener>
+    <listener>
+        <listener-class>by.tr.web.listener.UserStatusUpdateManager</listener-class>
+    </listener>
+
     <error-page>
         <error-code>403</error-code>
         <location>/forbidden</location>
@@ -36,6 +40,11 @@
     <context-param>
         <param-name>log4j-config-location</param-name>
         <param-value>WEB-INF/classes/log4j.properties</param-value>
+    </context-param>
+
+    <context-param>
+        <param-name>posterUploadFolder</param-name>
+        <param-value>/images/poster/</param-value>
     </context-param>
 
     <servlet>
@@ -110,7 +119,24 @@
         <servlet-name>NotFound</servlet-name>
         <url-pattern>/notfound</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>AddMovie</servlet-name>
+        <jsp-file>/WEB-INF/jsp/admin/addMovie.jsp</jsp-file>
+    </servlet>
 
+    <servlet>
+        <servlet-name>ImageUploader</servlet-name>
+        <servlet-class>by.tr.web.controller.FileUploader</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ImageUploader</servlet-name>
+        <url-pattern>/upload</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>AddMovie</servlet-name>
+        <url-pattern>/add/movie</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>480</session-timeout>
     </session-config>
@@ -133,7 +159,7 @@
     </filter-mapping>
     <filter-mapping>
         <filter-name>CharsetFilter</filter-name>
-        <url-pattern>/mpb</url-pattern>
+        <url-pattern>/*</url-pattern>
     </filter-mapping>
 
 </web-app>

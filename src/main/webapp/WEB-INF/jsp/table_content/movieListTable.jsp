@@ -26,7 +26,7 @@
                 <div class="show-id ${currentMovie.showID}"><b><c:out value="${id}"/></b></div>
                 <c:set var="id" value="${id+1}"/>
             </td>
-            <td class="poster-cell"><img src="/images${currentMovie.poster}.jpg" class="img-thumbnail poster"></td>
+            <td class="poster-cell"><img src="${pageContext.request.contextPath}${currentMovie.poster}" class="img-thumbnail poster"></td>
             <td class="show-title-cell">
                 <a href="${pageContext.request.contextPath}/mpb?command=take_movie&showId=${currentMovie.showID}">
                     <c:out value="${currentMovie.title}"/></a></td>

@@ -15,7 +15,7 @@
         <c:out value="${boxofficeType}"/>
     </td>
     <td>
-        <jsp:getProperty name="show" property="boxOffice"/>
+        <jsp:getProperty name="show" property="formattedBoxOffice"/>
     </td>
 </tr>
 <tr>
@@ -23,7 +23,7 @@
         <c:out value="${budgetType}"/>
     </td>
     <td>
-        <jsp:getProperty name="show" property="budget"/>
+        <jsp:getProperty name="show" property="formattedBudget"/>
     </td>
 </tr>
 <tr>

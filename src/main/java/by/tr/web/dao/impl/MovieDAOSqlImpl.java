@@ -1,5 +1,6 @@
 package by.tr.web.dao.impl;
 
+import by.tr.web.controller.util.DateTimeUtil;
 import by.tr.web.dao.Configuration;
 import by.tr.web.dao.MovieDAO;
 import by.tr.web.dao.factory.ConfigurationFactory;
@@ -7,8 +8,10 @@ import by.tr.web.dao.impl.connection_pool.ConnectionPool;
 import by.tr.web.dao.parameter.SqlQueryName;
 import by.tr.web.dao.util.ShowDaoUtil;
 import by.tr.web.domain.Movie;
+import by.tr.web.domain.Show;
 import by.tr.web.domain.builder.MovieBuilder;
 import by.tr.web.exception.dao.common.DAOException;
+import by.tr.web.exception.dao.common.TransactionInterruptionException;
 import by.tr.web.exception.dao.movie.CounterDAOException;
 import by.tr.web.exception.dao.movie.MovieInitializationException;
 
@@ -20,7 +23,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Time;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 public class MovieDAOSqlImpl implements MovieDAO {
@@ -121,12 +123,57 @@ public class MovieDAOSqlImpl implements MovieDAO {
             }
 
             Movie movie = setMovieInfo(id, resultSet);
-            movie = (Movie) ShowDaoUtil.setShowGenres(movie,lang, connection);
+            movie = (Movie) ShowDaoUtil.setShowGenres(movie, lang, connection);
             movie = (Movie) ShowDaoUtil.setShowCountries(movie, lang, connection);
 
             return movie;
         } catch (SQLException e) {
             throw new DAOException("Error while executing SQL query", e);
+        } finally {
+            connectionPool.closeConnection(connection, preparedStatement, resultSet);
+        }
+    }
+
+    @Override
+    public int addMovie(Movie movieEnglish, Show russianTranslation) throws DAOException {
+        Connection connection = null;
+        ResultSet resultSet = null;
+        PreparedStatement preparedStatement = null;
+        try {
+            connection = connectionPool.takeConnection();
+            connection.setAutoCommit(false);
+
+            String showType = Show.ShowType.MOVIE.toString().toLowerCase();
+            int showId = ShowDaoUtil.addNewShow(connection, movieEnglish, showType);
+
+            movieEnglish.setShowID(showId);
+            russianTranslation.setShowID(showId);
+
+            ShowDaoUtil.addShowCountries(connection, movieEnglish);
+            ShowDaoUtil.addShowGenres(connection, movieEnglish);
+
+            ShowDaoUtil.addNewShowTranslation(connection, movieEnglish);
+            ShowDaoUtil.addNewShowTranslation(connection, russianTranslation);
+
+            Configuration queryConfig = ConfigurationFactory.getInstance().getMovieQueryConfig();
+            String addMovieInfoQuery = queryConfig.getSqlQuery(SqlQueryName.ADD_NEW_MOVIE);
+
+            preparedStatement = connection.prepareStatement(addMovieInfoQuery);
+
+            preparedStatement.setInt(1, movieEnglish.getShowID());
+            preparedStatement.setLong(2, movieEnglish.getBudget());
+            preparedStatement.setLong(3, movieEnglish.getBoxOffice());
+            preparedStatement.setString(4, movieEnglish.getFormattedMpaaRating());
+
+            preparedStatement.executeUpdate();
+            connection.commit();
+            return showId;
+        } catch (SQLException e) {
+            connectionPool.rollbackConnection(connection);
+            throw new DAOException("Error occurred while adding new movie to data base ", e);
+        } catch (TransactionInterruptionException e) {
+            connectionPool.rollbackConnection(connection);
+            throw new DAOException("Transaction was interrupted while adding new show", e);
         } finally {
             connectionPool.closeConnection(connection, preparedStatement, resultSet);
         }
@@ -144,7 +191,7 @@ public class MovieDAOSqlImpl implements MovieDAO {
             String synopsis = resultSet.getString(7);
             String poster = resultSet.getString(8);
 
-            int year = getYearFromDate(premiereDate);
+            int year = DateTimeUtil.getYearFromDate(premiereDate);
 
             Movie movie = new MovieBuilder()
                     .addId(movieId)
@@ -166,14 +213,6 @@ public class MovieDAOSqlImpl implements MovieDAO {
 
     }
 
-
-    private int getYearFromDate(Date date) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-        int year = calendar.get(Calendar.YEAR);
-
-        return year;
-    }
 
     private String formMovieListQuery(String orderType) {
 

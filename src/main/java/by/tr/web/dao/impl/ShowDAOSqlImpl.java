@@ -5,6 +5,8 @@ import by.tr.web.dao.ShowDAO;
 import by.tr.web.dao.factory.ConfigurationFactory;
 import by.tr.web.dao.impl.connection_pool.ConnectionPool;
 import by.tr.web.dao.parameter.SqlQueryName;
+import by.tr.web.domain.Country;
+import by.tr.web.domain.Genre;
 import by.tr.web.domain.User;
 import by.tr.web.domain.UserReview;
 import by.tr.web.domain.builder.UserBuilder;
@@ -191,6 +193,72 @@ public class ShowDAOSqlImpl implements ShowDAO {
     }
 
     @Override
+    public List<Country> takeCountryList(String lang) throws DAOException {
+        Connection connection = null;
+        ResultSet resultSet = null;
+        PreparedStatement preparedStatement = null;
+        try {
+            connection = connectionPool.takeConnection();
+            Configuration queryConfig = ConfigurationFactory.getInstance().getShowQueryConfig();
+            String countryListQuery = queryConfig.getSqlQuery(SqlQueryName.TAKE_COUNTRY_LIST_QUERY);
+
+            preparedStatement = connection.prepareStatement(countryListQuery);
+            preparedStatement.setString(1, lang);
+
+            resultSet = preparedStatement.executeQuery();
+
+            List<Country> countries = new ArrayList<>();
+            Country country;
+            while (resultSet.next()) {
+                int countryId = resultSet.getInt(1);
+                String countryName = resultSet.getString(2);
+
+                country = new Country(countryId, countryName);
+                countries.add(country);
+            }
+            return countries;
+
+        } catch (SQLException e) {
+            throw new DAOException("SQL error while taking country list from DB", e);
+        } finally {
+            connectionPool.closeConnection(connection, preparedStatement, resultSet);
+        }
+    }
+
+    @Override
+    public List<Genre> takeGenreList(String lang) throws DAOException {
+        Connection connection = null;
+        ResultSet resultSet = null;
+        PreparedStatement preparedStatement = null;
+        try {
+            connection = connectionPool.takeConnection();
+            Configuration queryConfig = ConfigurationFactory.getInstance().getShowQueryConfig();
+            String genreListQuery = queryConfig.getSqlQuery(SqlQueryName.TAKE_GENRE_LIST_QUERY);
+
+            preparedStatement = connection.prepareStatement(genreListQuery);
+            preparedStatement.setString(1, lang);
+
+            resultSet = preparedStatement.executeQuery();
+
+            List<Genre> genres = new ArrayList<>();
+            Genre genre;
+            while (resultSet.next()) {
+                int genreId = resultSet.getInt(1);
+                String genreName = resultSet.getString(2);
+
+                genre = new Genre(genreId, genreName);
+                genres.add(genre);
+            }
+            return genres;
+
+        } catch (SQLException e) {
+            throw new DAOException("SQL error while taking genre list from DB", e);
+        } finally {
+            connectionPool.closeConnection(connection, preparedStatement, resultSet);
+        }
+    }
+
+    @Override
     public int countShowReviews(int showId) throws DAOException {
         Connection connection = null;
         ResultSet resultSet = null;
@@ -215,6 +283,54 @@ public class ShowDAOSqlImpl implements ShowDAO {
             throw new CounterDAOException("Error while executing reviews counter query", e);
         } finally {
             connectionPool.closeConnection(connection, preparedStatement, resultSet);
+        }
+    }
+
+    @Override
+    public void postReview(int userId, int showId) throws DAOException {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        try {
+            connection = connectionPool.takeConnection();
+
+            Configuration queryConfig = ConfigurationFactory.getInstance().getShowQueryConfig();
+            String postReviewQuery = queryConfig.getSqlQuery(SqlQueryName.POST_USER_REVIEW);
+
+            preparedStatement = connection.prepareStatement(postReviewQuery);
+
+            preparedStatement.setInt(1, userId);
+            preparedStatement.setInt(2, showId);
+
+            preparedStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new DAOException("Error while preparing SQL-statement for review posting", e);
+        } finally {
+            connectionPool.closeConnection(connection, preparedStatement);
+        }
+    }
+
+    @Override
+    public void deleteReview(int userId, int showId) throws DAOException {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        try {
+            connection = connectionPool.takeConnection();
+
+            Configuration queryConfig = ConfigurationFactory.getInstance().getShowQueryConfig();
+            String deleteUserReview = queryConfig.getSqlQuery(SqlQueryName.DELETE_USER_REVIEW);
+
+            preparedStatement = connection.prepareStatement(deleteUserReview);
+
+            preparedStatement.setInt(1, userId);
+            preparedStatement.setInt(2, showId);
+
+            preparedStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new DAOException("Error while preparing SQL-statement for review deletion", e);
+        } finally {
+            connectionPool.closeConnection(connection, preparedStatement);
         }
     }
 

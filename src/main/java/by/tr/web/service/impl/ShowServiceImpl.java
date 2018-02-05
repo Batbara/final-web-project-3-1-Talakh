@@ -3,7 +3,11 @@ package by.tr.web.service.impl;
 import by.tr.web.controller.constant.JspAttribute;
 import by.tr.web.dao.ShowDAO;
 import by.tr.web.dao.factory.DAOFactory;
+import by.tr.web.domain.Country;
+import by.tr.web.domain.Genre;
+import by.tr.web.domain.User;
 import by.tr.web.domain.UserReview;
+import by.tr.web.domain.builder.UserReviewBuilder;
 import by.tr.web.exception.dao.common.DAOException;
 import by.tr.web.exception.service.common.ServiceException;
 import by.tr.web.service.ShowService;
@@ -40,6 +44,33 @@ public class ShowServiceImpl implements ShowService {
     }
 
     @Override
+    public List<Country> takeCountryList(String lang) throws ServiceException {
+        DataTypeValidator validator = ValidatorFactory.getInstance().getDataTypeValidator();
+        validator.checkLanguage(lang);
+        ShowDAO showDAO = DAOFactory.getInstance().getShowDAO();
+
+        try {
+            return showDAO.takeCountryList(lang);
+        } catch (DAOException e) {
+            throw new ServiceException("Cannot take country list", e);
+        }
+    }
+
+    @Override
+    public List<Genre> takeGenreList(String lang) throws ServiceException {
+        DataTypeValidator validator = ValidatorFactory.getInstance().getDataTypeValidator();
+        validator.checkLanguage(lang);
+
+        ShowDAO showDAO = DAOFactory.getInstance().getShowDAO();
+
+        try {
+            return showDAO.takeGenreList(lang);
+        } catch (DAOException e) {
+            throw new ServiceException("Cannot take genre list", e);
+        }
+    }
+
+    @Override
     public void addUserRate(UserReview userReviewRate) throws ServiceException {
 
         UserReviewValidator validator = ValidatorFactory.getInstance().getUserReviewValidator();
@@ -64,6 +95,38 @@ public class ShowServiceImpl implements ShowService {
             showDAO.addReview(userReview);
         } catch (DAOException e) {
             throw new ServiceException("Cannot add user review for show", e);
+        }
+    }
+
+    @Override
+    public void postUserReview(UserReview userReview) throws ServiceException {
+        UserReviewValidator validator = ValidatorFactory.getInstance().getUserReviewValidator();
+        validator.checkShowInReview(userReview);
+        validator.checkUserInReview(userReview);
+
+        ShowDAO showDAO = DAOFactory.getInstance().getShowDAO();
+        int showId = userReview.getShowId();
+        int userId = userReview.getUser().getId();
+        try {
+            showDAO.postReview(userId, showId);
+        } catch (DAOException e) {
+            throw new ServiceException("Cannot post user review", e);
+        }
+    }
+
+    @Override
+    public void deleteUserReview(UserReview userReview) throws ServiceException {
+        UserReviewValidator validator = ValidatorFactory.getInstance().getUserReviewValidator();
+        validator.checkShowInReview(userReview);
+        validator.checkUserInReview(userReview);
+
+        ShowDAO showDAO = DAOFactory.getInstance().getShowDAO();
+        int showId = userReview.getShowId();
+        int userId = userReview.getUser().getId();
+        try {
+            showDAO.deleteReview(userId, showId);
+        } catch (DAOException e) {
+            throw new ServiceException("Cannot delete user review", e);
         }
     }
 
@@ -116,6 +179,27 @@ public class ShowServiceImpl implements ShowService {
         validator.checkForPositive(parameter);
         return Integer.parseInt(parameter);
     }
+
+    @Override
+    public UserReview retrieveUserReview(HttpServletRequest request) throws ServiceException {
+
+        int showId = retrieveShowId(request);
+
+        String userIdString = request.getParameter(JspAttribute.USER_ID);
+
+        DataTypeValidator validator = ValidatorFactory.getInstance().getDataTypeValidator();
+        validator.checkForPositive(userIdString);
+        int userId = Integer.parseInt(userIdString);
+
+        UserReview userReview = new UserReviewBuilder()
+                .addShowId(showId)
+                .addUser(new User(userId))
+                .create();
+
+        return userReview;
+
+    }
+
 
     @Override
     public int countShowReviews(String showId) throws ServiceException {

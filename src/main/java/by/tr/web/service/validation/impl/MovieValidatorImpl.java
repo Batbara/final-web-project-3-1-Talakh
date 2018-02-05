@@ -2,12 +2,14 @@ package by.tr.web.service.validation.impl;
 
 import by.tr.web.domain.Movie;
 import by.tr.web.exception.service.common.ServiceException;
+import by.tr.web.exception.service.common.ValidationException;
 import by.tr.web.exception.service.show.InvalidOrderTypeException;
 import by.tr.web.service.factory.ValidatorFactory;
 import by.tr.web.service.validation.DataTypeValidator;
+import by.tr.web.service.validation.MovieValidator;
 import by.tr.web.service.validation.ShowValidator;
 
-public class MovieValidatorImpl implements ShowValidator {
+public class MovieValidatorImpl implements ShowValidator, MovieValidator {
     @Override
     public boolean checkOrderType(String inputOrderType) throws InvalidOrderTypeException {
         if (inputOrderType == null) {
@@ -43,5 +45,19 @@ public class MovieValidatorImpl implements ShowValidator {
             throw new ServiceException("Unexpected error while validating ordered movie list parameters");
         }
         return true;
+    }
+
+    @Override
+    public boolean validateMpaaRating(String mpaaRatingInput) throws ValidationException {
+        if (mpaaRatingInput == null) {
+            throw new ValidationException("Mpaa rating is empty");
+        }
+        for (Movie.MPAARating mpaaRating : Movie.MPAARating.values()) {
+            String ratingName = mpaaRating.name();
+            if (ratingName.equalsIgnoreCase(mpaaRatingInput)) {
+                return true;
+            }
+        }
+        throw new ValidationException("Invalid mpaa rating parameter");
     }
 }

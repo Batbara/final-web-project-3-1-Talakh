@@ -23,6 +23,27 @@
         <cp:commandName>take_reviews_on_moder</cp:commandName>
         <cp:className>by.tr.web.controller.command.impl.admin_command.TakeReviewsOnModeration</cp:className>
     </cp:command>
+    <cp:command scope="admin">
+        <cp:commandName>post_review</cp:commandName>
+        <cp:className>by.tr.web.controller.command.impl.admin_command.PostReview</cp:className>
+    </cp:command>
+    <cp:command scope="admin">
+        <cp:commandName>delete_review</cp:commandName>
+        <cp:className>by.tr.web.controller.command.impl.admin_command.DeleteReview</cp:className>
+    </cp:command>
+    <cp:command scope="admin">
+        <cp:commandName>add_movie</cp:commandName>
+        <cp:className>by.tr.web.controller.command.impl.admin_command.AddMovie</cp:className>
+    </cp:command>
+    <cp:command scope="admin">
+        <cp:commandName>take_country_list</cp:commandName>
+        <cp:className>by.tr.web.controller.command.impl.admin_command.TakeCountryList</cp:className>
+    </cp:command>
+    <cp:command scope="admin">
+        <cp:commandName>take_genre_list</cp:commandName>
+        <cp:className>by.tr.web.controller.command.impl.admin_command.TakeGenreList</cp:className>
+    </cp:command>
+
     <cp:command>
         <cp:commandName>change_language</cp:commandName>
         <cp:className>by.tr.web.controller.command.impl.user_command.ChangeLanguageImpl</cp:className>

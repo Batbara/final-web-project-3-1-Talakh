@@ -9,6 +9,7 @@ import by.tr.web.domain.User;
 import by.tr.web.domain.builder.UserBuilder;
 import by.tr.web.exception.dao.common.DAOException;
 import by.tr.web.exception.dao.user.PasswordDAOException;
+import by.tr.web.exception.service.common.EmptyParameterException;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
@@ -93,11 +94,11 @@ public class UserDAOSqlImplTest {
     }
 
     @Test
-    public void testUserSuccessfulLogin() throws DAOException, ParseException {
+    public void testUserSuccessfulLogin() throws DAOException, ParseException, EmptyParameterException {
         String userName = "Maggie";
         String password = "12345";
         String lang = "ru";
-        Timestamp regDate = DateTimeUtil.getTimeFromString("2018-01-19T19:19:36", DEFAULT_TIME_PATTERN);
+        Timestamp regDate = DateTimeUtil.getTimestampFromString("2018-01-19T19:19:36", DEFAULT_TIME_PATTERN);
 
         User expectedUser = new UserBuilder()
                 .addId(37)

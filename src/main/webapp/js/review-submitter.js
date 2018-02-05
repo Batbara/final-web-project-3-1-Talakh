@@ -16,7 +16,7 @@ $(document).ready(function () {
     $("#add-review-form").on("submit", function (event) {
         var form = $(this);
         event.preventDefault();
-        var newContent = $('#reviewContent').val().replace(/\r\n|\r|\n/g,"\\n");
+        var newContent = $('#reviewContent').val().replace(/\r\n|\r|\n/g, "\\n");
         alert(newContent);
         $('#reviewContent').val(newContent);
         $.ajax({
@@ -35,8 +35,55 @@ $(document).ready(function () {
             }
         });
     });
+
+
+    $('#postSuccessAlert, #deleteReviewSuccessAlert').on('close.bs.alert', function () {
+        location.reload(true);
+    });
 });
 
+function deleteReview(button) {
+    var reviewId = $(button).attr("class").split(" ").pop();
+    var form = $('#deleteReviewForm'+reviewId);
+    $.ajax({
+        type: form.attr('method'),
+        url: form.attr('action'),
+        data: form.serialize(),
+        success: function (data) {
+            if (data === 'success') {
+                $('#deleteReviewSuccessAlert').show();
+            } else {
+                $('#reviewFailureAlert').show();
+            }
+        },
+        error: function (data) {
+            $('#reviewFailureAlert').show();
+        }
+    });
 
+}
+
+function postReview(button) {
+    var reviewId = $(button).attr("class").split(" ").pop();
+    var form = $('#postReviewForm'+reviewId);
+    $.ajax({
+        type: form.attr('method'),
+        url: form.attr('action'),
+        data: form.serialize(),
+        success: function (data) {
+            if (data === 'success') {
+                $('#postSuccessAlert').show();
+
+            } else {
+                $('#reviewFailureAlert').show();
+            }
+        },
+        error: function (data) {
+            $('#reviewFailureAlert').show();
+        }
+    });
+
+
+}
 
 

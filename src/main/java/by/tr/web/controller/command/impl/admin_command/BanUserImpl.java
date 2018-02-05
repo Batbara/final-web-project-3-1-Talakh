@@ -75,7 +75,7 @@ public class BanUserImpl implements Command {
         BanReason banReason = getBanReason(request);
         banInfo.setBanReason(banReason);
 
-        Timestamp banTime = DateTimeUtil.getTimeFromString(banTimeParameter, FrontControllerParameter.DEFAULT_TIME_PATTERN);
+        Timestamp banTime = DateTimeUtil.getTimestampFromString(banTimeParameter, FrontControllerParameter.DEFAULT_TIMESTAMP_PATTERN);
         banInfo.setBanTime(banTime);
 
         return banInfo;

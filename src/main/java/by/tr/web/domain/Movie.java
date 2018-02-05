@@ -5,8 +5,8 @@ import java.io.Serializable;
 public class Movie extends Show implements Serializable {
     private static final long serialVersionUID = -7910806745825801682L;
 
-    private String boxOffice;
-    private String budget;
+    private long boxOffice;
+    private long budget;
     private MPAARating mpaaRating;
 
     public enum MPAARating {
@@ -26,22 +26,32 @@ public class Movie extends Show implements Serializable {
         this.setShowID(id);
     }
 
-    public String getBoxOffice() {
+    public String getFormattedBoxOffice() {
 
-        return getFormattedString(boxOffice);
+        return getFormattedString(Long.toString(boxOffice));
+    }
+
+    public String getFormattedBudget() {
+
+        return getFormattedString(Long.toString(budget));
+    }
+
+    public long getBoxOffice() {
+
+        return boxOffice;
     }
 
     public void setBoxOffice(long boxOffice) {
-        this.boxOffice = String.valueOf(boxOffice);
+        this.boxOffice =boxOffice;
     }
 
-    public String getBudget() {
+    public long getBudget() {
 
-        return getFormattedString(budget);
+        return budget;
     }
 
     public void setBudget(long budget) {
-        this.budget = String.valueOf(budget);
+        this.budget =budget;
     }
 
     public void setMpaaRating(MPAARating mpaaRating) {
@@ -51,7 +61,9 @@ public class Movie extends Show implements Serializable {
     public MPAARating getMpaaRating() {
         return mpaaRating;
     }
-
+    public String getFormattedMpaaRating(){
+        return mpaaRating.toString().replace("_", "-").toUpperCase();
+    }
     public void setMpaaRating(String rating) {
         if (rating != null) {
             this.mpaaRating = MPAARating.valueOf(transformMPAAString(rating));
@@ -69,16 +81,16 @@ public class Movie extends Show implements Serializable {
 
         Movie movie = (Movie) o;
 
-        if (boxOffice != null ? !boxOffice.equals(movie.boxOffice) : movie.boxOffice != null) return false;
-        if (budget != null ? !budget.equals(movie.budget) : movie.budget != null) return false;
+        if (boxOffice != movie.boxOffice) return false;
+        if (budget != movie.budget) return false;
         return mpaaRating == movie.mpaaRating;
     }
 
     @Override
     public int hashCode() {
         int result = super.hashCode();
-        result = 31 * result + (boxOffice != null ? boxOffice.hashCode() : 0);
-        result = 31 * result + (budget != null ? budget.hashCode() : 0);
+        result = 31 * result + (int) (boxOffice ^ (boxOffice >>> 32));
+        result = 31 * result + (int) (budget ^ (budget >>> 32));
         result = 31 * result + (mpaaRating != null ? mpaaRating.hashCode() : 0);
         return result;
     }

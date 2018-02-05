@@ -2,7 +2,7 @@
 @import 'https://fonts.googleapis.com/css?family=Fredericka+the+Great';
 @import 'https://fonts.googleapis.com/css?family=Tinos:400,700';
 
-.movie-table, .user-table {
+.show-table, .user-table {
 
     color: #595151;
     font-size: 18px;
@@ -13,11 +13,11 @@
     margin-bottom: 50px;
 }
 
-.movie-table {
+.show-table {
     max-width: 750px;
 }
 
-table {
+.users-table > table, .show-table > table {
     border: 10px solid #50434D;
     background-color: #B8C99D;
     font-family: 'Tinos', serif;
@@ -88,7 +88,7 @@ table {
     border-bottom: 5px solid #50434D;
 }
 
-.movie-table td {
+.show-table td {
 
     border-bottom: 10px solid #50434D;
 }
@@ -129,7 +129,9 @@ table {
 th {
     text-align: center;
 }
-
+tr.review-row{
+    margin-bottom: 20px;
+}
 tr.bannedUser {
     background-color: rgba(220, 64, 51, 0.52);
 }

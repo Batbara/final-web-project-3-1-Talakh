@@ -4,6 +4,7 @@ import by.tr.web.controller.constant.FrontControllerParameter;
 import by.tr.web.dao.MovieDAO;
 import by.tr.web.dao.factory.DAOFactory;
 import by.tr.web.domain.Movie;
+import by.tr.web.domain.Show;
 import by.tr.web.exception.dao.common.DAOException;
 import by.tr.web.exception.dao.movie.CounterDAOException;
 import by.tr.web.exception.service.common.ServiceException;
@@ -47,6 +48,16 @@ public class MovieServiceImpl implements MovieService {
             return movieDAO.takeMovie(movieId, lang);
         } catch (DAOException e) {
             throw new ServiceException("Error while taking movie", e);
+        }
+    }
+
+    @Override
+    public int addMovie(Movie movie, Show russianTranslation) throws ServiceException {
+        MovieDAO movieDAO = DAOFactory.getInstance().getMovieDAO();
+        try {
+            return movieDAO.addMovie(movie, russianTranslation);
+        } catch (DAOException e) {
+            throw new ServiceException("Cannot add movie to data base", e);
         }
     }
 

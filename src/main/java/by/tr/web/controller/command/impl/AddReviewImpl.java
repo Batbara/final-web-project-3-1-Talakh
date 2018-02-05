@@ -26,7 +26,6 @@ public class AddReviewImpl implements Command {
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute(JspAttribute.USER);
 
-
         response.setContentType(FrontControllerParameter.TEXT_HTML_CONTENT_TYPE);
         response.setCharacterEncoding(request.getCharacterEncoding());
         PrintWriter out = response.getWriter();

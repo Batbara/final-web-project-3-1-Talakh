@@ -27,7 +27,7 @@
             <div class="show-id ${currentTvShow.showID}"><b><c:out value="${id}"/></b></div>
             <c:set var="id" value="${id+1}"/>
         </td>
-        <td class="poster-cell"><img src="/images${currentTvShow.poster}.jpg" class="img-thumbnail poster"></td>
+        <td class="poster-cell"><img src="${pageContext.request.contextPath}${currentTvShow.poster}" class="img-thumbnail poster"></td>
         <td class="show-title-cell">
             <a href="${pageContext.request.contextPath}/mpb?command=take_tv_show&showId=${currentTvShow.showID}">
                 <c:out value="${currentTvShow.title}"/></a>

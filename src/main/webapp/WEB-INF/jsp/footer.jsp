@@ -8,6 +8,12 @@
 
 <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.9/validator.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
+
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/moment-with-locales.min.js"></script>
+
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/bootstrap-datetimepicker.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/i18n/defaults-ru_RU.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/scroll.js"></script>
 <script src="${pageContext.request.contextPath}/js/header.js"></script>
 

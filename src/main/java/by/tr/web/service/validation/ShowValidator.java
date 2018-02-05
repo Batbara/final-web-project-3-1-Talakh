@@ -17,9 +17,9 @@ public interface ShowValidator {
 
         ValidatorFactory validatorFactory = ValidatorFactory.getInstance();
         DataTypeValidator dataTypeValidator = validatorFactory.getDataTypeValidator();
-        if (!dataTypeValidator.checkLanguage(lang) && !dataTypeValidator.checkForPositive(showId)) {
-            throw new ServiceException("Invalid input parameters");
-        }
+
+        dataTypeValidator.checkLanguage(lang);
+        dataTypeValidator.checkForPositive(showId);
         return true;
     }
 }

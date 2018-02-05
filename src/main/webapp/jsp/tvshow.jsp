@@ -13,6 +13,7 @@
 
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/tv-show.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/show.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/review.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/starrr.css">
     <title>
         <jsp:getProperty name="show" property="title"/>
@@ -39,7 +40,7 @@
                        <mpb:tv-show-ref tvShow="${show}"/>
                     </a>
                 </span>
-                    <div class="posterBlock"><img src="/images<jsp:getProperty name = "show" property = "poster"/>.jpg"
+                    <div class="posterBlock"><img src="${pageContext.request.contextPath}<jsp:getProperty name = "show" property = "poster"/>"
                                                   class="poster"></div>
                 </div>
 

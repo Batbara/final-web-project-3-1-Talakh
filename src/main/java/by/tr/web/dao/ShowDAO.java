@@ -1,5 +1,7 @@
 package by.tr.web.dao;
 
+import by.tr.web.domain.Country;
+import by.tr.web.domain.Genre;
 import by.tr.web.domain.UserReview;
 import by.tr.web.exception.dao.common.DAOException;
 import by.tr.web.exception.dao.common.UnsupportedOperationException;
@@ -19,7 +21,15 @@ public interface ShowDAO {
 
     List<UserReview> takeReviewsOnModeration(int startReview, int reviewsNum) throws DAOException;
 
+    List<Country> takeCountryList(String lang) throws DAOException;
+
+    List<Genre> takeGenreList(String lang) throws DAOException;
+
     int countShowReviews(int showId) throws DAOException;
+
+    void postReview(int userId, int showId) throws DAOException;
+
+    void deleteReview(int userId, int showId) throws DAOException;
 
     int countReviewsOnModeration() throws DAOException;
 

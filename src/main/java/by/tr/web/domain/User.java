@@ -27,6 +27,10 @@ public class User implements Serializable {
         ADMIN, CASUAL_VIEWER, MOVIE_FAN, REVIEWER, CRITIC
     }
 
+    public User(int userId){
+        this();
+        this.id = userId;
+    }
     public User() {
         banInfo = new BanInfo();
         userStatus = UserStatus.CASUAL_VIEWER;

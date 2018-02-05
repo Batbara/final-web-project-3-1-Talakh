@@ -28,5 +28,20 @@ public final class JspAttribute {
     public static final String REVIEW_CONTENT = "reviewContent";
     public static final String REVIEWS_NUMBER = "reviewsNumber";
     public static final String REVIEWS_ON_MODERATION_LIST = "reviewsOnModerationList";
+
+    public static final String SHOW_SYNOPSIS_EN = "synopsis_en";
+    public static final String SHOW_SYNOPSIS_RU = "synopsis_ru";
+    public static final String SHOW_TITLE_RU = "title_ru";
+    public static final String SHOW_TITLE_EN = "title_en";
+    public static final String SHOW_POSTER_EN = "poster_en";
+    public static final String SHOW_POSTER_RU = "poster_ru";
+    public static final String SHOW_RUNTIME = "runtime";
+    public static final String SHOW_PREMIERE_DATE = "premiereDate";
+    public static final String SHOW_COUNTRY_ID = "countryId";
+    public static final String SHOW_GENRE_ID = "genreId";
+
+    public static final String MOVIE_BUDGET = "budget";
+    public static final String MOVIE_BOX_OFFICE = "boxOffice";
+    public static final String MOVIE_MPAA_RATING = "mpaaRating";
     private JspAttribute(){}
 }

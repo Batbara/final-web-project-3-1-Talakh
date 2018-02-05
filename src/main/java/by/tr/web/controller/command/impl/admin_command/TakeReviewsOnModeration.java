@@ -29,24 +29,28 @@ public class TakeReviewsOnModeration implements Command {
         ShowService showService = ServiceFactory.getInstance().getShowService();
         try {
             int numberOfReviews = showService.countReviewsOnModeration();
+            if (numberOfReviews == 0) {
+                request.setAttribute(JspAttribute.REVIEWS_ON_MODERATION_LIST, null);
+            } else {
+                int currentReviewPage = tableService.takeCurrentPage(request);
+                request.setAttribute(TableParameter.PAGE, currentReviewPage);
 
-            int currentReviewPage = tableService.takeCurrentPage(request);
-            request.setAttribute(TableParameter.PAGE, currentReviewPage);
+                request.setAttribute(FrontControllerParameter.DEFAULT_RECORDS_ON_PAGE, 25);
+                int recordsOnPage = tableService.takeRecordsOnPage(request);
+                request.setAttribute(TableParameter.RECORDS_ON_PAGE, recordsOnPage);
 
-            request.setAttribute(FrontControllerParameter.DEFAULT_RECORDS_ON_PAGE, 25);
-            int recordsOnPage = tableService.takeRecordsOnPage(request);
-            request.setAttribute(TableParameter.RECORDS_ON_PAGE, recordsOnPage);
-
-            int recordsToTake = tableService.calcRecordsToTake(recordsOnPage, currentReviewPage, numberOfReviews);
+                int recordsToTake = tableService.calcRecordsToTake(recordsOnPage, currentReviewPage, numberOfReviews);
 
 
-            int startRecordNum = (currentReviewPage - 1) * recordsOnPage;
-            List<UserReview> reviewsOnModeration = showService.takeReviewsOnModeration(startRecordNum, recordsToTake);
-            request.setAttribute(JspAttribute.REVIEWS_ON_MODERATION_LIST, reviewsOnModeration);
+                int startRecordNum = (currentReviewPage - 1) * recordsOnPage;
+                List<UserReview> reviewsOnModeration = showService.takeReviewsOnModeration(startRecordNum, recordsToTake);
+                request.setAttribute(JspAttribute.REVIEWS_ON_MODERATION_LIST, reviewsOnModeration);
 
-            int numOfPages = (int) Math.ceil((double) numberOfReviews / recordsOnPage);
-            request.setAttribute(TableParameter.NUMBER_OF_PAGES, numOfPages);
+                int numOfPages = (int) Math.ceil((double) numberOfReviews / recordsOnPage);
+                request.setAttribute(TableParameter.NUMBER_OF_PAGES, numOfPages);
 
+
+            }
             request.getRequestDispatcher(JspPagePath.REVIEWS_MODERATION_PAGE_PATH).forward(request, response);
         } catch (CountingServiceException e) {
             logger.error("Error while counting reviews on moderation", e);

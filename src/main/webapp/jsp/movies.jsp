@@ -48,7 +48,7 @@
             </div>
         </div>
 
-        <div class="movie-table center-block">
+        <div class="show-table center-block">
 
             <c:import url="/WEB-INF/jsp/table_content/movieListTable.jsp"/>
 

@@ -4,17 +4,33 @@ import java.io.Serializable;
 
 public class Country implements Serializable {
     private static final long serialVersionUID = 6987578084084822484L;
+    private int countryId;
     private String countryName;
 
     public Country() {
+    }
+    public Country(int countryId) {
+        this.countryId = countryId;
     }
 
     public Country(String countryName) {
         this.countryName = countryName;
     }
+    public Country(int countryId, String countryName) {
+        this.countryId = countryId;
+        this.countryName = countryName;
+    }
+
+    public int getCountryId() {
+        return countryId;
+    }
 
     public String getCountryName() {
         return countryName;
+    }
+
+    public void setCountryId(int countryId) {
+        this.countryId = countryId;
     }
 
     public void setCountryName(String countryName) {

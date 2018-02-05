@@ -14,9 +14,10 @@
 <fmt:message bundle="${loc}" key="local.navButton.rus" var="rus"/>
 <fmt:message bundle="${loc}" key="local.navButton.eng" var="eng"/>
 <fmt:message bundle="${loc}" key="local.navButton.admin" var="administration"/>
-
+<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
 <header>
     <div id="loggedUser" data-logged-user="${sessionScope.user}"></div>
+    <div id="currLocale" data-local="${sessionScope.local}"></div>
     <nav class="top-navbar">
         <ul class="main-nav">
 

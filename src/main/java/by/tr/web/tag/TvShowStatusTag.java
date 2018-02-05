@@ -34,7 +34,7 @@ public class TvShowStatusTag extends TagSupport {
         }
 
         String lang = RequestUtil.getLanguage((HttpServletRequest) pageContext.getRequest());
-        ResourceBundle resourceBundle = ResourceBundle.getBundle(FrontControllerParameter.LOCALISATION_BUNDLE_NAME,
+        ResourceBundle resourceBundle = ResourceBundle.getBundle(FrontControllerParameter.LOCALIZATION_BUNDLE_NAME,
                 Locale.forLanguageTag(lang));
         String tag = formTag(resourceBundle);
         JspWriter out = pageContext.getOut();

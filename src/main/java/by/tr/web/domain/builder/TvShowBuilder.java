@@ -123,6 +123,7 @@ public class TvShowBuilder extends ShowBuilder {
     public TvShow create() {
         TvShow tvShow = new TvShow();
         tvShow.setShowID(showID);
+        tvShow.setLanguage(language);
         tvShow.setTitle(title);
         tvShow.setSynopsis(synopsis);
         tvShow.setPoster(poster);

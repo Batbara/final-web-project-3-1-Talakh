@@ -8,6 +8,8 @@
       rel="stylesheet">
 <link rel="stylesheet" type="text/css"
       href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css">
+
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/normalize.css">
 <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/layout.css">

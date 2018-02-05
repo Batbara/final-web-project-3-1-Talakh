@@ -11,6 +11,7 @@ public class Show implements Serializable {
 
     private int showID;
 
+    private String language;
     private String title;
     private String synopsis;
     private String poster;
@@ -27,6 +28,9 @@ public class Show implements Serializable {
     private double userRating;
     private List<UserReview> reviewList;
 
+    public enum ShowType {
+        MOVIE, TV_SERIES
+    }
     public Show() {
         genreList = new ArrayList<>();
         countryList = new ArrayList<>();
@@ -39,6 +43,14 @@ public class Show implements Serializable {
 
     public void setShowID(int showID) {
         this.showID = showID;
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
     }
 
     public int getYear() {

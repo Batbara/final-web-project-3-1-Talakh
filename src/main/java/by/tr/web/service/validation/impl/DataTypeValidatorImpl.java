@@ -1,5 +1,7 @@
 package by.tr.web.service.validation.impl;
 
+import by.tr.web.exception.service.common.EmptyParameterException;
+import by.tr.web.exception.service.common.InvalidNumericalInput;
 import by.tr.web.exception.service.common.LangNotSupportedException;
 import by.tr.web.service.validation.DataTypeValidator;
 
@@ -23,23 +25,30 @@ public class DataTypeValidatorImpl implements DataTypeValidator {
     }
 
     @Override
-    public boolean checkForNotNegative(String number) {
-        if(number == null){
-            return false;
+    public boolean checkForNotNegative(String number) throws EmptyParameterException, InvalidNumericalInput {
+        if (number == null) {
+            throw new EmptyParameterException("Cannot check number for negative: parameter is empty");
         }
         Matcher matcher = CHECK_INT_PATTERN.matcher(number);
+
         if (matcher.matches()) {
-            return Integer.parseInt(number) >= 0;
+            if (Integer.parseInt(number) <= 0) {
+                throw new InvalidNumericalInput(number + " is negative");
+            }
+        } else {
+            throw new InvalidNumericalInput(number + " is not a number");
         }
-        return false;
+        return true;
     }
 
     @Override
-    public boolean checkForPositive(String number) {
+    public boolean checkForPositive(String number) throws EmptyParameterException, InvalidNumericalInput {
         boolean isNotNegative = checkForNotNegative(number);
-        if(isNotNegative){
-            return Integer.parseInt(number) != 0;
+        if (isNotNegative) {
+            if (Integer.parseInt(number) == 0) {
+                throw new InvalidNumericalInput(number + " is zero");
+            }
         }
-        return false;
+        return true;
     }
 }

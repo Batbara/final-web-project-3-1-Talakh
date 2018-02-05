@@ -1,0 +1,112 @@
+.reviewContent {
+    padding: 20px;
+    font-family: 'Tinos', serif;
+    text-align: justify;
+}
+.post-info {
+    background-color: #d5efab;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    align-items: center;
+
+}
+.reviews-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.postDate {
+    padding: 10px;
+    background-color: #97ad74;
+}
+.author {
+    margin-left: 20px;
+}
+.name {
+    padding-right: 5px;
+    padding-left: 5px;
+}
+.reviews-info {
+    margin-right: 10%;
+    margin-left: 5%;
+    padding: 10px;
+    font-size: 16px;
+    color: black;
+    background-color: #9e8a73;
+}
+.user-review-info{
+    text-align: center;
+    font-size: 18px;
+}
+.reviews-info {
+    margin-bottom: 5%;
+}
+.review-title{
+    text-align: center;
+    font-weight: bold;
+}
+
+.review{
+    margin-right: 10%;
+    margin-left: 5%;
+    width: 600px;
+    padding: 10px;
+    background-color: #cde0af;
+    color: black;
+}
+.addReview{
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+}
+.add-review-button {
+    margin-top: 20px;
+}
+.add-review-form {
+    max-width: 600px;
+}
+.reviews, .addReview {
+    margin-top: 2%;
+    padding: 2%;
+    font-family: 'Tinos', serif;
+
+}
+.overlay {
+    position: relative;
+}
+.overlay:after {
+    position: absolute;
+    content:"";
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    opacity: .5;
+}
+
+.review:after{
+    background-color: #eababa;
+}
+
+.review-control{
+    font-size: 20px;
+    margin-bottom: 50px;
+    margin-top: 5px;
+}
+.review-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.on-top-message {
+    position: fixed;
+    bottom: 0;
+    left: 20px;
+}
+@media screen and (max-width: 600px) {
+    .review {
+        width: 600px;
+    }
+}

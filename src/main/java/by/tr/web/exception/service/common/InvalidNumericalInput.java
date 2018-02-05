@@ -1,6 +1,6 @@
 package by.tr.web.exception.service.common;
 
-public class InvalidNumericalInput extends ServiceException {
+public class InvalidNumericalInput extends ValidationException {
     private static final long serialVersionUID = -7703534771764676640L;
 
     public InvalidNumericalInput() {

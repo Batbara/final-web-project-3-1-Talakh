@@ -13,6 +13,7 @@ import by.tr.web.domain.builder.UserBuilder;
 import by.tr.web.domain.builder.UserReviewBuilder;
 import by.tr.web.exception.dao.common.DAOException;
 import by.tr.web.exception.dao.movie.CounterDAOException;
+import by.tr.web.exception.service.common.EmptyParameterException;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
@@ -95,7 +96,7 @@ public class MovieDAOSqlImplTest {
     }
 
     @Test
-    public void testTakeMovieSuccessful() throws DAOException, ParseException {
+    public void testTakeMovieSuccessful() throws DAOException, ParseException, EmptyParameterException {
         int id = 23;
         String lang = "ru";
 
@@ -164,7 +165,7 @@ public class MovieDAOSqlImplTest {
         return movieList;
     }
 
-    private Movie formExpectedMovie(int id) throws ParseException {
+    private Movie formExpectedMovie(int id) throws ParseException, EmptyParameterException {
 
         String synopsis = "Четырехпалый Френки должен был переправить краденый алмаз из Англии в США " +
                 "своему боссу Эви. Но вместо этого герой попадает в эпицентр больших неприятностей." +
@@ -173,10 +174,10 @@ public class MovieDAOSqlImplTest {
                 "участием множества колоритных персонажей лондонского дна — русского гангстера, троих" +
                 " незадачливых грабителей, хитрого боксера и угрюмого громилы грозного мафиози. " +
                 "Каждый норовит в одиночку сорвать Большой Куш.";
-        long runTimeInMillis = DateTimeUtil.getTimeFromString("01:42:00", "hh:mm:ss").getTime();
+        long runTimeInMillis = DateTimeUtil.getTimestampFromString("01:42:00", "hh:mm:ss").getTime();
         Time runTime = new Time(runTimeInMillis);
 
-        long premiereDateInMillis = DateTimeUtil.getTimeFromString("2000-08-23", "yyyy-MM-dd").getTime();
+        long premiereDateInMillis = DateTimeUtil.getTimestampFromString("2000-08-23", "yyyy-MM-dd").getTime();
         java.sql.Date premiereDate = new Date(premiereDateInMillis);
 
         List<Genre> movieGenres = new ArrayList<>();
@@ -208,7 +209,7 @@ public class MovieDAOSqlImplTest {
         return movie;
     }
 
-    private List<UserReview> formReviews(int movieId) throws ParseException {
+    private List<UserReview> formReviews(int movieId) throws ParseException, EmptyParameterException {
 
         User user = new UserBuilder()
                 .addId(31)
@@ -235,7 +236,7 @@ public class MovieDAOSqlImplTest {
                 "Лично для меня «Большой куш» стал настоящим открытием и я могу смело сказать" +
                 " что это мой самый любимый фильм. ";
 
-        Timestamp postDate = DateTimeUtil.getTimeFromString("2018-01-21T19:10:49", DEFAULT_TIME_PATTERN);
+        Timestamp postDate = DateTimeUtil.getTimestampFromString("2018-01-21T19:10:49", DEFAULT_TIME_PATTERN);
 
         List<UserReview> reviews = new ArrayList<>();
         UserReview review = new UserReviewBuilder()

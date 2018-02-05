@@ -7,6 +7,7 @@ import by.tr.web.cookie.CookieNotFoundException;
 import by.tr.web.cookie.NoSuchCookieInRequest;
 import by.tr.web.domain.Movie;
 import by.tr.web.domain.TvShow;
+import by.tr.web.exception.service.common.EmptyParameterException;
 import by.tr.web.exception.service.common.ServiceException;
 import by.tr.web.exception.service.show.InvalidOrderTypeException;
 import by.tr.web.service.TableService;
@@ -19,48 +20,33 @@ import javax.servlet.http.HttpServletRequest;
 public class TableServiceImpl implements TableService {
     @Override
     public int takeCurrentPage(HttpServletRequest request) throws ServiceException {
-        int defaultPageValue = 1;
+        int defaultCurrentPageValue = 1;
 
         String currentPageString = request.getParameter(TableParameter.PAGE);
 
         DataTypeValidator validator = ValidatorFactory.getInstance().getDataTypeValidator();
-        boolean isPositive = validator.checkForPositive(currentPageString);
-
-        if (isPositive) {
-            return Integer.parseInt(currentPageString);
-        }
-
-        int currentPage;
         try {
-            String valueFromCookie = takeValueFromCookie(request);
-            currentPage = Integer.parseInt(valueFromCookie);
-        } catch (NoSuchCookieInRequest | CookieNotFoundException e) {
-            currentPage = defaultPageValue;
+            validator.checkForPositive(currentPageString);
+            return Integer.parseInt(currentPageString);
+        } catch (EmptyParameterException e) {
+            return determineValueFromCookie(request, defaultCurrentPageValue);
         }
-        return currentPage;
     }
 
     @Override
     public int takeRecordsOnPage(HttpServletRequest request) throws ServiceException {
-        int defaultValue = (Integer) request.getAttribute(FrontControllerParameter.DEFAULT_RECORDS_ON_PAGE);
+        int defaultRecordsOnPage = (Integer) request.getAttribute(FrontControllerParameter.DEFAULT_RECORDS_ON_PAGE);
 
         String recordsOnPageParameter = request.getParameter(TableParameter.RECORDS_ON_PAGE);
 
         DataTypeValidator validator = ValidatorFactory.getInstance().getDataTypeValidator();
-        boolean isPositive = validator.checkForPositive(recordsOnPageParameter);
-
-        if (isPositive) {
-            return Integer.parseInt(recordsOnPageParameter);
-        }
-
-        int currentPage;
         try {
-            String valueFromCookie = takeValueFromCookie(request);
-            currentPage = Integer.parseInt(valueFromCookie);
-        } catch (NoSuchCookieInRequest | CookieNotFoundException e) {
-            currentPage = defaultValue;
+            validator.checkForPositive(recordsOnPageParameter);
+            return Integer.parseInt(recordsOnPageParameter);
+        } catch (EmptyParameterException e) {
+            return determineValueFromCookie(request, defaultRecordsOnPage);
         }
-        return currentPage;
+
     }
 
     @Override
@@ -113,6 +99,17 @@ public class TableServiceImpl implements TableService {
         }
 
         return orderType;
+    }
+
+    private int determineValueFromCookie(HttpServletRequest request, int defaultValue) {
+        int currentPage;
+        try {
+            String valueFromCookie = takeValueFromCookie(request);
+            currentPage = Integer.parseInt(valueFromCookie);
+        } catch (NoSuchCookieInRequest | CookieNotFoundException e) {
+            currentPage = defaultValue;
+        }
+        return currentPage;
     }
 
     private String takeValueFromCookie(HttpServletRequest request) throws NoSuchCookieInRequest, CookieNotFoundException {

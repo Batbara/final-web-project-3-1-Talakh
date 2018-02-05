@@ -51,6 +51,11 @@
             <rtexprvalue>true</rtexprvalue>
         </attribute>
     </tag>
+    <tag>
+        <name>mpaa-list</name>
+        <tag-class>by.tr.web.tag.MpaaSelectionListTag</tag-class>
+        <body-content>empty</body-content>
+    </tag>
 
     <tag>
         <name>show-rating</name>

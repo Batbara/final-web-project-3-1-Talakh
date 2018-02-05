@@ -42,7 +42,7 @@ public class SetUserReviewStatus extends TagSupport {
 
         List<UserReview> userReviews = user.getUserReviews();
         for(UserReview review : userReviews){
-            if(review.getShowId() == showId){
+            if(review.getShowId() == showId && review.getReviewContent() != null){
                 return review.getReviewStatus().toString();
             }
         }

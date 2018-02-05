@@ -109,6 +109,7 @@ public class MovieBuilder extends ShowBuilder {
     public Movie create() {
         Movie movie = new Movie();
         movie.setShowID(showID);
+        movie.setLanguage(language);
         movie.setTitle(title);
         movie.setSynopsis(synopsis);
         movie.setPoster(poster);

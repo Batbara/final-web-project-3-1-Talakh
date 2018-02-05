@@ -7,6 +7,8 @@ import by.tr.web.domain.BanReason;
 import by.tr.web.domain.User;
 import by.tr.web.exception.dao.common.DAOException;
 import by.tr.web.exception.dao.user.PasswordDAOException;
+import by.tr.web.exception.service.common.EmptyParameterException;
+import by.tr.web.exception.service.common.InvalidNumericalInput;
 import by.tr.web.exception.service.common.ServiceException;
 import by.tr.web.exception.service.user.CountingUserException;
 import by.tr.web.exception.service.user.EmailAlreadyRegisteredException;
@@ -148,10 +150,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public void unbanUser(String userID) throws ServiceException {
         DataTypeValidator validator = ValidatorFactory.getInstance().getDataTypeValidator();
-        boolean isIDValid = validator.checkForPositive(userID);
-        if (!isIDValid) {
-            throw new InvalidUserIDException("Incorrect user ID input");
+        try {
+            validator.checkForPositive(userID);
+        } catch (InvalidNumericalInput | EmptyParameterException e) {
+            throw new InvalidUserIDException("Incorrect user ID input", e);
         }
+
         UserDAO userDAO = DAOFactory.getInstance().getUserDAO();
         try {
             int idFromString = Integer.parseInt(userID);
