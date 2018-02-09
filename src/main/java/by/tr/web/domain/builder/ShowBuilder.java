@@ -2,15 +2,15 @@ package by.tr.web.domain.builder;
 
 import by.tr.web.domain.Country;
 import by.tr.web.domain.Genre;
+import by.tr.web.domain.Review;
 import by.tr.web.domain.Show;
-import by.tr.web.domain.UserReview;
 
 import java.sql.Date;
 import java.sql.Time;
 import java.util.List;
 
 public abstract class ShowBuilder {
-    protected int showID;
+    protected int showId;
 
     protected String language;
     protected String title;
@@ -25,7 +25,8 @@ public abstract class ShowBuilder {
     protected List<Country> countries;
 
     protected double userRating;
-    protected List<UserReview> reviews;
+    protected List<Review> reviews;
+    protected Show.ShowType showType;
 
     public ShowBuilder addLanguage(String language){
         this.language = language;
@@ -48,8 +49,8 @@ public abstract class ShowBuilder {
         return this;
     }
 
-    public ShowBuilder addId(int showID) {
-        this.showID = showID;
+    public ShowBuilder addId(int showId) {
+        this.showId = showId;
         return this;
     }
 
@@ -78,8 +79,12 @@ public abstract class ShowBuilder {
         return this;
     }
 
-    public ShowBuilder addReviews(List<UserReview> reviews) {
+    public ShowBuilder addReviews(List<Review> reviews) {
         this.reviews = reviews;
+        return this;
+    }
+    public ShowBuilder addShowType(String showType) {
+        this.showType = Show.ShowType.valueOf(showType.toUpperCase());
         return this;
     }
 

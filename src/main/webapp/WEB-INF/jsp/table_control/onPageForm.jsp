@@ -13,9 +13,17 @@
         <input type="hidden" name="order" value="${requestScope.order}">
 
         <c:choose>
+            <c:when test="${param.command == 'take_show_list'}">
+                <label for="showsPageSelection">${onPage}</label>
+                <select name="onPage" id="showsPageSelection">
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                </select>
+            </c:when>
             <c:when test="${param.command == 'take_user_list'}">
-                <label for="onUsersPageSelection">${onPage}</label>
-                <select name="onPage" id="onUsersPageSelection">
+                <label for="usersPageSelection">${onPage}</label>
+                <select name="onPage" id="usersPageSelection">
                     <option value="25">25</option>
                     <option value="50">50</option>
                     <option value="100">100</option>

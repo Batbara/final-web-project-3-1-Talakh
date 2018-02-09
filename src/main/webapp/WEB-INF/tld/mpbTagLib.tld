@@ -11,7 +11,7 @@
 
     <tag>
         <name>ban-info</name>
-        <tag-class>by.tr.web.tag.BanInfoTag</tag-class>
+        <tag-class>by.tr.web.tag.user.BanInfoTag</tag-class>
         <body-content>empty</body-content>
         <attribute>
             <name>user</name>
@@ -22,7 +22,7 @@
 
     <tag>
         <name>user-status</name>
-        <tag-class>by.tr.web.tag.UserStatusTag</tag-class>
+        <tag-class>by.tr.web.tag.user.UserStatusTag</tag-class>
         <body-content>empty</body-content>
         <attribute>
             <name>userStatus</name>
@@ -33,7 +33,7 @@
 
     <tag>
         <name>tvShow-status</name>
-        <tag-class>by.tr.web.tag.TvShowStatusTag</tag-class>
+        <tag-class>by.tr.web.tag.tv_show.TvShowStatusTag</tag-class>
         <body-content>empty</body-content>
         <attribute>
             <name>status</name>
@@ -43,7 +43,7 @@
     </tag>
     <tag>
         <name>mpaa-rating</name>
-        <tag-class>by.tr.web.tag.MpaaRatingTag</tag-class>
+        <tag-class>by.tr.web.tag.movie.MpaaRatingTag</tag-class>
         <body-content>empty</body-content>
         <attribute>
             <name>mpaaRating</name>
@@ -53,13 +53,13 @@
     </tag>
     <tag>
         <name>mpaa-list</name>
-        <tag-class>by.tr.web.tag.MpaaSelectionListTag</tag-class>
+        <tag-class>by.tr.web.tag.movie.MpaaSelectionListTag</tag-class>
         <body-content>empty</body-content>
     </tag>
 
     <tag>
         <name>show-rating</name>
-        <tag-class>by.tr.web.tag.ShowRatingTag</tag-class>
+        <tag-class>by.tr.web.tag.show.ShowRatingTag</tag-class>
         <body-content>empty</body-content>
         <attribute>
             <name>show</name>
@@ -74,7 +74,7 @@
     </tag>
     <tag>
         <name>set-review-status</name>
-        <tag-class>by.tr.web.tag.SetUserReviewStatus</tag-class>
+        <tag-class>by.tr.web.tag.user.SetUserReviewStatusTag</tag-class>
         <body-content>empty</body-content>
         <attribute>
             <name>showId</name>
@@ -94,10 +94,25 @@
     </tag>
     <tag>
         <name>tv-show-ref</name>
-        <tag-class>by.tr.web.tag.TvShowRefTag</tag-class>
+        <tag-class>by.tr.web.tag.tv_show.TvShowRefTag</tag-class>
         <body-content>empty</body-content>
         <attribute>
             <name>tvShow</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+    <tag>
+        <name>tv-show-status-list</name>
+        <tag-class>by.tr.web.tag.tv_show.TvShowStatusListTag</tag-class>
+        <body-content>empty</body-content>
+    </tag>
+    <tag>
+        <name>show-type</name>
+        <tag-class>by.tr.web.tag.show.ShowTypeTag</tag-class>
+        <body-content>empty</body-content>
+        <attribute>
+            <name>showType</name>
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>

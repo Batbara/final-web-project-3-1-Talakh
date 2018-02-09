@@ -20,8 +20,7 @@ public class User implements Serializable {
     private BanInfo banInfo;
 
     private Timestamp registrationDate;
-    private String userAvatar;
-    private List<UserReview> userReviews;
+    private List<Review> reviews;
 
     public enum UserStatus {
         ADMIN, CASUAL_VIEWER, MOVIE_FAN, REVIEWER, CRITIC
@@ -34,7 +33,7 @@ public class User implements Serializable {
     public User() {
         banInfo = new BanInfo();
         userStatus = UserStatus.CASUAL_VIEWER;
-        userReviews = new ArrayList<>();
+        reviews = new ArrayList<>();
     }
 
     public User(String userName, String password, String email) {
@@ -123,29 +122,21 @@ public class User implements Serializable {
         this.registrationDate = registrationDate;
     }
 
-    public List<UserReview> getUserReviews() {
-        return userReviews;
+    public List<Review> getReviews() {
+        return reviews;
     }
 
-    public void setUserReviews(List<UserReview> userReviews) {
-        this.userReviews = userReviews;
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
     }
 
-    public void addUserReview(UserReview review) {
-        userReviews.add(review);
-    }
-
-    public String getUserAvatar() {
-        return userAvatar;
-    }
-
-    public void setUserAvatar(String userAvatar) {
-        this.userAvatar = userAvatar;
+    public void addUserReview(Review review) {
+        reviews.add(review);
     }
 
     public int getUserRateForShow (int showId){
         int userRate = 0;
-        for(UserReview review : userReviews){
+        for(Review review : reviews){
             if(review.getShowId() == showId){
                 return review.getUserRate();
             }
@@ -169,7 +160,7 @@ public class User implements Serializable {
         if (registrationDate != null ? !registrationDate.equals(user.registrationDate) : user.registrationDate != null)
             return false;
 
-        return userReviews != null ? userReviews.equals(user.userReviews) : user.userReviews == null;
+        return reviews != null ? reviews.equals(user.reviews) : user.reviews == null;
     }
 
     @Override
@@ -182,7 +173,7 @@ public class User implements Serializable {
         result = 31 * result + (isBanned ? 1 : 0);
         result = 31 * result + (banInfo != null ? banInfo.hashCode() : 0);
         result = 31 * result + (registrationDate != null ? registrationDate.hashCode() : 0);
-        result = 31 * result + (userReviews != null ? userReviews.hashCode() : 0);
+        result = 31 * result + (reviews != null ? reviews.hashCode() : 0);
         return result;
     }
 
@@ -197,7 +188,7 @@ public class User implements Serializable {
                 ", isBanned=" + isBanned +
                 ", banInfo=" + banInfo +
                 ", registrationDate=" + registrationDate +
-                ", userReviews=" + userReviews +
+                ", userReviews=" + reviews +
                 '}';
     }
 }

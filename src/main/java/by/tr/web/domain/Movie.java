@@ -23,7 +23,7 @@ public class Movie extends Show implements Serializable {
 
     public Movie(int id) {
         this();
-        this.setShowID(id);
+        this.setShowId(id);
     }
 
     public String getFormattedBoxOffice() {

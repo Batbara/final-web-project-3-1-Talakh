@@ -1,9 +1,10 @@
 package by.tr.web.filter;
 
-import by.tr.web.controller.command.CommandProvider;
+import by.tr.web.controller.command.command_provider.CommandProvider;
 import by.tr.web.controller.constant.FrontControllerParameter;
 import by.tr.web.controller.constant.JspAttribute;
 import by.tr.web.domain.User;
+import org.apache.log4j.Logger;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -17,6 +18,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 public class AccessChecker implements Filter {
+    private static final Logger logger = Logger.getLogger(AccessChecker.class);
     public void destroy() {
     }
 

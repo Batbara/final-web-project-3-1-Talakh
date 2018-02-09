@@ -19,6 +19,7 @@ public final class JspAttribute {
 
     public static final String MOVIES = "movies";
     public static final String SHOW = "show";
+    public static final String SHOWS = "shows";
     public static final String TV_SHOWS = "tvShows";
     public static final String USER_ID = "userId";
     public static final String SHOW_ID = "showId";
@@ -43,5 +44,11 @@ public final class JspAttribute {
     public static final String MOVIE_BUDGET = "budget";
     public static final String MOVIE_BOX_OFFICE = "boxOffice";
     public static final String MOVIE_MPAA_RATING = "mpaaRating";
+
+    public static final String TV_SHOW_SEASONS_NUMBER = "seasonsNum";
+    public static final String TV_SHOW_EPISODES_NUMBER = "episodesNum";
+    public static final String TV_SHOW_CHANNEL = "channel";
+    public static final String TV_SHOW_STATUS = "tvShowStatus";
+    public static final String TV_SHOW_FINISHED_YEAR = "finishedYear";
     private JspAttribute(){}
 }

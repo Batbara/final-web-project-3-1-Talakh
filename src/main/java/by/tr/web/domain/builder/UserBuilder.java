@@ -1,8 +1,8 @@
 package by.tr.web.domain.builder;
 
 import by.tr.web.domain.BanInfo;
+import by.tr.web.domain.Review;
 import by.tr.web.domain.User;
-import by.tr.web.domain.UserReview;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -20,12 +20,11 @@ public class UserBuilder {
     private BanInfo banInfo;
 
     private Timestamp registrationDate;
-    private String userAvatar;
-    private List<UserReview> userReviews;
+    private List<Review> reviews;
     public UserBuilder(){
         banInfo = new BanInfo();
         userStatus = User.UserStatus.CASUAL_VIEWER;
-        userReviews = new ArrayList<>();
+        reviews = new ArrayList<>();
     }
 
     public UserBuilder addId(int id) {
@@ -62,18 +61,14 @@ public class UserBuilder {
         this.banInfo = banInfo;
         return this;
     }
-    public UserBuilder addAvatar(String userAvatar) {
-        this.userAvatar = userAvatar;
-        return this;
-    }
 
     public UserBuilder addRegistrationDate(Timestamp registrationDate) {
         this.registrationDate = registrationDate;
         return this;
     }
 
-    public UserBuilder addUserReviews(List<UserReview> userReviews) {
-        this.userReviews = userReviews;
+    public UserBuilder addUserReviews(List<Review> reviews) {
+        this.reviews = reviews;
         return this;
     }
     public User create(){
@@ -89,8 +84,7 @@ public class UserBuilder {
         user.setBanInfo(banInfo);
 
         user.setRegistrationDate(registrationDate);
-        user.setUserAvatar(userAvatar);
-        user.setUserReviews(userReviews);
+        user.setReviews(reviews);
 
         return user;
     }

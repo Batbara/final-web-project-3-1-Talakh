@@ -119,11 +119,31 @@
         <servlet-name>NotFound</servlet-name>
         <url-pattern>/notfound</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ServerError</servlet-name>
+        <jsp-file>/WEB-INF/jsp/error/internal-error.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ServerError</servlet-name>
+        <url-pattern>/server_error</url-pattern>
+    </servlet-mapping>
     <servlet>
         <servlet-name>AddMovie</servlet-name>
-        <jsp-file>/WEB-INF/jsp/admin/addMovie.jsp</jsp-file>
+        <jsp-file>/WEB-INF/jsp/admin/addMoviePage.jsp</jsp-file>
     </servlet>
-
+    <servlet-mapping>
+        <servlet-name>AddMovie</servlet-name>
+        <url-pattern>/add/movie</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>AddTvShow</servlet-name>
+        <jsp-file>/WEB-INF/jsp/admin/addTvShowPage.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AddTvShow</servlet-name>
+        <url-pattern>/add/tv-show</url-pattern>
+    </servlet-mapping>
     <servlet>
         <servlet-name>ImageUploader</servlet-name>
         <servlet-class>by.tr.web.controller.FileUploader</servlet-class>
@@ -133,14 +153,21 @@
         <url-pattern>/upload</url-pattern>
     </servlet-mapping>
 
-    <servlet-mapping>
-        <servlet-name>AddMovie</servlet-name>
-        <url-pattern>/add/movie</url-pattern>
-    </servlet-mapping>
+
     <session-config>
         <session-timeout>480</session-timeout>
     </session-config>
-    
+
+
+    <filter>
+        <filter-name>NoCacheFilter</filter-name>
+        <filter-class>by.tr.web.filter.NoCacheFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>NoCacheFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
     <filter>
         <filter-name>CharsetFilter</filter-name>
         <filter-class>by.tr.web.filter.CharsetFilter</filter-class>
@@ -149,6 +176,12 @@
             <param-value>utf-8</param-value>
         </init-param>
     </filter>
+    <filter-mapping>
+        <filter-name>CharsetFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+        <url-pattern>/add/movie</url-pattern>
+    </filter-mapping>
+
     <filter>
         <filter-name>AccessChecker</filter-name>
         <filter-class>by.tr.web.filter.AccessChecker</filter-class>
@@ -156,10 +189,6 @@
     <filter-mapping>
         <filter-name>AccessChecker</filter-name>
         <url-pattern>/mpb</url-pattern>
-    </filter-mapping>
-    <filter-mapping>
-        <filter-name>CharsetFilter</filter-name>
-        <url-pattern>/*</url-pattern>
     </filter-mapping>
 
 </web-app>

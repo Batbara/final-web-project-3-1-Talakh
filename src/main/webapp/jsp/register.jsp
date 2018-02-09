@@ -5,12 +5,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <c:import url="/WEB-INF/jsp/styling.jsp"/>
+    <c:import url="/WEB-INF/jsp/page_structure/styling.jsp"/>
 
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/user-form.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/form-style.css">
     <fmt:setLocale value="${sessionScope.local}"/>
     <fmt:setBundle basename="localization.local" var="loc"/>
-    <fmt:message bundle="${loc}" key="local.message.signup" var="signupMessage"/>
+    <fmt:message bundle="${loc}" key="local.user.message.signup" var="signupMessage"/>
     <fmt:message bundle="${loc}" key="local.submit.signup" var="signupButton"/>
     <fmt:message bundle="${loc}" key="local.error.register.user" var="regUserError"/>
     <fmt:message bundle="${loc}" key="local.error.login" var="regLoginError"/>
@@ -21,7 +21,10 @@
     <title><c:out value="${signupButton}"/> | MotionPicture Bank [MPB]</title>
 </head>
 <body>
-<c:import url="/WEB-INF/jsp/header/header.jsp"/>
+<c:import url="/WEB-INF/jsp/page_structure/header.jsp"/>
+<c:if test="${sessionScope.user ne null}">
+    <c:redirect url="/index.jsp"/>
+</c:if>
 <div class="main">
     <nav class="side-nav"></nav>
     <article>
@@ -36,7 +39,7 @@
                         <fieldset>
                             <input type="hidden" name="command" value="register">
 
-                            <c:import url="/WEB-INF/jsp/form/usernameField.jsp"/>
+                            <c:import url="/WEB-INF/jsp/user/usernameField.jsp"/>
                             <div class="form-group">
 
                                 <div class="col-md-12">
@@ -52,7 +55,7 @@
                                     <div class="help-block with-errors"></div>
                                 </div>
                             </div>
-                            <c:import url="/WEB-INF/jsp/form/passwordField.jsp"/>
+                            <c:import url="/WEB-INF/jsp/user/passwordField.jsp"/>
 
 
                             <div class="form-group">
@@ -95,7 +98,7 @@
     <aside></aside>
 
 </div>
-<c:import url="/WEB-INF/jsp/footer.jsp"/>
+<c:import url="/WEB-INF/jsp/page_structure/footer.jsp"/>
 
 </body>
 </html>

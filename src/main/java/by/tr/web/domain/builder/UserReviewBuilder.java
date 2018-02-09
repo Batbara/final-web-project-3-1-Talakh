@@ -1,7 +1,7 @@
 package by.tr.web.domain.builder;
 
+import by.tr.web.domain.Review;
 import by.tr.web.domain.User;
-import by.tr.web.domain.UserReview;
 
 import java.sql.Timestamp;
 
@@ -16,11 +16,11 @@ public class UserReviewBuilder {
     private String reviewContent;
     private Timestamp postDate;
 
-    private UserReview.ReviewStatus reviewStatus;
+    private Review.ReviewStatus reviewStatus;
 
     public UserReviewBuilder(){
         user = new User();
-        reviewStatus = UserReview.ReviewStatus.MODERATED;
+        reviewStatus = Review.ReviewStatus.MODERATED;
     }
 
     public UserReviewBuilder addUser(User user) {
@@ -51,21 +51,21 @@ public class UserReviewBuilder {
         return this;
     }
     public UserReviewBuilder addReviewStatus(String reviewStatus) {
-        this.reviewStatus = UserReview.ReviewStatus.valueOf(reviewStatus.toUpperCase());
+        this.reviewStatus = Review.ReviewStatus.valueOf(reviewStatus.toUpperCase());
         return this;
     }
-    public UserReview create(){
-        UserReview userReview = new UserReview();
+    public Review create(){
+        Review review = new Review();
 
-        userReview.setShowId(showId);
-        userReview.setUser(user);
+        review.setShowId(showId);
+        review.setUser(user);
 
-        userReview.setUserRate(userRate);
-        userReview.setPostDate(postDate);
-        userReview.setReviewTitle(reviewTitle);
-        userReview.setReviewContent(reviewContent);
-        userReview.setReviewStatus(reviewStatus);
+        review.setUserRate(userRate);
+        review.setPostDate(postDate);
+        review.setReviewTitle(reviewTitle);
+        review.setReviewContent(reviewContent);
+        review.setReviewStatus(reviewStatus);
 
-        return userReview;
+        return review;
     }
 }

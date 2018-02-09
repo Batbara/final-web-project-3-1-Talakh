@@ -1,6 +1,6 @@
 package by.tr.web.listener;
 
-import by.tr.web.dao.impl.connection_pool.ConnectionPool;
+import by.tr.web.dao.configuration.ConnectionPool;
 import org.apache.log4j.Logger;
 
 import java.sql.CallableStatement;

@@ -7,20 +7,20 @@
 <html>
 <head>
 
-    <c:import url="/WEB-INF/jsp/styling.jsp"/>
+    <c:import url="/WEB-INF/jsp/page_structure/styling.jsp"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/starrr.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/table-style.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/tv-show.css">
     <fmt:setLocale value="${sessionScope.local}"/>
     <fmt:setBundle basename="localization.local" var="loc"/>
-    <fmt:message bundle="${loc}" key="local.navButton.tv" var="pageTitle"/>
+    <fmt:message bundle="${loc}" key="local.link.tv" var="pageTitle"/>
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title> ${pageTitle} | MotionPicture Bank [MPB]</title>
 </head>
 <body>
-<c:import url="/WEB-INF/jsp/header/header.jsp"/>
+<c:import url="/WEB-INF/jsp/page_structure/header.jsp"/>
 <div class="main">
     <nav class="side-nav"></nav>
     <article>
@@ -50,10 +50,10 @@
 
         <div class="show-table center-block">
 
-            <c:import url="/WEB-INF/jsp/table_content/tvShowListTable.jsp"/>
+            <c:import url="/WEB-INF/jsp/tv_show/tvShowListTable.jsp"/>
 
         </div>
-        <c:import url="/WEB-INF/jsp/table_content/ratingDialogs.jsp"/>
+        <c:import url="/WEB-INF/jsp/show/ratingDialogs.jsp"/>
     </article>
     <aside>
 
@@ -61,8 +61,8 @@
 
     </aside>
 </div>
-<c:import url="/WEB-INF/jsp/footer.jsp"/>
+<c:import url="/WEB-INF/jsp/page_structure/footer.jsp"/>
 <c:import url="/WEB-INF/jsp/table_control/tableScripts.jsp"/>
-<c:import url="/WEB-INF/jsp/table_content/ratingScripts.jsp"/>
+<c:import url="/WEB-INF/jsp/show/ratingScripts.jsp"/>
 </body>
 </html>

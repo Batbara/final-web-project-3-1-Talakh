@@ -10,7 +10,7 @@ public class TvShow extends Show implements Serializable {
     private int seasonsNum;
     private int episodesNum;
     private int finishedYear;
-    private TVChannel channel;
+    private TvChannel channel;
 
     public enum ShowStatus {
         FINISHED, RETURNING, PAUSE
@@ -20,16 +20,19 @@ public class TvShow extends Show implements Serializable {
     }
     public TvShow() {
         showStatus = ShowStatus.RETURNING;
-        channel = new TVChannel();
+        channel = new TvChannel();
     }
 
     public ShowStatus getShowStatus() {
         return showStatus;
     }
-
+    public String getFormattedShowStatus(){
+        return showStatus.toString().toLowerCase();
+    }
     public void setShowStatus(ShowStatus showStatus) {
         this.showStatus = showStatus;
     }
+
 
     public void setShowStatus(String status) {
         this.showStatus = ShowStatus.valueOf(status.toUpperCase());
@@ -59,11 +62,11 @@ public class TvShow extends Show implements Serializable {
         this.finishedYear = finishedYear;
     }
 
-    public TVChannel getChannel() {
+    public TvChannel getChannel() {
         return channel;
     }
 
-    public void setChannel(TVChannel channel) {
+    public void setChannel(TvChannel channel) {
         this.channel = channel;
     }
 

@@ -2,7 +2,6 @@ package by.tr.web.controller.constant;
 
 import by.tr.web.domain.TvShow;
 import by.tr.web.domain.User;
-import by.tr.web.exception.controller.UserStatusBundleException;
 import org.apache.log4j.Logger;
 
 import java.lang.reflect.Field;
@@ -25,11 +24,11 @@ public final class LocalizationPropertyKey {
     public static final String STATUS_REVIEWER = "local.info.user.status.reviewer";
     public static final String STATUS_CRITIC = "local.info.user.status.critic";
 
-    public static final String STATUS_FINISHED = "local.info.tvshow.status.finished";
-    public static final String STATUS_RETURNING = "local.info.tvshow.status.returning";
-    public static final String STATUS_PAUSE = "local.info.tvshow.status.paused";
+    public static final String STATUS_FINISHED = "local.info.tv.show.status.finished";
+    public static final String STATUS_RETURNING = "local.info.tv.show.status.returning";
+    public static final String STATUS_PAUSE = "local.info.tv.show.status.paused";
 
-    public static final String SHOW_RATING = "local.show.sidenav.rating";
+    public static final String SHOW_RATING = "local.show.link.rating";
     public static final String USER_CUSTOM_RATE = "local.show.user.custom.rate";
 
     public static final String SHOW_TOTAL_REVIEWS = "local.show.reviews.total";
@@ -37,6 +36,9 @@ public final class LocalizationPropertyKey {
     public static final String SHOWING_MESSAGE = "local.message.showing";
 
     public static final String TV_SERIES = "local.show.tv.series";
+    public static final String MOVIE = "local.show.type.movie";
+
+    public static final String SHOW_ALREADY_EXISTS = "local.error.show.already.exists";
     public static String getUserStatusProperty(User.UserStatus userStatus) {
         return userStatusMap.get(userStatus);
     }

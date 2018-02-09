@@ -1,19 +1,21 @@
 package by.tr.web.dao.impl.movie;
 
-import by.tr.web.controller.util.DateTimeUtil;
-import by.tr.web.dao.impl.MovieDAOSqlImpl;
-import by.tr.web.dao.impl.connection_pool.ConnectionPool;
+import by.tr.web.controller.constant.DateTimeUtil;
+import by.tr.web.controller.constant.FrontControllerParameter;
+import by.tr.web.dao.configuration.ConnectionPool;
+import by.tr.web.dao.exception.CounterDAOException;
+import by.tr.web.dao.exception.DAOException;
+import by.tr.web.dao.movie.MovieDAOSqlImpl;
 import by.tr.web.domain.Country;
 import by.tr.web.domain.Genre;
 import by.tr.web.domain.Movie;
+import by.tr.web.domain.Review;
 import by.tr.web.domain.User;
-import by.tr.web.domain.UserReview;
 import by.tr.web.domain.builder.MovieBuilder;
 import by.tr.web.domain.builder.UserBuilder;
 import by.tr.web.domain.builder.UserReviewBuilder;
-import by.tr.web.exception.dao.common.DAOException;
-import by.tr.web.exception.dao.movie.CounterDAOException;
-import by.tr.web.exception.service.common.EmptyParameterException;
+import by.tr.web.service.input_validator.RequestParameterNotFound;
+import by.tr.web.service.show.ShowAlreadyExistsException;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
@@ -40,7 +42,6 @@ public class MovieDAOSqlImplTest {
 
     @AfterClass
     public static void destroyConnectionPool() {
-        ConnectionPool connectionPool = ConnectionPool.getInstance();
         connectionPool.dispose();
     }
 
@@ -96,7 +97,7 @@ public class MovieDAOSqlImplTest {
     }
 
     @Test
-    public void testTakeMovieSuccessful() throws DAOException, ParseException, EmptyParameterException {
+    public void testTakeMovieSuccessful() throws DAOException, ParseException, RequestParameterNotFound {
         int id = 23;
         String lang = "ru";
 
@@ -108,13 +109,25 @@ public class MovieDAOSqlImplTest {
         Assert.assertEquals(expectedEquals, actual);
     }
 
+    @Test(expected = ShowAlreadyExistsException.class)
+    public void testAddMovieFailed() throws ParseException, RequestParameterNotFound, DAOException {
+        Movie movieToAdd = new MovieBuilder()
+                .addTitle("Logan")
+                .addPremiereDate(DateTimeUtil.getDateFromString("2017-02-17", FrontControllerParameter.SQL_DATE_PATTERN))
+                .create();
+        Movie movieToAddRussianTranslation = new MovieBuilder()
+                .addTitle("Логан")
+                .create();
+        movieDAO.addMovie(movieToAdd, movieToAddRussianTranslation);
+    }
+
     private List<Movie> formExpectedMovieListByTitle() {
         List<Movie> movieList = new ArrayList<>();
 
         Movie kingdomOfHeaven = new MovieBuilder()
                 .addId(7)
                 .addTitle("Kingdom of Heaven")
-                .addPoster("/poster/71")
+                .addPoster("/images/poster/71.jpg")
                 .addYear(2005)
                 .addUserRating(7d)
                 .create();
@@ -123,7 +136,7 @@ public class MovieDAOSqlImplTest {
         Movie lifeOfPi = new MovieBuilder()
                 .addId(20)
                 .addTitle("Life of Pi")
-                .addPoster("/poster/201")
+                .addPoster("/images/poster/201.jpg")
                 .addYear(2012)
                 .addUserRating(7d)
                 .create();
@@ -138,34 +151,34 @@ public class MovieDAOSqlImplTest {
         Movie timeMachineMovie = new MovieBuilder()
                 .addId(16)
                 .addTitle("The Time Machine")
-                .addPoster("/poster/161")
+                .addPoster("/images/poster/161.jpg")
                 .addYear(1960)
-                .addUserRating(0d)
+                .addUserRating(7.0)
                 .create();
         movieList.add(timeMachineMovie);
 
         Movie myFairLadyMovie = new MovieBuilder()
                 .addId(12)
                 .addTitle("My Fair Lady")
-                .addPoster("/poster/121")
+                .addPoster("/images/poster/121.jpg")
                 .addYear(1964)
-                .addUserRating(7d)
+                .addUserRating(8.5d)
                 .create();
         movieList.add(myFairLadyMovie);
 
         Movie godFatherMovie = new MovieBuilder()
                 .addId(5)
                 .addTitle("The Godfather")
-                .addPoster("/poster/51")
+                .addPoster("/images/poster/51.jpg")
                 .addYear(1972)
-                .addUserRating(8.5d)
+                .addUserRating(9d)
                 .create();
         movieList.add(godFatherMovie);
 
         return movieList;
     }
 
-    private Movie formExpectedMovie(int id) throws ParseException, EmptyParameterException {
+    private Movie formExpectedMovie(int id) throws ParseException, RequestParameterNotFound {
 
         String synopsis = "Четырехпалый Френки должен был переправить краденый алмаз из Англии в США " +
                 "своему боссу Эви. Но вместо этого герой попадает в эпицентр больших неприятностей." +
@@ -188,7 +201,7 @@ public class MovieDAOSqlImplTest {
         movieCountries.add(new Country("США"));
         movieCountries.add(new Country("Великобритания"));
 
-        List<UserReview> reviews = formReviews(id);
+        List<Review> reviews = formReviews(id);
 
         Movie movie = new MovieBuilder()
                 .addId(id)
@@ -196,20 +209,19 @@ public class MovieDAOSqlImplTest {
                 .addYear(2000)
                 .addPremiereDate(premiereDate)
                 .addSynopsis(synopsis)
-                .addPoster("/poster/232")
+                .addPoster("/images/poster/232.jpg")
                 .addBoxOffice(83557872)
                 .addBudget(10000000)
                 .addMpaaRating("R")
                 .addRuntime(runTime)
                 .addGenres(movieGenres)
                 .addCountries(movieCountries)
-                .addReviews(reviews)
-                .addUserRating(9d)
+                .addUserRating(0d)
                 .create();
         return movie;
     }
 
-    private List<UserReview> formReviews(int movieId) throws ParseException, EmptyParameterException {
+    private List<Review> formReviews(int movieId) throws ParseException, RequestParameterNotFound {
 
         User user = new UserBuilder()
                 .addId(31)
@@ -238,8 +250,8 @@ public class MovieDAOSqlImplTest {
 
         Timestamp postDate = DateTimeUtil.getTimestampFromString("2018-01-21T19:10:49", DEFAULT_TIME_PATTERN);
 
-        List<UserReview> reviews = new ArrayList<>();
-        UserReview review = new UserReviewBuilder()
+        List<Review> reviews = new ArrayList<>();
+        Review review = new UserReviewBuilder()
                 .addShowId(movieId)
                 .addUser(user)
                 .addReviewContent(reviewContent)

@@ -8,11 +8,11 @@
 <html>
 <head>
 
-    <c:import url="/WEB-INF/jsp/styling.jsp"/>
+    <c:import url="/WEB-INF/jsp/page_structure/styling.jsp"/>
     <fmt:setLocale value="${sessionScope.local}"/>
     <fmt:setBundle basename="localization.local" var="loc"/>
-    <fmt:message bundle="${loc}" key="local.navButton.admin" var="administration"/>
-    <fmt:message bundle="${loc}" key="local.admin.sidenav.reviews" var="reviewsModer"/>
+    <fmt:message bundle="${loc}" key="local.user.administration.page" var="administration"/>
+    <fmt:message bundle="${loc}" key="local.admin.link.reviews" var="reviewsModer"/>
 
     <fmt:message bundle="${loc}" key="local.info.user.banReason" var="banReason"/>
     <fmt:message bundle="${loc}" key="local.info.user.ban" var="ban"/>
@@ -20,14 +20,14 @@
     <fmt:message bundle="${loc}" key="local.info.user.banTime" var="banTime"/>
     <fmt:message bundle="${loc}" key="local.info.user.select.status" var="selectStatusMessage"/>
     <fmt:message bundle="${loc}" key="local.table.onPage" var="onPage"/>
-    <fmt:message bundle="${loc}" key="local.message.errorMessage" var="errorMessage"/>
+    <fmt:message bundle="${loc}" key="local.response.message.error" var="errorMessage"/>
     <fmt:message bundle="${loc}" key="local.message.delete.review.success" var="deleteReviewSuccessfully"/>
     <fmt:message bundle="${loc}" key="local.message.post.review.success" var="postReviewSuccessfully"/>
-    <fmt:message bundle="${loc}" key="local.message.success" var="successMessage"/>
-    <fmt:message bundle="${loc}" key="local.message.failure" var="failureMessage"/>
-    <fmt:message bundle="${loc}" key="local.message.confirm" var="confirm"/>
-    <fmt:message bundle="${loc}" key="local.message.cancel" var="cancel"/>
-    <fmt:message bundle="${loc}" key="local.message.change" var="change"/>
+    <fmt:message bundle="${loc}" key="local.response.success" var="successMessage"/>
+    <fmt:message bundle="${loc}" key="local.response.failure" var="failureMessage"/>
+    <fmt:message bundle="${loc}" key="local.control.confirm" var="confirm"/>
+    <fmt:message bundle="${loc}" key="local.control.cancel" var="cancel"/>
+    <fmt:message bundle="${loc}" key="local.control.change" var="change"/>
     <fmt:message bundle="${loc}" key="local.admin.review.post" var="postReview"/>
     <fmt:message bundle="${loc}" key="local.admin.review.delete" var="deleteReview"/>
     <fmt:message bundle="${loc}" key="local.message.no.reviews" var="noNewReviewsMessage"/>
@@ -40,7 +40,7 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/review.css">
 </head>
 <body>
-<c:import url="/WEB-INF/jsp/header/header.jsp"/>
+<c:import url="/WEB-INF/jsp/page_structure/header.jsp"/>
 <div class="main">
     <nav>
         <div data-spy="affix">
@@ -162,7 +162,7 @@
 
     </aside>
 </div>
-<c:import url="/WEB-INF/jsp/footer.jsp"/>
+<c:import url="/WEB-INF/jsp/page_structure/footer.jsp"/>
 <c:import url="/WEB-INF/jsp/table_control/tableScripts.jsp"/>
 
 <script src="${pageContext.request.contextPath}/js/content.js"></script>

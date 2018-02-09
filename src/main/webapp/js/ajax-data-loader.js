@@ -14,6 +14,11 @@ $(document).ready(function () {
         },
         error: function (responseJson) {
             console.log("error occurred")
+        },
+        statusCode: {
+            403: function () {
+                window.location.href = "/forbidden";
+            }
         }
     });
     $.ajax({
@@ -30,6 +35,11 @@ $(document).ready(function () {
         },
         error: function (responseJson) {
             console.log("error occurred")
+        },
+        statusCode: {
+            403: function () {
+                window.location.href = "/forbidden";
+            }
         }
     });
     $("#addMovieForm").on("submit", function (event) {

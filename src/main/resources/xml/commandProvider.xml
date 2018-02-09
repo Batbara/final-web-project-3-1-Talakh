@@ -5,87 +5,99 @@
 
     <cp:command scope="admin">
         <cp:commandName>take_user_list</cp:commandName>
-        <cp:className>by.tr.web.controller.command.impl.admin_command.TakeUserListImpl</cp:className>
+        <cp:className>by.tr.web.controller.command.admin.TakeUserListImpl</cp:className>
     </cp:command>
     <cp:command scope="admin">
         <cp:commandName>ban_user</cp:commandName>
-        <cp:className>by.tr.web.controller.command.impl.admin_command.BanUserImpl</cp:className>
+        <cp:className>by.tr.web.controller.command.admin.BanUserImpl</cp:className>
     </cp:command>
     <cp:command scope="admin">
         <cp:commandName>unban_user</cp:commandName>
-        <cp:className>by.tr.web.controller.command.impl.admin_command.UnbanUserImpl</cp:className>
+        <cp:className>by.tr.web.controller.command.admin.UnbanUserImpl</cp:className>
     </cp:command>
     <cp:command scope="admin">
         <cp:commandName>change_user_status</cp:commandName>
-        <cp:className>by.tr.web.controller.command.impl.admin_command.ChangeUserStatus</cp:className>
+        <cp:className>by.tr.web.controller.command.admin.ChangeUserStatusImpl</cp:className>
     </cp:command>
     <cp:command scope="admin">
         <cp:commandName>take_reviews_on_moder</cp:commandName>
-        <cp:className>by.tr.web.controller.command.impl.admin_command.TakeReviewsOnModeration</cp:className>
+        <cp:className>by.tr.web.controller.command.admin.TakeModeratedReviewsImpl</cp:className>
     </cp:command>
     <cp:command scope="admin">
         <cp:commandName>post_review</cp:commandName>
-        <cp:className>by.tr.web.controller.command.impl.admin_command.PostReview</cp:className>
+        <cp:className>by.tr.web.controller.command.admin.PostReviewImpl</cp:className>
     </cp:command>
     <cp:command scope="admin">
         <cp:commandName>delete_review</cp:commandName>
-        <cp:className>by.tr.web.controller.command.impl.admin_command.DeleteReview</cp:className>
+        <cp:className>by.tr.web.controller.command.admin.DeleteReviewImpl</cp:className>
     </cp:command>
     <cp:command scope="admin">
         <cp:commandName>add_movie</cp:commandName>
-        <cp:className>by.tr.web.controller.command.impl.admin_command.AddMovie</cp:className>
+        <cp:className>by.tr.web.controller.command.admin.AddMovieImpl</cp:className>
     </cp:command>
     <cp:command scope="admin">
         <cp:commandName>take_country_list</cp:commandName>
-        <cp:className>by.tr.web.controller.command.impl.admin_command.TakeCountryList</cp:className>
+        <cp:className>by.tr.web.controller.command.admin.TakeCountryListImpl</cp:className>
     </cp:command>
     <cp:command scope="admin">
         <cp:commandName>take_genre_list</cp:commandName>
-        <cp:className>by.tr.web.controller.command.impl.admin_command.TakeGenreList</cp:className>
+        <cp:className>by.tr.web.controller.command.admin.TakeGenreListImpl</cp:className>
+    </cp:command>
+    <cp:command scope="admin">
+        <cp:commandName>take_show_list</cp:commandName>
+        <cp:className>by.tr.web.controller.command.admin.TakeShowListImpl</cp:className>
+    </cp:command>
+    <cp:command scope="admin">
+        <cp:commandName>delete_show</cp:commandName>
+        <cp:className>by.tr.web.controller.command.admin.DeleteShowImpl</cp:className>
+    </cp:command>
+    <cp:command scope="admin">
+        <cp:commandName>add_tv_show</cp:commandName>
+        <cp:className>by.tr.web.controller.command.admin.AddTvShowImpl</cp:className>
     </cp:command>
 
     <cp:command>
         <cp:commandName>change_language</cp:commandName>
-        <cp:className>by.tr.web.controller.command.impl.user_command.ChangeLanguageImpl</cp:className>
+        <cp:className>by.tr.web.controller.command.user.ChangeLanguageImpl</cp:className>
     </cp:command>
     <cp:command>
         <cp:commandName>login</cp:commandName>
-        <cp:className>by.tr.web.controller.command.impl.user_command.LoginationImpl</cp:className>
+        <cp:className>by.tr.web.controller.command.user.LoginUserImpl</cp:className>
     </cp:command>
     <cp:command>
         <cp:commandName>register</cp:commandName>
-        <cp:className>by.tr.web.controller.command.impl.user_command.RegistrationImpl</cp:className>
+        <cp:className>by.tr.web.controller.command.user.RegisterImpl</cp:className>
     </cp:command>
     <cp:command>
         <cp:commandName>logout</cp:commandName>
-        <cp:className>by.tr.web.controller.command.impl.user_command.LogoutImpl</cp:className>
+        <cp:className>by.tr.web.controller.command.user.LogoutImpl</cp:className>
     </cp:command>
     <cp:command>
         <cp:commandName>take_account</cp:commandName>
-        <cp:className>by.tr.web.controller.command.impl.TakeAccountImpl</cp:className>
+        <cp:className>by.tr.web.controller.command.user.TakeAccountImpl</cp:className>
     </cp:command>
     <cp:command>
         <cp:commandName>take_movie_list</cp:commandName>
-        <cp:className>by.tr.web.controller.command.impl.TakeMovieListImpl</cp:className>
+        <cp:className>by.tr.web.controller.command.entity.TakeMovieListImpl</cp:className>
     </cp:command>
     <cp:command>
         <cp:commandName>take_movie</cp:commandName>
-        <cp:className>by.tr.web.controller.command.impl.TakeMovieImpl</cp:className>
+        <cp:className>by.tr.web.controller.command.entity.TakeMovieImpl</cp:className>
     </cp:command>
     <cp:command>
         <cp:commandName>take_tv_list</cp:commandName>
-        <cp:className>by.tr.web.controller.command.impl.TakeTvListImpl</cp:className>
+        <cp:className>by.tr.web.controller.command.entity.TakeTvListImpl</cp:className>
     </cp:command>
     <cp:command>
         <cp:commandName>take_tv_show</cp:commandName>
-        <cp:className>by.tr.web.controller.command.impl.TakeTvShowImpl</cp:className>
+        <cp:className>by.tr.web.controller.command.entity.TakeTvShowImpl</cp:className>
     </cp:command>
     <cp:command>
         <cp:commandName>add_user_rate</cp:commandName>
-        <cp:className>by.tr.web.controller.command.impl.AddUserRateImpl</cp:className>
+        <cp:className>by.tr.web.controller.command.entity.AddUserRateImpl</cp:className>
     </cp:command>
     <cp:command>
         <cp:commandName>add_review</cp:commandName>
-        <cp:className>by.tr.web.controller.command.impl.AddReviewImpl</cp:className>
+        <cp:className>by.tr.web.controller.command.entity.AddReviewImpl</cp:className>
     </cp:command>
 </cp:commandList>

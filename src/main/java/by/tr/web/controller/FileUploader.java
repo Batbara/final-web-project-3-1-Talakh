@@ -1,7 +1,7 @@
 package by.tr.web.controller;
 
 import by.tr.web.controller.command.Command;
-import by.tr.web.controller.command.CommandProvider;
+import by.tr.web.controller.command.command_provider.CommandProvider;
 import by.tr.web.controller.constant.FrontControllerParameter;
 
 import javax.servlet.ServletException;

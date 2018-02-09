@@ -38,5 +38,7 @@ $(document).ready(
                 event.relatedTarget.style.background = "#595151"
             }
         };
+
     }
 );
+

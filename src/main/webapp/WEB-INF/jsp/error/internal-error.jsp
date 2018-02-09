@@ -8,7 +8,7 @@
     <fmt:setBundle basename="localization.local" var="loc"/>
     <fmt:message bundle="${loc}" key="local.error.internal" var="errorMessage"/>
     <fmt:message bundle="${loc}" key="local.title.error" var="errorTitle"/>
-    <fmt:message bundle="${loc}" key="local.navButton.home" var="home" />
+    <fmt:message bundle="${loc}" key="local.link.home" var="home" />
 
     <title><c:out value="${errorMessage}"/></title>
 </head>

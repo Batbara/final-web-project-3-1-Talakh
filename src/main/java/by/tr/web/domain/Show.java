@@ -7,26 +7,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Show implements Serializable {
-    private static final long serialVersionUID = 4088005724983165608L;
+    private static final long serialVersionUId = 4088005724983165608L;
 
-    private int showID;
+    protected int showId;
 
-    private String language;
-    private String title;
-    private String synopsis;
-    private String poster;
+    protected String language;
+    protected String title;
+    protected String synopsis;
+    protected String poster;
 
-    private int year;
-    private Date premiereDate;
-    private Time runtime;
+    protected int year;
+    protected Date premiereDate;
+    protected Time runtime;
 
-    private List<Genre> genreList;
-    private String[] genres;
-    private List<Country> countryList;
-    private String[] countries;
+    protected List<Genre> genreList;
+    protected String[] genres;
+    protected List<Country> countryList;
+    protected String[] countries;
 
-    private double userRating;
-    private List<UserReview> reviewList;
+    protected double userRating;
+    protected List<Review> reviewList;
+
+    protected ShowType showType;
 
     public enum ShowType {
         MOVIE, TV_SERIES
@@ -37,12 +39,12 @@ public class Show implements Serializable {
         reviewList = new ArrayList<>();
     }
 
-    public int getShowID() {
-        return showID;
+    public int getShowId() {
+        return showId;
     }
 
-    public void setShowID(int showID) {
-        this.showID = showID;
+    public void setShowId(int showId) {
+        this.showId = showId;
     }
 
     public String getLanguage() {
@@ -110,9 +112,16 @@ public class Show implements Serializable {
         this.countryList.add(country);
     }
 
-    public void addReview(UserReview review) {
+    public void addReview(Review review) {
         this.reviewList.add(review);
-        //userRating = calculateAvgRating();
+    }
+
+    public ShowType getShowType() {
+        return showType;
+    }
+
+    public void setShowType(ShowType showType) {
+        this.showType = showType;
     }
 
     public String getTitle() {
@@ -147,11 +156,11 @@ public class Show implements Serializable {
         this.userRating = userRating;
     }
 
-    public List<UserReview> getReviewList() {
+    public List<Review> getReviewList() {
         return reviewList;
     }
 
-    public void setReviewList(List<UserReview> reviewList) {
+    public void setReviewList(List<Review> reviewList) {
         this.reviewList = reviewList;
     }
 
@@ -162,7 +171,7 @@ public class Show implements Serializable {
 
         Show show = (Show) o;
 
-        if (showID != show.showID) return false;
+        if (showId != show.showId) return false;
         if (year != show.year) return false;
         if (Double.compare(show.userRating, userRating) != 0) return false;
         if (title != null ? !title.equals(show.title) : show.title != null) return false;
@@ -179,7 +188,7 @@ public class Show implements Serializable {
     public int hashCode() {
         int result;
         long temp;
-        result = showID;
+        result = showId;
         result = 31 * result + (title != null ? title.hashCode() : 0);
         result = 31 * result + (synopsis != null ? synopsis.hashCode() : 0);
         result = 31 * result + (poster != null ? poster.hashCode() : 0);
@@ -197,7 +206,7 @@ public class Show implements Serializable {
     @Override
     public String toString() {
         return "Show{" +
-                "showID=" + showID +
+                "showId=" + showId +
                 ", title='" + title + '\'' +
                 ", synopsis='" + synopsis + '\'' +
                 ", poster='" + poster + '\'' +
@@ -209,15 +218,6 @@ public class Show implements Serializable {
                 ", userRating=" + userRating +
                 ", reviewList=" + reviewList +
                 '}';
-    }
-
-    private double calculateAvgRating() {
-        double avgRating = 0;
-        for (UserReview review : reviewList) {
-            avgRating += review.getUserRate();
-        }
-        avgRating = avgRating / reviewList.size();
-        return avgRating;
     }
 
     private <T> String[] convertToStringArray(List<T> list) {

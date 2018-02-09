@@ -3,7 +3,7 @@ package by.tr.web.domain.builder;
 import by.tr.web.domain.Country;
 import by.tr.web.domain.Genre;
 import by.tr.web.domain.Movie;
-import by.tr.web.domain.UserReview;
+import by.tr.web.domain.Review;
 
 import java.sql.Date;
 import java.sql.Time;
@@ -19,6 +19,7 @@ public class MovieBuilder extends ShowBuilder {
         reviews = new ArrayList<>();
         genres = new ArrayList<>();
         countries = new ArrayList<>();
+        mpaaRating = Movie.MPAARating.NONE;
     }
 
     @Override
@@ -46,8 +47,8 @@ public class MovieBuilder extends ShowBuilder {
     }
 
     @Override
-    public MovieBuilder addId(int showID) {
-        super.addId(showID);
+    public MovieBuilder addId(int showId) {
+        super.addId(showId);
         return this;
     }
 
@@ -82,7 +83,7 @@ public class MovieBuilder extends ShowBuilder {
     }
 
     @Override
-    public MovieBuilder addReviews(List<UserReview> reviews) {
+    public MovieBuilder addReviews(List<Review> reviews) {
         super.addReviews(reviews);
         return this;
     }
@@ -108,7 +109,8 @@ public class MovieBuilder extends ShowBuilder {
 
     public Movie create() {
         Movie movie = new Movie();
-        movie.setShowID(showID);
+        movie.setShowId(showId);
+        movie.setShowType(showType);
         movie.setLanguage(language);
         movie.setTitle(title);
         movie.setSynopsis(synopsis);

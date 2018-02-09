@@ -11,8 +11,8 @@
     <fmt:setLocale value="${sessionScope.local}"/>
     <fmt:setBundle basename="localization.local" var="loc"/>
     <fmt:message bundle="${loc}" key="local.title.forbidden" var="title"/>
-    <fmt:message bundle="${loc}" key="local.message.forbidden" var="forbiddenMessage"/>
-    <fmt:message bundle="${loc}" key="local.navButton.home" var="home"/>
+    <fmt:message bundle="${loc}" key="local.response.message.forbidden" var="forbiddenMessage"/>
+    <fmt:message bundle="${loc}" key="local.link.home" var="home"/>
     <title>${title} | MotionPicture Bank [MPB]</title>
 </head>
 <body>

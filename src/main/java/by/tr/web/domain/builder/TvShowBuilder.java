@@ -2,9 +2,9 @@ package by.tr.web.domain.builder;
 
 import by.tr.web.domain.Country;
 import by.tr.web.domain.Genre;
-import by.tr.web.domain.TVChannel;
+import by.tr.web.domain.Review;
+import by.tr.web.domain.TvChannel;
 import by.tr.web.domain.TvShow;
-import by.tr.web.domain.UserReview;
 
 import java.sql.Date;
 import java.sql.Time;
@@ -17,11 +17,11 @@ public class TvShowBuilder extends ShowBuilder {
     private int seasonsNum;
     private int episodesNum;
     private int finishedYear;
-    private TVChannel channel;
+    private TvChannel channel;
     
     public TvShowBuilder(){
         showStatus = TvShow.ShowStatus.RETURNING;
-        channel = new TVChannel();
+        channel = new TvChannel();
         reviews = new ArrayList<>();
         genres = new ArrayList<>();
         countries = new ArrayList<>();
@@ -53,8 +53,8 @@ public class TvShowBuilder extends ShowBuilder {
     }
 
     @Override
-    public TvShowBuilder addId(int showID) {
-        super.addId(showID);
+    public TvShowBuilder addId(int showId) {
+        super.addId(showId);
         return this;
     }
 
@@ -89,7 +89,7 @@ public class TvShowBuilder extends ShowBuilder {
     }
 
     @Override
-    public TvShowBuilder addReviews(List<UserReview> reviews) {
+    public TvShowBuilder addReviews(List<Review> reviews) {
         super.addReviews(reviews);
         return this;
     }
@@ -115,14 +115,15 @@ public class TvShowBuilder extends ShowBuilder {
     }
 
     public TvShowBuilder addChannel(String channel) {
-        this.channel = new TVChannel(channel);
+        this.channel = new TvChannel(channel);
         return this;
     }
 
     @Override
     public TvShow create() {
         TvShow tvShow = new TvShow();
-        tvShow.setShowID(showID);
+        tvShow.setShowId(showId);
+        tvShow.setShowType(showType);
         tvShow.setLanguage(language);
         tvShow.setTitle(title);
         tvShow.setSynopsis(synopsis);

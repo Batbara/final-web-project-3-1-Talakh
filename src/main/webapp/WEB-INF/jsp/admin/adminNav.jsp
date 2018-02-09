@@ -6,11 +6,11 @@
 
 <fmt:setLocale value="${sessionScope.local}"/>
 <fmt:setBundle basename="localization.local" var="loc"/>
-<fmt:message bundle="${loc}" key="local.admin.sidenav.users" var="usersNavButton"/>
-<fmt:message bundle="${loc}" key="local.admin.sidenav.content" var="contentNavButton"/>
-<fmt:message bundle="${loc}" key="local.admin.sidenav.reviews" var="reviewsModerNavButton"/>
+<fmt:message bundle="${loc}" key="local.admin.link.users" var="usersNavButton"/>
+<fmt:message bundle="${loc}" key="local.admin.link.content" var="contentNavButton"/>
+<fmt:message bundle="${loc}" key="local.admin.link.reviews" var="reviewsModerNavButton"/>
 <fmt:message bundle="${loc}" key="local.admin.add.movie" var="addMovieButton"/>
-<fmt:message bundle="${loc}" key="local.admin.add.tvshow" var="addTvShowButton"/>
+<fmt:message bundle="${loc}" key="local.admin.add.tv.show" var="addTvShowButton"/>
 <ul class="nav nav-stacked">
     <li>
         <form id="users-form" action="${pageContext.request.contextPath}/mpb" method="get">
@@ -21,7 +21,6 @@
             </a>
 
         </form>
-        <ul></ul>
     </li>
     <li>
         <form id="reviews-moder-form" action="${pageContext.request.contextPath}/mpb" method="get">
@@ -33,9 +32,24 @@
         </form>
     </li>
     <li>
+        <form id="show-content-form" action="${pageContext.request.contextPath}/mpb" method="get">
+            <input type="hidden" name="command" value="take_show_list"/>
+            <a href="javascript:{}" class="side-nav-button"
+               onclick="document.getElementById('show-content-form').submit(); return false;">
+               ${contentNavButton}
+            </a>
+        </form>
+    </li>
+    <li>
 
-        <a href="${pageContext.request.contextPath}/add/movie" class="side-nav-button">
+        <a href="${pageContext.request.contextPath}/add/movie" target="_blank" class="side-nav-button">
             ${addMovieButton}
+        </a>
+    </li>
+    <li>
+
+        <a href="${pageContext.request.contextPath}/add/tv-show" target="_blank" class="side-nav-button">
+            ${addTvShowButton}
         </a>
     </li>
 </ul>

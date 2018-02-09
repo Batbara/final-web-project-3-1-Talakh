@@ -6,14 +6,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <c:import url="/WEB-INF/jsp/styling.jsp"/>
+    <c:import url="/WEB-INF/jsp/page_structure/styling.jsp"/>
 
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/user-form.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/form-style.css">
     <fmt:setLocale value="${sessionScope.local}"/>
     <fmt:setBundle basename="localization.local" var="loc"/>
-    <fmt:message bundle="${loc}" key="local.message.signin" var="signinMessage"/>
-    <fmt:message bundle="${loc}" key="local.navButton.login" var="login"/>
-    <fmt:message bundle="${loc}" key="local.message.password" var="password"/>
+    <fmt:message bundle="${loc}" key="local.user.message.signin" var="signinMessage"/>
+    <fmt:message bundle="${loc}" key="local.user.login" var="login"/>
+    <fmt:message bundle="${loc}" key="local.user.message.password" var="password"/>
     <fmt:message bundle="${loc}" key="local.message.oops" var="oops"/>
     <fmt:message bundle="${loc}" key="local.submit.signin" var="signinButton"/>
     <fmt:message bundle="${loc}" key="local.error.login.user" var="loginUserError"/>
@@ -21,15 +21,18 @@
     <fmt:message bundle="${loc}" key="local.error.login.password" var="loginPasswordError"/>
     <fmt:message bundle="${loc}" key="local.error.username" var="usernamePatternMismatch"/>
     <fmt:message bundle="${loc}" key="local.error.password" var="passwordPatternMismatch"/>
-    <fmt:message bundle="${loc}" key="local.error.password.empty" var="passwordEmpty"/>
+    <fmt:message bundle="${loc}" key="local.error.field.empty" var="emptyField"/>
     <fmt:message bundle="${loc}" key="local.error.username.empty" var="usernameEmpty"/>
-    <fmt:message bundle="${loc}" key="local.message.password" var="passwordPlaceholder"/>
-    <fmt:message bundle="${loc}" key="local.message.username" var="userNamePlaceholder"/>
+    <fmt:message bundle="${loc}" key="local.user.message.password" var="passwordPlaceholder"/>
+    <fmt:message bundle="${loc}" key="local.user.message.username" var="userNamePlaceholder"/>
     <title><c:out value="${signinButton}"/> | MotionPicture Bank [MPB]</title>
 
 </head>
 <body>
-<c:import url="/WEB-INF/jsp/header/header.jsp"/>
+<c:import url="/WEB-INF/jsp/page_structure/header.jsp"/>
+<c:if test="${sessionScope.user ne null}">
+    <c:redirect url="/index.jsp"/>
+</c:if>
 <div class="main">
     <nav class="side-nav"></nav>
     <article>
@@ -47,9 +50,9 @@
                             <input type="hidden" name="address" value="${pageContext.request.getParameter("address")}"/>
                             <input type="hidden" name="query" value="${pageContext.request.getParameter("query")}"/>
 
-                            <c:import url="/WEB-INF/jsp/form/usernameField.jsp"/>
+                            <c:import url="/WEB-INF/jsp/user/usernameField.jsp"/>
 
-                            <c:import url="/WEB-INF/jsp/form/passwordField.jsp"/>
+                            <c:import url="/WEB-INF/jsp/user/passwordField.jsp"/>
 
 
                             <div class="form-group">
@@ -61,7 +64,7 @@
 
                         </fieldset>
                     </form>
-                    <c:if test="${not empty requestScope.loginError}">
+                    <c:if test="${requestScope.loginError ne null}">
                         <div class="alert alert-warning alert-dismissable fade in">
                             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                             <c:choose>
@@ -92,6 +95,6 @@
     </aside>
 
 </div>
-<c:import url="/WEB-INF/jsp/footer.jsp"/>
+<c:import url="/WEB-INF/jsp/page_structure/footer.jsp"/>
 </body>
 </html>

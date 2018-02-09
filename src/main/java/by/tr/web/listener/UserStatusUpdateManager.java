@@ -16,7 +16,7 @@ public class UserStatusUpdateManager implements ServletContextListener{
 
     public void contextInitialized(ServletContextEvent sce) {
         scheduler = Executors.newSingleThreadScheduledExecutor();
-        scheduler.scheduleAtFixedRate(new UserStatusUpdater(), 1,5, TimeUnit.MINUTES);
+        scheduler.scheduleAtFixedRate(new UserStatusUpdater(), 1,12, TimeUnit.HOURS);
           }
 
     public void contextDestroyed(ServletContextEvent sce) {

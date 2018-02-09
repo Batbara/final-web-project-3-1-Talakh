@@ -15,21 +15,30 @@ $(document).ready(function () {
     $('[data-toggle="tooltip"]').tooltip();
 
     $('.alert').hide();
-    $('#banDialog, #unbanDialog, #ratingSetFailed, #ratingSetSuccessful, #changeStatusDialog').on('hidden.bs.modal', function () {
+    $('#banDialog, #unbanDialog, #ratingSetFailed, #ratingSetSuccessful, #changeStatusDialog, #deleteShowDialog').on('hidden.bs.modal', function () {
         location.reload(true);
     });
     setUpMovieTableSelection();
     setUpUsersTableSelection();
     setUpTvShowTableSelection();
+    setUpShowTableSelection();
 });
 
+function setUpShowTableSelection() {
+    var selectedOnPage = getCookie("onShowsPage");
+    if (selectedOnPage == "") {
+        $("#showsPageSelection").val(1);
+    } else {
+        $("#showsPageSelection").val(selectedOnPage);
+    }
+}
 function setUpUsersTableSelection() {
 
     var selectedOnPage = getCookie("onUsersPage");
     if (selectedOnPage == "") {
-        $("#onUsersPageSelection").val(1);
+        $("#usersPageSelection").val(1);
     } else {
-        $("#onUsersPageSelection").val(selectedOnPage);
+        $("#usersPageSelection").val(selectedOnPage);
     }
 
 }
@@ -76,6 +85,31 @@ $("#banTime").attr("min", new Date().toJSON().slice(0, 19));
 $(".banButton").on("click", function () {
     return retrieveUserNameAndID("#banDialog", this, "#userBanId", "#banUserTitle");
 
+});
+$(".deleteShowButton").on("click", function () {
+    $("#deleteShowDialog").modal('show');
+    var idToMatch = $(this).attr("class").split(" ").pop();
+
+    var showIDs = $(".show-id");
+
+    for (var idElement = 0; idElement < showIDs.length; idElement++) {
+        var currID = showIDs[idElement];
+        if (currID.classList.contains(idToMatch)) {
+            var idValue = $(currID).text();
+            $("#showIdToDelete").attr("value", idValue);
+        }
+    }
+
+    var showTitles = $(".show-title");
+    for (var titleElement = 0; titleElement < showTitles.length; titleElement++) {
+        var currTitle = showTitles[titleElement];
+        if (currTitle.classList.contains(idToMatch)) {
+            var userName = $(currTitle).text();
+            $("#deleteShowTitle").text(userName);
+        }
+    }
+
+    return false;
 });
 $(".unbanButton").on("click", function () {
     return retrieveUserNameAndID("#unbanDialog", this, "#userUnbanId", "#unbanUserName");

@@ -1,5 +1,7 @@
 package by.tr.web.filter;
 
+import org.apache.log4j.Logger;
+
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -10,10 +12,12 @@ import java.io.IOException;
 
 public class CharsetFilter implements Filter {
 
+    private static final Logger logger = Logger.getLogger(CharsetFilter.class);
+    private static final String ENCODING_PARAMETER = "pageEncoding";
     private String encoding;
 
     public void init(FilterConfig fConfig) throws ServletException {
-        encoding = fConfig.getInitParameter("pageEncoding");
+        encoding = fConfig.getInitParameter(ENCODING_PARAMETER);
     }
 
     public void destroy() {

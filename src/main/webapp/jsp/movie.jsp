@@ -7,7 +7,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <c:import url="/WEB-INF/jsp/styling.jsp"/>
+    <c:import url="/WEB-INF/jsp/page_structure/styling.jsp"/>
 
     <jsp:useBean id="show" class="by.tr.web.domain.Movie" type="by.tr.web.domain.Movie" scope="request"/>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/show.css">
@@ -18,11 +18,11 @@
         | MotionPicture Bank [MPB]</title>
 </head>
 <body>
-<c:import url="/WEB-INF/jsp/header/header.jsp"/>
+<c:import url="/WEB-INF/jsp/page_structure/header.jsp"/>
 <div class="main">
     <nav>
         <div data-spy="affix">
-            <c:import url="/WEB-INF/jsp/show_content/showSideNav.jsp"/>
+            <c:import url="/WEB-INF/jsp/show/showSideNav.jsp"/>
         </div>
 
     </nav>
@@ -35,7 +35,7 @@
                 <div class="col-md-4">
                 <span>
                     <a class="title"
-                       href="${pageContext.request.contextPath}/mpb?command=take_movie&showId=<jsp:getProperty name="show" property="showID"/>">
+                       href="${pageContext.request.contextPath}/mpb?command=take_movie&showId=<jsp:getProperty name="show" property="showId"/>">
                         <jsp:getProperty name="show" property="title"/> (<jsp:getProperty name="show"
                                                                                           property="year"/>)</a>
                 </span>
@@ -46,17 +46,17 @@
                 <div class="infoTable">
 
                     <table class="table table-hover">
-                        <c:import url="/WEB-INF/jsp/show_content/showBasicInfo.jsp"/>
-                        <c:import url="/WEB-INF/jsp/show_content/movieInfo.jsp"/>
-                        <c:import url="/WEB-INF/jsp/show_content/showTimeInfo.jsp"/>
+                        <c:import url="/WEB-INF/jsp/show/showBasicInfo.jsp"/>
+                        <c:import url="/WEB-INF/jsp/movie/movieInfo.jsp"/>
+                        <c:import url="/WEB-INF/jsp/show/showTimeInfo.jsp"/>
                     </table>
                 </div>
 
             </div>
 
-            <c:import url="/WEB-INF/jsp/show_content/showRating.jsp"/>
-            <c:import url="/WEB-INF/jsp/show_content/showSynopsis.jsp"/>
-            <c:import url="/WEB-INF/jsp/show_content/showReviews.jsp">
+            <c:import url="/WEB-INF/jsp/show/showRating.jsp"/>
+            <c:import url="/WEB-INF/jsp/show/showSynopsis.jsp"/>
+            <c:import url="/WEB-INF/jsp/show/showReviews.jsp">
                 <c:param name="command" value="take_movie"/>
             </c:import>
         </div>
@@ -69,8 +69,8 @@
 
     </aside>
 </div>
-<c:import url="/WEB-INF/jsp/footer.jsp"/>
-<c:import url="/WEB-INF/jsp/table_content/ratingScripts.jsp"/>
+<c:import url="/WEB-INF/jsp/page_structure/footer.jsp"/>
+<c:import url="/WEB-INF/jsp/show/ratingScripts.jsp"/>
 <script src="${pageContext.request.contextPath}/js/content.js"></script>
 
 <script src="${pageContext.request.contextPath}/js/review-submitter.js"></script>

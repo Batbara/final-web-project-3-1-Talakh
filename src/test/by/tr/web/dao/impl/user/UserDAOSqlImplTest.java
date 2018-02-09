@@ -1,15 +1,17 @@
 package by.tr.web.dao.impl.user;
 
-import by.tr.web.controller.util.DateTimeUtil;
-import by.tr.web.dao.impl.UserDAOSqlImpl;
-import by.tr.web.dao.impl.connection_pool.ConnectionPool;
+import by.tr.web.controller.constant.DateTimeUtil;
+import by.tr.web.dao.configuration.ConnectionPool;
+import by.tr.web.dao.exception.DAOException;
+import by.tr.web.dao.user.PasswordDAOException;
+import by.tr.web.dao.user.UserDAOSqlImpl;
 import by.tr.web.domain.BanInfo;
 import by.tr.web.domain.BanReason;
+import by.tr.web.domain.Review;
 import by.tr.web.domain.User;
 import by.tr.web.domain.builder.UserBuilder;
-import by.tr.web.exception.dao.common.DAOException;
-import by.tr.web.exception.dao.user.PasswordDAOException;
-import by.tr.web.exception.service.common.EmptyParameterException;
+import by.tr.web.domain.builder.UserReviewBuilder;
+import by.tr.web.service.input_validator.RequestParameterNotFound;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
@@ -30,6 +32,7 @@ public class UserDAOSqlImplTest {
     private final static String DEFAULT_TIME_PATTERN = "yyyy-MM-dd'T'hh:mm:ss";
 
     private static final String DELETE_USER_QUERY = "DELETE FROM test.user WHERE user_name = ?";
+    public static final String SET_USER_STATUS = "UPDATE user SET user_status = ? WHERE user_id = ?";
     private static final String GET_USER_QUERY = "SELECT user.user_id, user.user_email, " +
             "        user.user_status, user.user_is_banned, " +
             "        user.user_reg_date" +
@@ -38,7 +41,6 @@ public class UserDAOSqlImplTest {
     private static final String REMOVE_BAN_QUERY = "UPDATE  user " +
             "  SET user_is_banned = 0," +
             "     user_ban_time = NULL," +
-            "     user_unban_time = NULL," +
             "     user_ban_reason_id = NULL" +
             "   WHERE user_name = ?";
     private static final String SET_BAN_QUERY = "UPDATE  user" +
@@ -68,7 +70,6 @@ public class UserDAOSqlImplTest {
 
     @AfterClass
     public static void destroyConnectionPool() {
-        ConnectionPool connectionPool = ConnectionPool.getInstance();
         connectionPool.dispose();
     }
 
@@ -94,7 +95,7 @@ public class UserDAOSqlImplTest {
     }
 
     @Test
-    public void testUserSuccessfulLogin() throws DAOException, ParseException, EmptyParameterException {
+    public void testUserSuccessfulLogin() throws DAOException, ParseException, RequestParameterNotFound {
         String userName = "Maggie";
         String password = "12345";
         String lang = "ru";
@@ -108,6 +109,29 @@ public class UserDAOSqlImplTest {
                 .addRegistrationDate(regDate)
                 .addBanStatus(false)
                 .create();
+        Review rate = new UserReviewBuilder()
+                .addUser(expectedUser)
+                .addShowId(8)
+                .addUserRate(8)
+                .create();
+
+        Review review = new UserReviewBuilder()
+                .addUser(expectedUser)
+                .addShowId(9)
+                .addUserRate(8)
+                .addReviewTitle("DOH!")
+                .addReviewContent("\n" +
+                        "«Симпсоны» — самый лучший мультик, который я когда-либо смотрела. Они подходят для всех возрастов. Независимо от того, сколько Вам лет, Вы будете улыбаться и смеяться, когда смотрите этот мультик.\n" +
+                        "\n" +
+                        "Знакомые нам всем герои оказываются в очередной смешной передряге, из которой умудряются, как всегда, выйти с улыбками на лицах.\n" +
+                        "\n" +
+                        "Если хочется от души повеселиться и приятно провести время, посмотрите «Симпсонов».")
+                .addPostDate(DateTimeUtil.getTimestampFromString("2018-01-28T17:17:07", DEFAULT_TIME_PATTERN))
+                .addReviewStatus("posted")
+                .create();
+
+        expectedUser.addUserReview(rate);
+        expectedUser.addUserReview(review);
 
         User actualUser = userDAO.login(userName, password, lang);
 
@@ -125,24 +149,8 @@ public class UserDAOSqlImplTest {
     }
 
     @Test
-    public void testIsUserRegistered() throws DAOException {
-        String login = "fakeUSERname";
-        boolean expected = false;
-        boolean actual = userDAO.isUserRegistered(login);
-        Assert.assertEquals(expected, actual);
-    }
-
-    @Test
-    public void testIsEmailRegistered() throws DAOException {
-        String email = "talahbarbara@gmail.com";
-        boolean expected = true;
-        boolean actual = userDAO.isEmailRegistered(email);
-        Assert.assertEquals(expected, actual);
-    }
-
-    @Test
     public void testCountUsers() throws DAOException {
-        int expected = 10;
+        int expected = 32;
         int actual = userDAO.countUsers();
         Assert.assertEquals(expected, actual);
     }
@@ -189,6 +197,42 @@ public class UserDAOSqlImplTest {
             Assert.assertEquals(expectedBanned, actual);
         } finally {
             setBanToUser(user);
+        }
+    }
+
+    @Test
+    public void testSuccessfulUserStatusChange() throws SQLException, DAOException {
+
+        int userId = 25;
+        String oldStatus = "casual_viewer";
+        try {
+
+            userDAO.changeUserStatus(userId, "reviewer");
+            User changedUser = getUser("crazyPanda");
+
+            User.UserStatus expectedStatus = User.UserStatus.REVIEWER;
+            User.UserStatus actualStatus = changedUser.getUserStatus();
+
+            Assert.assertEquals(expectedStatus, actualStatus);
+        } finally {
+            resetStatus(userId, oldStatus);
+        }
+    }
+
+    private void resetStatus(int userId, String status) throws SQLException {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        try {
+            connection = connectionPool.takeConnection();
+            preparedStatement = connection.prepareStatement(SET_USER_STATUS);
+
+            preparedStatement.setString(1, status);
+            preparedStatement.setInt(2, userId);
+
+            preparedStatement.executeUpdate();
+
+        } finally {
+            connectionPool.closeConnection(connection, preparedStatement);
         }
     }
 
