@@ -1,8 +1,8 @@
 package by.tr.web.dao.user;
 
 import by.tr.web.dao.configuration.Configuration;
-import by.tr.web.dao.configuration.ConfigurationFactory;
 import by.tr.web.dao.configuration.ConnectionPool;
+import by.tr.web.dao.configuration.QueryConfigurationFactory;
 import by.tr.web.dao.constant.SqlQueryName;
 import by.tr.web.dao.exception.CounterDAOException;
 import by.tr.web.dao.exception.DAOException;
@@ -51,7 +51,7 @@ public class UserDAOSqlImpl implements UserDAO {
             }
             checkEmailForRegistration(connection, eMail);
 
-            Configuration queryConfig = ConfigurationFactory.getInstance().getUserQueryConfig();
+            Configuration queryConfig = QueryConfigurationFactory.getInstance().getUserQueryConfig();
             String registerQuery = queryConfig.getSqlQuery(SqlQueryName.REGISTER_QUERY);
 
             preparedStatement = connection.prepareStatement(registerQuery, Statement.RETURN_GENERATED_KEYS);
@@ -86,7 +86,7 @@ public class UserDAOSqlImpl implements UserDAO {
             checkUsernameForRegistration(connection, login);
             checkPasswordMatch(connection, login, password);
 
-            Configuration queryConfig = ConfigurationFactory.getInstance().getUserQueryConfig();
+            Configuration queryConfig = QueryConfigurationFactory.getInstance().getUserQueryConfig();
             String takeUserQuery = queryConfig.getSqlQuery(SqlQueryName.TAKE_USER_QUERY);
 
             preparedStatement = connection.prepareStatement(takeUserQuery);
@@ -148,7 +148,7 @@ public class UserDAOSqlImpl implements UserDAO {
         try {
             connection = connectionPool.takeConnection();
 
-            Configuration queryConfig = ConfigurationFactory.getInstance().getUserQueryConfig();
+            Configuration queryConfig = QueryConfigurationFactory.getInstance().getUserQueryConfig();
             String takeUserList = queryConfig.getSqlQuery(SqlQueryName.TAKE_USER_LIST);
 
             preparedStatement = connection.prepareStatement(takeUserList);
@@ -199,7 +199,7 @@ public class UserDAOSqlImpl implements UserDAO {
             connection = connectionPool.takeConnection();
             statement = connection.createStatement();
 
-            Configuration queryConfig = ConfigurationFactory.getInstance().getUserQueryConfig();
+            Configuration queryConfig = QueryConfigurationFactory.getInstance().getUserQueryConfig();
             String userCounterQuery = queryConfig.getSqlQuery(SqlQueryName.USER_COUNTER_QUERY);
 
             resultSet = statement.executeQuery(userCounterQuery);
@@ -223,7 +223,7 @@ public class UserDAOSqlImpl implements UserDAO {
         try {
             connection = connectionPool.takeConnection();
 
-            Configuration queryConfig = ConfigurationFactory.getInstance().getUserQueryConfig();
+            Configuration queryConfig = QueryConfigurationFactory.getInstance().getUserQueryConfig();
             String banUserQuery = queryConfig.getSqlQuery(SqlQueryName.BAN_USER_QUERY);
 
             preparedStatement = connection.prepareStatement(banUserQuery);
@@ -252,7 +252,7 @@ public class UserDAOSqlImpl implements UserDAO {
         try {
             connection = connectionPool.takeConnection();
 
-            Configuration queryConfig = ConfigurationFactory.getInstance().getUserQueryConfig();
+            Configuration queryConfig = QueryConfigurationFactory.getInstance().getUserQueryConfig();
             String takeBanReasonsQuery = queryConfig.getSqlQuery(SqlQueryName.TAKE_BAN_REASONS_QUERY);
 
             preparedStatement = connection.prepareStatement(takeBanReasonsQuery);
@@ -287,7 +287,7 @@ public class UserDAOSqlImpl implements UserDAO {
         try {
             connection = connectionPool.takeConnection();
 
-            Configuration queryConfig = ConfigurationFactory.getInstance().getUserQueryConfig();
+            Configuration queryConfig = QueryConfigurationFactory.getInstance().getUserQueryConfig();
             String unbanUserQuery = queryConfig.getSqlQuery(SqlQueryName.UNBAN_USER_QUERY);
 
             preparedStatement = connection.prepareStatement(unbanUserQuery);
@@ -311,7 +311,7 @@ public class UserDAOSqlImpl implements UserDAO {
         try {
             connection = connectionPool.takeConnection();
 
-            Configuration queryConfig = ConfigurationFactory.getInstance().getUserQueryConfig();
+            Configuration queryConfig = QueryConfigurationFactory.getInstance().getUserQueryConfig();
             String changeUserStatusQuery = queryConfig.getSqlQuery(SqlQueryName.CHANGE_USER_STATUS_QUERY);
 
             preparedStatement = connection.prepareStatement(changeUserStatusQuery);
@@ -334,7 +334,7 @@ public class UserDAOSqlImpl implements UserDAO {
         ResultSet resultSet = null;
         try {
 
-            Configuration queryConfig = ConfigurationFactory.getInstance().getUserQueryConfig();
+            Configuration queryConfig = QueryConfigurationFactory.getInstance().getUserQueryConfig();
             String takeBanInfo = queryConfig.getSqlQuery(SqlQueryName.TAKE_BAN_INFO);
 
             preparedStatement = connection.prepareStatement(takeBanInfo);
@@ -365,7 +365,7 @@ public class UserDAOSqlImpl implements UserDAO {
         ResultSet resultSet = null;
         try {
 
-            Configuration queryConfig = ConfigurationFactory.getInstance().getUserQueryConfig();
+            Configuration queryConfig = QueryConfigurationFactory.getInstance().getUserQueryConfig();
             String takeUserReviewsQuery = queryConfig.getSqlQuery(SqlQueryName.TAKE_USER_REVIEWS_QUERY);
 
             preparedStatement = connection.prepareStatement(takeUserReviewsQuery);
@@ -408,7 +408,7 @@ public class UserDAOSqlImpl implements UserDAO {
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         try {
-            Configuration queryConfig = ConfigurationFactory.getInstance().getUserQueryConfig();
+            Configuration queryConfig = QueryConfigurationFactory.getInstance().getUserQueryConfig();
             String checkPasswordQuery = queryConfig.getSqlQuery(SqlQueryName.CHECK_PASSWORD_QUERY);
 
             preparedStatement = connection.prepareStatement(checkPasswordQuery);
@@ -433,7 +433,7 @@ public class UserDAOSqlImpl implements UserDAO {
         ResultSet resultSet = null;
         PreparedStatement preparedStatement = null;
         try {
-            Configuration queryConfig = ConfigurationFactory.getInstance().getUserQueryConfig();
+            Configuration queryConfig = QueryConfigurationFactory.getInstance().getUserQueryConfig();
             String checkEmailQuery = queryConfig.getSqlQuery(SqlQueryName.CHECK_EMAIL_QUERY);
 
             preparedStatement = connection.prepareStatement(checkEmailQuery);
@@ -458,7 +458,7 @@ public class UserDAOSqlImpl implements UserDAO {
         ResultSet resultSet = null;
         PreparedStatement preparedStatement = null;
         try {
-            Configuration queryConfig = ConfigurationFactory.getInstance().getUserQueryConfig();
+            Configuration queryConfig = QueryConfigurationFactory.getInstance().getUserQueryConfig();
             String checkUserExistQuery = queryConfig.getSqlQuery(SqlQueryName.CHECK_USER_EXIST_QUERY);
 
             preparedStatement = connection.prepareStatement(checkUserExistQuery);

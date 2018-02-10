@@ -18,11 +18,21 @@ import java.util.List;
 
 public class TakeCountryListImpl implements Command {
     private static final Logger logger = Logger.getLogger(TakeGenreListImpl.class);
+
+    /**
+     * Command to take country list from data base
+     * <p>
+     * Method tries to retrieve {@link List} of all countries producing films/tv-shows
+     * from data base accordingly to chosen locale.
+     * In case of success, {@link List} is converted to {@link Gson} object and written to response during AJAX call.
+     * If an error occurs, {@link HttpServletResponse#SC_INTERNAL_SERVER_ERROR} will be sent.
+     * </p>
+     */
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         ShowService showService = ServiceFactory.getInstance().getShowService();
         String lang = RequestUtil.getLanguage(request);
-        try{
+        try {
             List<Country> countryList = showService.takeCountryList(lang);
 
             String genreListJson = new Gson().toJson(countryList);

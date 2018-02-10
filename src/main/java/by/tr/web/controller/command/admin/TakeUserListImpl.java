@@ -4,7 +4,6 @@ import by.tr.web.controller.command.Command;
 import by.tr.web.controller.constant.FrontControllerParameter;
 import by.tr.web.controller.constant.JspAttribute;
 import by.tr.web.controller.constant.JspPagePath;
-import by.tr.web.controller.constant.TableParameter;
 import by.tr.web.controller.util.RequestUtil;
 import by.tr.web.cookie.CookieManager;
 import by.tr.web.cookie.CookieName;
@@ -12,6 +11,7 @@ import by.tr.web.domain.BanReason;
 import by.tr.web.domain.User;
 import by.tr.web.service.ServiceException;
 import by.tr.web.service.ServiceFactory;
+import by.tr.web.service.table.TableParameter;
 import by.tr.web.service.table.TableService;
 import by.tr.web.service.user.UserService;
 import by.tr.web.service.user.exception.CountingUserException;
@@ -39,12 +39,11 @@ public class TakeUserListImpl implements Command {
             int numberOfRecords = userService.countUsers();
 
             request.setAttribute(FrontControllerParameter.COOKIE_NAME, CookieName.USERS_CURRENT_PAGE);
-            int currentPage = tableService.takeCurrentPage(request);
+            int currentPage = tableService.takeCurrentPage(request, TableParameter.USERS_TABLE);
             request.setAttribute(TableParameter.PAGE, currentPage);
 
             request.setAttribute(FrontControllerParameter.COOKIE_NAME, CookieName.RECORDS_ON_USERS_PAGE);
-            request.setAttribute(FrontControllerParameter.DEFAULT_RECORDS_ON_PAGE, 25);
-            int recordsOnPage = tableService.takeRecordsOnPage(request);
+            int recordsOnPage = tableService.takeRecordsOnPage(request, TableParameter.USERS_TABLE);
             request.setAttribute(TableParameter.RECORDS_ON_PAGE, recordsOnPage);
 
             int recordsToTake = tableService.calcRecordsToTake(recordsOnPage, currentPage, numberOfRecords);

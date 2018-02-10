@@ -4,7 +4,6 @@ import by.tr.web.controller.command.Command;
 import by.tr.web.controller.constant.FrontControllerParameter;
 import by.tr.web.controller.constant.JspAttribute;
 import by.tr.web.controller.constant.JspPagePath;
-import by.tr.web.controller.constant.TableParameter;
 import by.tr.web.controller.util.RequestUtil;
 import by.tr.web.cookie.CookieManager;
 import by.tr.web.cookie.CookieName;
@@ -12,6 +11,7 @@ import by.tr.web.domain.TvShow;
 import by.tr.web.service.CountingServiceException;
 import by.tr.web.service.ServiceException;
 import by.tr.web.service.ServiceFactory;
+import by.tr.web.service.table.TableParameter;
 import by.tr.web.service.table.TableService;
 import by.tr.web.service.tv_show.TvShowService;
 import org.apache.log4j.Logger;
@@ -36,16 +36,15 @@ public class TakeTvListImpl implements Command {
             int numberOfRecords = tvShowService.countTvShow();
 
             request.setAttribute(FrontControllerParameter.COOKIE_NAME, CookieName.TVSHOW_CURRENT_PAGE);
-            int currentPage = tableService.takeCurrentPage(request);
+            int currentPage = tableService.takeCurrentPage(request, TableParameter.TV_SHOWS_TABLE);
             request.setAttribute(TableParameter.PAGE, currentPage);
 
             request.setAttribute(FrontControllerParameter.COOKIE_NAME, CookieName.RECORDS_ON_TVSHOW_PAGE);
-            request.setAttribute(FrontControllerParameter.DEFAULT_RECORDS_ON_PAGE, 5);
-            int recordsOnPage = tableService.takeRecordsOnPage(request);
+            int recordsOnPage = tableService.takeRecordsOnPage(request,TableParameter.TV_SHOWS_TABLE );
             request.setAttribute(TableParameter.RECORDS_ON_PAGE, recordsOnPage);
 
             request.setAttribute(FrontControllerParameter.COOKIE_NAME, CookieName.TVSHOW_ORDER);
-            String orderType = tableService.takeTvShowOrderType(request);
+            String orderType = tableService.takeTvShowOrderType(request, TableParameter.TV_SHOWS_TABLE);
             request.setAttribute(TableParameter.ORDER, orderType);
 
             int recordsToTake = tableService.calcRecordsToTake(recordsOnPage, currentPage, numberOfRecords);

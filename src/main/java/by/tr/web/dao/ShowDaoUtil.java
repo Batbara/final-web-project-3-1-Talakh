@@ -1,8 +1,8 @@
 package by.tr.web.dao;
 
 import by.tr.web.dao.configuration.Configuration;
-import by.tr.web.dao.configuration.ConfigurationFactory;
 import by.tr.web.dao.configuration.ConnectionPool;
+import by.tr.web.dao.configuration.QueryConfigurationFactory;
 import by.tr.web.dao.constant.SqlQueryName;
 import by.tr.web.dao.exception.DAOException;
 import by.tr.web.dao.exception.EntityNotUniqueException;
@@ -29,7 +29,7 @@ public class ShowDaoUtil {
         PreparedStatement preparedStatement = null;
 
         try {
-            Configuration queryConfig = ConfigurationFactory.getInstance().getShowQueryConfig();
+            Configuration queryConfig = QueryConfigurationFactory.getInstance().getShowQueryConfig();
             String takeGenreQuery = queryConfig.getSqlQuery(SqlQueryName.TAKE_GENRE_OF_SHOW_QUERY);
 
             preparedStatement = connection.prepareStatement(takeGenreQuery);
@@ -58,7 +58,7 @@ public class ShowDaoUtil {
         PreparedStatement preparedStatement = null;
 
         try {
-            Configuration queryConfig = ConfigurationFactory.getInstance().getShowQueryConfig();
+            Configuration queryConfig = QueryConfigurationFactory.getInstance().getShowQueryConfig();
             String takeCountry = queryConfig.getSqlQuery(SqlQueryName.TAKE_COUNTRY_OF_SHOW_QUERY);
 
             preparedStatement = connection.prepareStatement(takeCountry);
@@ -92,7 +92,7 @@ public class ShowDaoUtil {
             Time showRuntime = show.getRuntime();
             Date showPremiereDate = show.getPremiereDate();
 
-            Configuration queryConfig = ConfigurationFactory.getInstance().getShowQueryConfig();
+            Configuration queryConfig = QueryConfigurationFactory.getInstance().getShowQueryConfig();
             String addShowQuery = queryConfig.getSqlQuery(SqlQueryName.ADD_NEW_SHOW);
 
             preparedStatement = connection.prepareStatement(addShowQuery, Statement.RETURN_GENERATED_KEYS);
@@ -130,7 +130,7 @@ public class ShowDaoUtil {
             String showTitle = show.getTitle();
             String showSynopsis = show.getSynopsis();
 
-            Configuration queryConfig = ConfigurationFactory.getInstance().getShowQueryConfig();
+            Configuration queryConfig = QueryConfigurationFactory.getInstance().getShowQueryConfig();
             String addShowQuery = queryConfig.getSqlQuery(SqlQueryName.ADD_SHOW_TRANSLATION);
 
             preparedStatement = connection.prepareStatement(addShowQuery);
@@ -171,7 +171,7 @@ public class ShowDaoUtil {
             int showId = show.getShowId();
             List<Genre> genreList = show.getGenreList();
 
-            Configuration queryConfig = ConfigurationFactory.getInstance().getShowQueryConfig();
+            Configuration queryConfig = QueryConfigurationFactory.getInstance().getShowQueryConfig();
             String addShowQuery = queryConfig.getSqlQuery(SqlQueryName.ADD_SHOW_GENRES);
 
             preparedStatement = connection.prepareStatement(addShowQuery);
@@ -197,7 +197,7 @@ public class ShowDaoUtil {
             int showId = show.getShowId();
             List<Country> countryList = show.getCountryList();
 
-            Configuration queryConfig = ConfigurationFactory.getInstance().getShowQueryConfig();
+            Configuration queryConfig = QueryConfigurationFactory.getInstance().getShowQueryConfig();
             String addShowQuery = queryConfig.getSqlQuery(SqlQueryName.ADD_SHOW_COUNTRIES);
 
             preparedStatement = connection.prepareStatement(addShowQuery);
@@ -223,7 +223,7 @@ public class ShowDaoUtil {
         PreparedStatement preparedStatement = null;
 
         try {
-            Configuration queryConfig = ConfigurationFactory.getInstance().getShowQueryConfig();
+            Configuration queryConfig = QueryConfigurationFactory.getInstance().getShowQueryConfig();
             String takeCountry = queryConfig.getSqlQuery(SqlQueryName.CHECK_SHOW_EXISTENCE_IN_DB);
 
             preparedStatement = connection.prepareStatement(takeCountry);

@@ -31,6 +31,7 @@ public final class FrontControllerParameter {
     public static final String DESCENDING_ORDER = " desc";
     public static final String POSTER_UPLOAD_FOLDER = "posterUploadFolder";
 
-    private FrontControllerParameter(){}
+    private FrontControllerParameter() {
+    }
 
 }

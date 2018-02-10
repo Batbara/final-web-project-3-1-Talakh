@@ -7,6 +7,7 @@ import by.tr.web.service.input_validator.DataTypeValidator;
 import by.tr.web.service.input_validator.RequestParameterNotFound;
 import by.tr.web.tag.CustomTagLibParameter;
 
+import java.net.URL;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.text.ParseException;
@@ -72,7 +73,20 @@ public class TypeFormatUtil {
         SimpleDateFormat dateFormat = new SimpleDateFormat(FrontControllerParameter.FILENAME_TIMESTAMP_PATTERN);
         return language.toString()+dateFormat.format(new Date(currTime)) + extension;
     }
+    public static String getSourcePath(String path) {
 
+        ClassLoader classLoader = TypeFormatUtil.class.getClassLoader();
+        URL sourceURL = classLoader.getResource(path);
+        assert sourceURL != null;
+        String rawPath = sourceURL.getPath();
+
+        String incorrectDriveLetterRegEx = "^/(.:/)";
+        String capturedGroup = "$1";
+        String correctPath = rawPath.replaceFirst(incorrectDriveLetterRegEx, capturedGroup);
+
+        return correctPath;
+
+    }
     private static String getFileExtension(String fileName) {
         return fileName.substring(fileName.lastIndexOf("."));
     }

@@ -18,6 +18,16 @@ import java.util.List;
 
 public class TakeGenreListImpl implements Command{
     private static final Logger logger = Logger.getLogger(TakeGenreListImpl.class);
+
+    /**
+     * Command to take genre list from data base
+     * <p>
+     * Method tries to retrieve {@link List} of all films/tv-shows genres stored in data base
+     * accordingly to chosen locale.
+     * In case of success, {@link List} is converted to {@link Gson} object and written to response during AJAX call.
+     * If an error occurs, {@link HttpServletResponse#SC_INTERNAL_SERVER_ERROR} will be sent.
+     * </p>
+     */
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         ShowService showService = ServiceFactory.getInstance().getShowService();

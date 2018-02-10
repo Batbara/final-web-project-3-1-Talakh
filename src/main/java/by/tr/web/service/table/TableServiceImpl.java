@@ -1,25 +1,24 @@
 package by.tr.web.service.table;
 
 import by.tr.web.controller.constant.FrontControllerParameter;
-import by.tr.web.controller.constant.TableParameter;
 import by.tr.web.cookie.CookieManager;
 import by.tr.web.cookie.CookieNotFoundException;
 import by.tr.web.cookie.NoSuchCookieInRequest;
-import by.tr.web.domain.Movie;
-import by.tr.web.domain.TvShow;
 import by.tr.web.service.InvalidOrderTypeException;
 import by.tr.web.service.ServiceException;
 import by.tr.web.service.input_validator.DataTypeValidator;
 import by.tr.web.service.input_validator.RequestParameterNotFound;
 import by.tr.web.service.input_validator.ValidatorFactory;
 import by.tr.web.service.show.ShowValidator;
+import by.tr.web.service.table.parser.TableConfiguration;
 
 import javax.servlet.http.HttpServletRequest;
 
 public class TableServiceImpl implements TableService {
     @Override
-    public int takeCurrentPage(HttpServletRequest request) throws ServiceException {
-        int defaultCurrentPageValue = 1;
+    public int takeCurrentPage(HttpServletRequest request, String tableName) throws ServiceException {
+        TableConfiguration configuration = TableConfigurationFactory.getInstance().configurationFor(tableName);
+        int defaultCurrentPageValue = configuration.getCurrentPage();
 
         String currentPageString = request.getParameter(TableParameter.PAGE);
 
@@ -33,8 +32,10 @@ public class TableServiceImpl implements TableService {
     }
 
     @Override
-    public int takeRecordsOnPage(HttpServletRequest request) throws ServiceException {
-        int defaultRecordsOnPage = (Integer) request.getAttribute(FrontControllerParameter.DEFAULT_RECORDS_ON_PAGE);
+    public int takeRecordsOnPage(HttpServletRequest request, String tableName) throws ServiceException {
+
+        TableConfiguration configuration = TableConfigurationFactory.getInstance().configurationFor(tableName);
+        int defaultRecordsOnPage = configuration.getRecordsOnPage();
 
         String recordsOnPageParameter = request.getParameter(TableParameter.RECORDS_ON_PAGE);
 
@@ -63,8 +64,11 @@ public class TableServiceImpl implements TableService {
     }
 
     @Override
-    public String takeMovieOrderType(HttpServletRequest request) {
-        String defaultOrderType = Movie.MovieOrderType.TITLE.toString().toLowerCase();
+    public String takeMovieOrderType(HttpServletRequest request, String tableName) throws TableConfigurationException {
+
+        TableConfiguration configuration = TableConfigurationFactory.getInstance().configurationFor(tableName);
+        String defaultOrderType = configuration.getOrderType();
+
         String orderType = request.getParameter(TableParameter.ORDER);
 
         ShowValidator validator = ValidatorFactory.getInstance().getMovieValidator();
@@ -82,8 +86,11 @@ public class TableServiceImpl implements TableService {
     }
 
     @Override
-    public String takeTvShowOrderType(HttpServletRequest request) {
-        String defaultOrderType = TvShow.TvShowOrderType.TITLE.toString().toLowerCase();
+    public String takeTvShowOrderType(HttpServletRequest request, String tableName) throws TableConfigurationException {
+
+        TableConfiguration configuration = TableConfigurationFactory.getInstance().configurationFor(tableName);
+        String defaultOrderType = configuration.getOrderType();
+
         String orderType = request.getParameter(TableParameter.ORDER);
 
         ShowValidator validator = ValidatorFactory.getInstance().getTvShowValidator();

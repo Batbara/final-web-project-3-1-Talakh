@@ -19,6 +19,13 @@ import java.io.PrintWriter;
 public class ChangeUserStatusImpl implements Command {
     private static final Logger logger = Logger.getLogger(ChangeUserStatusImpl.class);
 
+    /**
+     * Command to change user status
+     * <p>
+     * Method retrieves all needed user data from request, validates it and tries to change requested user status.
+     * In case of success, {@link FrontControllerParameter#SUCCESS_RESPONSE} is written to response during AJAX call.
+     * If an error occurs, {@link FrontControllerParameter#FAILURE_RESPONSE} will be written to response.
+     */
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 

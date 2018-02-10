@@ -6,10 +6,10 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;
 
-@XmlRootElement(name = XmlParameter.COMMAND_LIST, namespace = XmlParameter.NAMESPACE)
+@XmlRootElement(name = CommandXmlParameter.COMMAND_LIST, namespace = CommandXmlParameter.NAMESPACE)
 @XmlAccessorType(XmlAccessType.FIELD)
 public class CommandList {
-    @XmlElement(name = XmlParameter.COMMAND, namespace = XmlParameter.NAMESPACE)
+    @XmlElement(name = CommandXmlParameter.COMMAND, namespace = CommandXmlParameter.NAMESPACE)
     private List<CommandPrototype> commandList;
 
     public CommandList() {

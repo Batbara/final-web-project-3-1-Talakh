@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="http://www.mpb.web.tr.by/tableConfiguration"
+           xmlns:tns="http://www.mpb.web.tr.by/tableConfiguration"
+           elementFormDefault="qualified">
+    <xs:element name="tables">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="table" type="tns:Table"
+                            minOccurs="1"
+                            maxOccurs="unbounded" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:complexType name="Table">
+        <xs:sequence>
+            <xs:element name="tableName" type="xs:string" />
+            <xs:element name="recordsOnPage" type="xs:positiveInteger" />
+            <xs:element name="currentPage" type="xs:positiveInteger" />
+            <xs:element name="orderType" minOccurs="0">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:enumeration value="title"/>
+                        <xs:enumeration value="genre"/>
+                        <xs:enumeration value="year"/>
+                        <xs:enumeration value="seasons"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

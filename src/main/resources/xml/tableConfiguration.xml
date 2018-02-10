@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<tc:tables xmlns:tc="http://www.mpb.web.tr.by/tableConfiguration"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://www.mpb.web.tr.by/tableConfiguration tableConfiguration.xsd">
+    <tc:table>
+        <tc:tableName>showsTable</tc:tableName>
+        <tc:recordsOnPage>25</tc:recordsOnPage>
+        <tc:currentPage>1</tc:currentPage>
+    </tc:table>
+    <tc:table>
+        <tc:tableName>usersTable</tc:tableName>
+        <tc:recordsOnPage>25</tc:recordsOnPage>
+        <tc:currentPage>1</tc:currentPage>
+    </tc:table>
+    <tc:table>
+        <tc:tableName>moviesTable</tc:tableName>
+        <tc:recordsOnPage>5</tc:recordsOnPage>
+        <tc:currentPage>1</tc:currentPage>
+        <tc:orderType>title</tc:orderType>
+    </tc:table>
+    <tc:table>
+        <tc:tableName>tvShowsTable</tc:tableName>
+        <tc:recordsOnPage>5</tc:recordsOnPage>
+        <tc:currentPage>1</tc:currentPage>
+        <tc:orderType>title</tc:orderType>
+    </tc:table>
+    <tc:table>
+        <tc:tableName>moderatedReviewsTable</tc:tableName>
+        <tc:recordsOnPage>25</tc:recordsOnPage>
+        <tc:currentPage>1</tc:currentPage>
+    </tc:table>
+    <tc:table>
+        <tc:tableName>showReviewsTable</tc:tableName>
+        <tc:recordsOnPage>5</tc:recordsOnPage>
+        <tc:currentPage>1</tc:currentPage>
+    </tc:table>
+
+</tc:tables>

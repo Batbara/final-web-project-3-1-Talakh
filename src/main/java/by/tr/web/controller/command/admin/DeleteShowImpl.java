@@ -18,6 +18,13 @@ import java.io.PrintWriter;
 public class DeleteShowImpl implements Command {
     private static final Logger logger = Logger.getLogger(DeleteReviewImpl.class);
 
+    /**
+     * Command to delete show
+     * <p>
+     * Method retrieves all needed show data from request, validates it and tries to delete requested show from data base.
+     * In case of success, {@link FrontControllerParameter#SUCCESS_RESPONSE} is written to response during AJAX call.
+     * If an error occurs, {@link FrontControllerParameter#FAILURE_RESPONSE} will be written to response.
+     */
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         response.setContentType(FrontControllerParameter.TEXT_PLAIN_CONTENT_TYPE);

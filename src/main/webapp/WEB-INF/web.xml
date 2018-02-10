@@ -17,6 +17,10 @@
     </listener>
 
     <error-page>
+        <error-code>500</error-code>
+        <location>/server_error</location>
+    </error-page>
+    <error-page>
         <error-code>403</error-code>
         <location>/forbidden</location>
     </error-page>

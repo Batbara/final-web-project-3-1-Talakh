@@ -1,8 +1,8 @@
 package by.tr.web.dao.show;
 
 import by.tr.web.dao.configuration.Configuration;
-import by.tr.web.dao.configuration.ConfigurationFactory;
 import by.tr.web.dao.configuration.ConnectionPool;
+import by.tr.web.dao.configuration.QueryConfigurationFactory;
 import by.tr.web.dao.constant.SqlQueryName;
 import by.tr.web.dao.exception.CounterDAOException;
 import by.tr.web.dao.exception.DAOException;
@@ -34,7 +34,7 @@ public class ShowDAOSqlImpl implements ShowDAO {
         PreparedStatement preparedStatement = null;
         try {
             connection = connectionPool.takeConnection();
-            Configuration queryConfig = ConfigurationFactory.getInstance().getShowQueryConfig();
+            Configuration queryConfig = QueryConfigurationFactory.getInstance().getShowQueryConfig();
             String takeShowListQuery = queryConfig.getSqlQuery(SqlQueryName.TAKE_SHOWS_LIST);
             preparedStatement = connection.prepareStatement(takeShowListQuery);
 
@@ -74,7 +74,7 @@ public class ShowDAOSqlImpl implements ShowDAO {
         try {
             connection = connectionPool.takeConnection();
 
-            Configuration queryConfig = ConfigurationFactory.getInstance().getShowQueryConfig();
+            Configuration queryConfig = QueryConfigurationFactory.getInstance().getShowQueryConfig();
             String deleteShow = queryConfig.getSqlQuery(SqlQueryName.DELETE_SHOW);
 
             preparedStatement = connection.prepareStatement(deleteShow);
@@ -99,7 +99,7 @@ public class ShowDAOSqlImpl implements ShowDAO {
             connection = connectionPool.takeConnection();
             statement = connection.createStatement();
 
-            Configuration queryConfig = ConfigurationFactory.getInstance().getShowQueryConfig();
+            Configuration queryConfig = QueryConfigurationFactory.getInstance().getShowQueryConfig();
             String movieCounterQuery = queryConfig.getSqlQuery(SqlQueryName.COUNT_ALL_SHOWS_QUERY);
 
             resultSet = statement.executeQuery(movieCounterQuery);
@@ -124,7 +124,7 @@ public class ShowDAOSqlImpl implements ShowDAO {
         PreparedStatement preparedStatement = null;
         try {
             connection = connectionPool.takeConnection();
-            Configuration queryConfig = ConfigurationFactory.getInstance().getShowQueryConfig();
+            Configuration queryConfig = QueryConfigurationFactory.getInstance().getShowQueryConfig();
             String reviewListQuery = queryConfig.getSqlQuery(SqlQueryName.TAKE_POSTED_REVIEW_LIST);
 
             preparedStatement = connection.prepareStatement(reviewListQuery);
@@ -180,7 +180,7 @@ public class ShowDAOSqlImpl implements ShowDAO {
         PreparedStatement preparedStatement = null;
         try {
             connection = connectionPool.takeConnection();
-            Configuration queryConfig = ConfigurationFactory.getInstance().getShowQueryConfig();
+            Configuration queryConfig = QueryConfigurationFactory.getInstance().getShowQueryConfig();
             String countryListQuery = queryConfig.getSqlQuery(SqlQueryName.TAKE_COUNTRY_LIST_QUERY);
 
             preparedStatement = connection.prepareStatement(countryListQuery);
@@ -213,7 +213,7 @@ public class ShowDAOSqlImpl implements ShowDAO {
         PreparedStatement preparedStatement = null;
         try {
             connection = connectionPool.takeConnection();
-            Configuration queryConfig = ConfigurationFactory.getInstance().getShowQueryConfig();
+            Configuration queryConfig = QueryConfigurationFactory.getInstance().getShowQueryConfig();
             String genreListQuery = queryConfig.getSqlQuery(SqlQueryName.TAKE_GENRE_LIST_QUERY);
 
             preparedStatement = connection.prepareStatement(genreListQuery);
@@ -247,7 +247,7 @@ public class ShowDAOSqlImpl implements ShowDAO {
         try {
             connection = connectionPool.takeConnection();
 
-            Configuration queryConfig = ConfigurationFactory.getInstance().getShowQueryConfig();
+            Configuration queryConfig = QueryConfigurationFactory.getInstance().getShowQueryConfig();
             String reviewsCounterQuery = queryConfig.getSqlQuery(SqlQueryName.COUNT_POSTED_REVIEWS_QUERY);
 
             preparedStatement = connection.prepareStatement(reviewsCounterQuery);
@@ -275,7 +275,7 @@ public class ShowDAOSqlImpl implements ShowDAO {
         try {
             connection = connectionPool.takeConnection();
 
-            Configuration queryConfig = ConfigurationFactory.getInstance().getShowQueryConfig();
+            Configuration queryConfig = QueryConfigurationFactory.getInstance().getShowQueryConfig();
             String showRatingQuery = queryConfig.getSqlQuery(SqlQueryName.TAKE_SHOW_RATING);
 
             preparedStatement = connection.prepareStatement(showRatingQuery);

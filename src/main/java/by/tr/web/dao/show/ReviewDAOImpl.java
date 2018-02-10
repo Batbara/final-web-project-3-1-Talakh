@@ -1,8 +1,8 @@
 package by.tr.web.dao.show;
 
 import by.tr.web.dao.configuration.Configuration;
-import by.tr.web.dao.configuration.ConfigurationFactory;
 import by.tr.web.dao.configuration.ConnectionPool;
+import by.tr.web.dao.configuration.QueryConfigurationFactory;
 import by.tr.web.dao.constant.SqlQueryName;
 import by.tr.web.dao.exception.CounterDAOException;
 import by.tr.web.dao.exception.DAOException;
@@ -87,7 +87,7 @@ public class ReviewDAOImpl implements ReviewDAO {
         PreparedStatement preparedStatement = null;
         try {
             connection = connectionPool.takeConnection();
-            Configuration queryConfig = ConfigurationFactory.getInstance().getShowQueryConfig();
+            Configuration queryConfig = QueryConfigurationFactory.getInstance().getShowQueryConfig();
             String reviewListQuery = queryConfig.getSqlQuery(SqlQueryName.TAKE_MODERATED_REVIEW_LIST_QUERY);
 
             preparedStatement = connection.prepareStatement(reviewListQuery);
@@ -142,7 +142,7 @@ public class ReviewDAOImpl implements ReviewDAO {
         try {
             connection = connectionPool.takeConnection();
 
-            Configuration queryConfig = ConfigurationFactory.getInstance().getShowQueryConfig();
+            Configuration queryConfig = QueryConfigurationFactory.getInstance().getShowQueryConfig();
             String postReviewQuery = queryConfig.getSqlQuery(SqlQueryName.POST_USER_REVIEW);
 
             preparedStatement = connection.prepareStatement(postReviewQuery);
@@ -167,7 +167,7 @@ public class ReviewDAOImpl implements ReviewDAO {
             connection = connectionPool.takeConnection();
             isShowPresentInDB(connection, showId);
 
-            Configuration queryConfig = ConfigurationFactory.getInstance().getShowQueryConfig();
+            Configuration queryConfig = QueryConfigurationFactory.getInstance().getShowQueryConfig();
             String deleteUserReview = queryConfig.getSqlQuery(SqlQueryName.DELETE_USER_REVIEW);
 
             preparedStatement = connection.prepareStatement(deleteUserReview);
@@ -192,7 +192,7 @@ public class ReviewDAOImpl implements ReviewDAO {
         try {
             connection = connectionPool.takeConnection();
 
-            Configuration queryConfig = ConfigurationFactory.getInstance().getShowQueryConfig();
+            Configuration queryConfig = QueryConfigurationFactory.getInstance().getShowQueryConfig();
             String reviewsCounterQuery = queryConfig.getSqlQuery(SqlQueryName.COUNT_MODERATED_REVIEWS_QUERY);
 
             statement = connection.createStatement();
@@ -217,7 +217,7 @@ public class ReviewDAOImpl implements ReviewDAO {
             int showId = review.getShowId();
             int userRate = review.getUserRate();
 
-            Configuration queryConfig = ConfigurationFactory.getInstance().getShowQueryConfig();
+            Configuration queryConfig = QueryConfigurationFactory.getInstance().getShowQueryConfig();
             String addRateQuery = queryConfig.getSqlQuery(SqlQueryName.ADD_USER_RATE);
 
             preparedStatement = connection.prepareStatement(addRateQuery);
@@ -245,7 +245,7 @@ public class ReviewDAOImpl implements ReviewDAO {
             int showId = review.getShowId();
             int userRate = review.getUserRate();
 
-            Configuration queryConfig = ConfigurationFactory.getInstance().getShowQueryConfig();
+            Configuration queryConfig = QueryConfigurationFactory.getInstance().getShowQueryConfig();
             String updateRateQuery = queryConfig.getSqlQuery(SqlQueryName.UPDATE_USER_RATE);
 
             preparedStatement = connection.prepareStatement(updateRateQuery);
@@ -273,7 +273,7 @@ public class ReviewDAOImpl implements ReviewDAO {
             String reviewTitle = review.getReviewTitle();
             String reviewContent = review.getReviewContent();
 
-            Configuration queryConfig = ConfigurationFactory.getInstance().getShowQueryConfig();
+            Configuration queryConfig = QueryConfigurationFactory.getInstance().getShowQueryConfig();
             String updateReviewQuery = queryConfig.getSqlQuery(SqlQueryName.UPDATE_USER_REVIEW);
 
             preparedStatement = connection.prepareStatement(updateReviewQuery);
@@ -303,7 +303,7 @@ public class ReviewDAOImpl implements ReviewDAO {
             String reviewTitle = review.getReviewTitle();
             String reviewContent = review.getReviewContent();
 
-            Configuration queryConfig = ConfigurationFactory.getInstance().getShowQueryConfig();
+            Configuration queryConfig = QueryConfigurationFactory.getInstance().getShowQueryConfig();
             String checkReviewPresenceQuery = queryConfig.getSqlQuery(SqlQueryName.ADD_USER_REVIEW);
 
             preparedStatement = connection.prepareStatement(checkReviewPresenceQuery);
@@ -332,7 +332,7 @@ public class ReviewDAOImpl implements ReviewDAO {
             int userId = review.getUser().getId();
             int showId = review.getShowId();
 
-            Configuration queryConfig = ConfigurationFactory.getInstance().getShowQueryConfig();
+            Configuration queryConfig = QueryConfigurationFactory.getInstance().getShowQueryConfig();
             String checkReviewPresenceQuery = queryConfig.getSqlQuery(SqlQueryName.CHECK_USER_REVIEW_PRESENCE);
 
             preparedStatement = connection.prepareStatement(checkReviewPresenceQuery);
@@ -360,7 +360,7 @@ public class ReviewDAOImpl implements ReviewDAO {
         PreparedStatement preparedStatement = null;
         try {
 
-            Configuration queryConfig = ConfigurationFactory.getInstance().getShowQueryConfig();
+            Configuration queryConfig = QueryConfigurationFactory.getInstance().getShowQueryConfig();
             String checkShowPresenceQuery = queryConfig.getSqlQuery(SqlQueryName.CHECK_SHOW_EXISTENCE_BY_ID);
 
             preparedStatement = connection.prepareStatement(checkShowPresenceQuery);

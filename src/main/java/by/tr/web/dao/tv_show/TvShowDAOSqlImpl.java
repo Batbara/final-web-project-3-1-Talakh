@@ -3,8 +3,8 @@ package by.tr.web.dao.tv_show;
 import by.tr.web.controller.util.TypeFormatUtil;
 import by.tr.web.dao.ShowDaoUtil;
 import by.tr.web.dao.configuration.Configuration;
-import by.tr.web.dao.configuration.ConfigurationFactory;
 import by.tr.web.dao.configuration.ConnectionPool;
+import by.tr.web.dao.configuration.QueryConfigurationFactory;
 import by.tr.web.dao.constant.SqlQueryName;
 import by.tr.web.dao.exception.CounterDAOException;
 import by.tr.web.dao.exception.DAOException;
@@ -85,7 +85,7 @@ public class TvShowDAOSqlImpl implements TvShowDAO {
         try {
             connection = connectionPool.takeConnection();
 
-            Configuration queryConfig = ConfigurationFactory.getInstance().getTvShowConfig();
+            Configuration queryConfig = QueryConfigurationFactory.getInstance().getTvShowConfig();
             String takeMovieInfoQuery = queryConfig.getSqlQuery(SqlQueryName.TAKE_TV_SHOW);
 
             preparedStatement = connection.prepareStatement(takeMovieInfoQuery);
@@ -120,7 +120,7 @@ public class TvShowDAOSqlImpl implements TvShowDAO {
             connection = connectionPool.takeConnection();
             statement = connection.createStatement();
 
-            Configuration queryConfig = ConfigurationFactory.getInstance().getTvShowConfig();
+            Configuration queryConfig = QueryConfigurationFactory.getInstance().getTvShowConfig();
             String tvShowCounterQuery = queryConfig.getSqlQuery(SqlQueryName.TVSHOW_COUNTER_QUERY);
 
             resultSet = statement.executeQuery(tvShowCounterQuery);
@@ -159,7 +159,7 @@ public class TvShowDAOSqlImpl implements TvShowDAO {
             ShowDaoUtil.addNewShowTranslation(connection, tvShowEnglish);
             ShowDaoUtil.addNewShowTranslation(connection, russianTranslation);
 
-            Configuration queryConfig = ConfigurationFactory.getInstance().getTvShowConfig();
+            Configuration queryConfig = QueryConfigurationFactory.getInstance().getTvShowConfig();
             String addTvShowQuery = queryConfig.getSqlQuery(SqlQueryName.ADD_NEW_TV_SHOW);
 
             preparedStatement = connection.prepareStatement(addTvShowQuery);
@@ -200,7 +200,7 @@ public class TvShowDAOSqlImpl implements TvShowDAO {
 
     private String formTvShowListQuery(String orderType) {
 
-        Configuration queryConfig = ConfigurationFactory.getInstance().getTvShowConfig();
+        Configuration queryConfig = QueryConfigurationFactory.getInstance().getTvShowConfig();
         String takeTvShowListQuery = queryConfig.getSqlQuery(SqlQueryName.TAKE_TVSHOW_LIST_QUERY);
 
         return String.format(takeTvShowListQuery, orderType);

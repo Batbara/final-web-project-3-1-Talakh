@@ -3,13 +3,15 @@ package by.tr.web.controller.util;
 import by.tr.web.controller.constant.FrontControllerParameter;
 import by.tr.web.controller.constant.JspAttribute;
 import by.tr.web.controller.constant.JspPagePath;
-import by.tr.web.controller.constant.TableParameter;
 import by.tr.web.domain.Review;
 import by.tr.web.domain.User;
 import by.tr.web.service.ServiceException;
 import by.tr.web.service.ServiceFactory;
 import by.tr.web.service.show.ShowService;
+import by.tr.web.service.table.TableConfigurationFactory;
+import by.tr.web.service.table.TableParameter;
 import by.tr.web.service.table.TableService;
+import by.tr.web.service.table.parser.TableConfiguration;
 import by.tr.web.service.user.UserService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -50,13 +52,14 @@ public final class RequestUtil {
             throws ServiceException {
         ShowService showService = ServiceFactory.getInstance().getShowService();
         TableService tableService = ServiceFactory.getInstance().getTableService();
-
-        int currentReviewPage = tableService.takeCurrentPage(request);
+        TableConfigurationFactory configurationFactory = TableConfigurationFactory.getInstance();
+        int currentReviewPage = tableService.takeCurrentPage(request, TableParameter.SHOW_REVIEWS_TABLE);
         request.setAttribute(TableParameter.PAGE, currentReviewPage);
 
-        int recordsOnPage = 5;
-        int recordsToTake = tableService.calcRecordsToTake(recordsOnPage, currentReviewPage, numberOfReviews);
+        TableConfiguration configuration = configurationFactory.configurationFor(TableParameter.SHOW_REVIEWS_TABLE);
+        int recordsOnPage = configuration.getRecordsOnPage();
 
+        int recordsToTake = tableService.calcRecordsToTake(recordsOnPage, currentReviewPage, numberOfReviews);
 
         int startRecordNum = (currentReviewPage - 1) * recordsOnPage;
 

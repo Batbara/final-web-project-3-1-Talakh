@@ -32,7 +32,13 @@ public class AddMovieImpl implements Command {
     private static final Logger logger = Logger.getLogger(AddMovieImpl.class);
     private static final String MOVIE_REDIRECT_PATH = "/mpb?command=take_movie&showId=%d";
 
-
+    /**
+     * Command to create new instance of {@link Movie} and add to data base
+     * <p>
+     * Method retrieves all needed data from request, validates it and tries to add it to data base.
+     * In case of success, link to added  {@link Movie} is written to response during AJAX call.
+     * If an error occurs, an appropriate message will be written to response.
+     */
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 

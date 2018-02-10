@@ -5,21 +5,21 @@ import by.tr.web.dao.exception.SqlQueryConfigurationError;
 
 import java.lang.reflect.Field;
 
-public class ConfigurationFactory {
-    private static final ConfigurationFactory instance = new ConfigurationFactory();
+public class QueryConfigurationFactory {
+    private static final QueryConfigurationFactory instance = new QueryConfigurationFactory();
     private Configuration userQueryConfig = new UserSqlQueryConfig();
     private Configuration movieQueryConfig = new MovieSqlQueryConfig();
     private Configuration showQueryConfig = new ShowSqlQueryConfig();
     private Configuration tvShowConfig = new TvShowSqlQueryConfig();
 
-    public static ConfigurationFactory getInstance() {
+    public static QueryConfigurationFactory getInstance() {
         return instance;
     }
 
     public Configuration getConfiguration(String name) throws DAOException {
 
         try {
-            Field field = ConfigurationFactory.class.getField(name);
+            Field field = QueryConfigurationFactory.class.getField(name);
             Configuration configValue = (Configuration) field.get(instance);
             return configValue;
         } catch (NoSuchFieldException e) {
@@ -45,5 +45,5 @@ public class ConfigurationFactory {
         return movieQueryConfig;
     }
 
-    private ConfigurationFactory(){}
+    private QueryConfigurationFactory(){}
 }

@@ -1,13 +1,13 @@
 package by.tr.web.controller.command.command_provider;
 
 import by.tr.web.controller.command.Command;
+import by.tr.web.controller.util.TypeFormatUtil;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.File;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -31,12 +31,15 @@ public class CommandProvider {
             JAXBContext jaxbContext = JAXBContext.newInstance(CommandList.class);
             Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
 
-            CommandList commandList = (CommandList) unmarshaller.unmarshal(new File(getSourcePath("xml/commandProvider.xml")));
+            String sourcePath = TypeFormatUtil.getSourcePath(CommandXmlParameter.COMMAND_PROVIDER_XML_PATH);
+            CommandList commandList = (CommandList) unmarshaller.unmarshal(new File(sourcePath));
+
             List<CommandPrototype> commands = commandList.getCommandList();
+
             for (CommandPrototype command : commands) {
                 Class commandClass = Class.forName(command.getClassName());
                 Object commandClassInstance = commandClass.newInstance();
-                if (command.getScope() != null && command.getScope().equals("admin")) {
+                if (command.checkScope(CommandXmlParameter.ADMIN_SCOPE)) {
                     adminCommands.add(command.getCommandName());
                 }
                 this.commands.put(command.getCommandName(), (Command) commandClassInstance);
@@ -55,7 +58,6 @@ public class CommandProvider {
     }
 
     public Command getCommand(String name) {
-        // CommandName commandName = CommandName.valueOf(name.toUpperCase());
         return commands.get(name);
     }
 
@@ -66,21 +68,6 @@ public class CommandProvider {
             }
         }
         return false;
-    }
-
-    private String getSourcePath(String path) {
-
-        ClassLoader classLoader = getClass().getClassLoader();
-        URL sourceURL = classLoader.getResource(path);
-        assert sourceURL != null;
-        String rawPath = sourceURL.getPath();
-
-        String incorrectDriveLetterRegEx = "^/(.:/)";
-        String capturedGroup = "$1";
-        String correctPath = rawPath.replaceFirst(incorrectDriveLetterRegEx, capturedGroup);
-
-        return correctPath;
-
     }
 
 }

@@ -3,8 +3,8 @@ package by.tr.web.dao.movie;
 import by.tr.web.controller.util.TypeFormatUtil;
 import by.tr.web.dao.ShowDaoUtil;
 import by.tr.web.dao.configuration.Configuration;
-import by.tr.web.dao.configuration.ConfigurationFactory;
 import by.tr.web.dao.configuration.ConnectionPool;
+import by.tr.web.dao.configuration.QueryConfigurationFactory;
 import by.tr.web.dao.constant.SqlQueryName;
 import by.tr.web.dao.exception.CounterDAOException;
 import by.tr.web.dao.exception.DAOException;
@@ -83,7 +83,7 @@ public class MovieDAOSqlImpl implements MovieDAO {
             connection = connectionPool.takeConnection();
             statement = connection.createStatement();
 
-            Configuration queryConfig = ConfigurationFactory.getInstance().getMovieQueryConfig();
+            Configuration queryConfig = QueryConfigurationFactory.getInstance().getMovieQueryConfig();
             String movieCounterQuery = queryConfig.getSqlQuery(SqlQueryName.MOVIE_COUNTER_QUERY);
 
             resultSet = statement.executeQuery(movieCounterQuery);
@@ -109,7 +109,7 @@ public class MovieDAOSqlImpl implements MovieDAO {
         try {
             connection = connectionPool.takeConnection();
 
-            Configuration queryConfig = ConfigurationFactory.getInstance().getMovieQueryConfig();
+            Configuration queryConfig = QueryConfigurationFactory.getInstance().getMovieQueryConfig();
             String takeMovieInfoQuery = queryConfig.getSqlQuery(SqlQueryName.TAKE_MOVIE_INFO_QUERY);
 
             preparedStatement = connection.prepareStatement(takeMovieInfoQuery);
@@ -156,7 +156,7 @@ public class MovieDAOSqlImpl implements MovieDAO {
             ShowDaoUtil.addNewShowTranslation(connection, movieEnglish);
             ShowDaoUtil.addNewShowTranslation(connection, russianTranslation);
 
-            Configuration queryConfig = ConfigurationFactory.getInstance().getMovieQueryConfig();
+            Configuration queryConfig = QueryConfigurationFactory.getInstance().getMovieQueryConfig();
             String addMovieInfoQuery = queryConfig.getSqlQuery(SqlQueryName.ADD_NEW_MOVIE);
 
             preparedStatement = connection.prepareStatement(addMovieInfoQuery);
@@ -220,7 +220,7 @@ public class MovieDAOSqlImpl implements MovieDAO {
 
     private String formMovieListQuery(String orderType) {
 
-        Configuration queryConfig = ConfigurationFactory.getInstance().getMovieQueryConfig();
+        Configuration queryConfig = QueryConfigurationFactory.getInstance().getMovieQueryConfig();
         String takeMovieListQuery = queryConfig.getSqlQuery(SqlQueryName.TAKE_MOVIE_LIST_QUERY);
 
         return String.format(takeMovieListQuery, orderType);

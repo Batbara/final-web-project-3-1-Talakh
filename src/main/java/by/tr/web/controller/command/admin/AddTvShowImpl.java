@@ -33,6 +33,13 @@ public class AddTvShowImpl implements Command {
     private static final Logger logger = Logger.getLogger(AddTvShowImpl.class);
     private static final String TV_SHOW_REDIRECT_PATH = "/mpb?command=take_tv_show&showId=%d";
 
+    /**
+     * Command to create new instance of {@link TvShow} and add to data base
+     * <p>
+     * Method retrieves all needed data from request, validates it and tries to add it to data base.
+     * In case of success, link to added  {@link TvShow} is written to response during AJAX call.
+     * If an error occurs, an appropriate message will be written to response.
+     */
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
