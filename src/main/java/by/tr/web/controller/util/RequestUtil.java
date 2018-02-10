@@ -1,24 +1,19 @@
-package by.tr.web.controller.constant;
+package by.tr.web.controller.util;
 
+import by.tr.web.controller.constant.FrontControllerParameter;
+import by.tr.web.controller.constant.JspAttribute;
+import by.tr.web.controller.constant.JspPagePath;
+import by.tr.web.controller.constant.TableParameter;
 import by.tr.web.domain.Review;
-import by.tr.web.domain.Show;
 import by.tr.web.domain.User;
-import by.tr.web.domain.builder.MovieBuilder;
-import by.tr.web.domain.builder.ShowBuilder;
 import by.tr.web.service.ServiceException;
 import by.tr.web.service.ServiceFactory;
-import by.tr.web.service.input_validator.DataTypeValidator;
-import by.tr.web.service.show.ShowBuildService;
 import by.tr.web.service.show.ShowService;
 import by.tr.web.service.table.TableService;
 import by.tr.web.service.user.UserService;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 public final class RequestUtil {
@@ -87,23 +82,5 @@ public final class RequestUtil {
         session.setAttribute(JspAttribute.USER, updatedUser);
     }
 
-    public static Show getShowTranslation(HttpServletRequest request, DataTypeValidator.Language language) throws ServiceException, IOException, ServletException {
-        ShowBuildService buildService = ServiceFactory.getInstance().getShowBuildService();
-        ShowBuilder translationShowBuilder = buildService.retrieveShowInfoTranslation(request, new MovieBuilder(),
-                language);
-        return translationShowBuilder.create();
-    }
-
-
-    public static String generateUniqueFileName(String fileName, DataTypeValidator.Language language) {
-        String extension = getFileExtension(fileName);
-        long currTime = System.currentTimeMillis();
-        SimpleDateFormat dateFormat = new SimpleDateFormat(FrontControllerParameter.FILENAME_TIMESTAMP_PATTERN);
-        return language.toString()+dateFormat.format(new Date(currTime)) + extension;
-    }
-
-    private static String getFileExtension(String fileName) {
-        return fileName.substring(fileName.lastIndexOf("."));
-    }
 
 }

@@ -12,7 +12,39 @@ function submitPerPage() {
 
 }
 
-$("#form-login").on("submit", function (event) {
+$("#loginForm, #registerForm").on("submit", function (event) {
+    var form = $(this);
+    var submitButton = $(form).find(':submit');
+    if (submitButton.hasClass('disabled') === true) {
+        return;
+    }
+    $.ajax({
+        type: form.attr('method'),
+        url: form.attr('action'),
+        data: form.serialize(),
+        success: function (data) {
+            if (data.redirect) {
+                window.location.href = data.redirect;
+                return;
+            }
+
+            if(!$.trim( $('#errorContainer').html() ).length ) {
+                $('#errorContainer').append('<div class="alert alert-warning alert-dismissable fade in" id="loginErrorContainer">\n' +
+                    '                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>\n' +
+                    '                            <span id="errorText"></span>\n' +
+                    '                        </div>');
+
+            }
+                $("#errorText").html(Object.values(data)[0]);
+
+
+        },
+        statusCode: {
+            500: function () {
+                window.location.href = "/server_error";
+            }
+        }
+    });
     event.preventDefault();
 });
 $("#deleteShowForm").on("submit", function (event) {
@@ -124,14 +156,13 @@ $("#addTvShowForm, #addMovieForm").on("submit", function (event) {
     event.preventDefault();
 
 });
-$(function() {
+$(function () {
 
-    $('.selectpicker').on('change', function(){
+    $('.selectpicker').on('change', function () {
         var selected = $(this).find("option:selected").val();
-        if(selected === 'FINISHED'){
+        if (selected === 'FINISHED') {
             $('#finishedYearFormGroup').slideDown(500, function () {
             });
-            //showAnimated('#finishedYearFormGroup');
         } else {
             $('#finishedYearFormGroup').slideUp(500, function () {
             });
@@ -139,6 +170,7 @@ $(function() {
     });
 
 });
+
 function showAnimated(alertId) {
     $(alertId).fadeTo(2000, 500).slideUp(500, function () {
         $(alertId).slideUp(500);

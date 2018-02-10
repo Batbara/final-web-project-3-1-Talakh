@@ -39,6 +39,14 @@ public final class LocalizationPropertyKey {
     public static final String MOVIE = "local.show.type.movie";
 
     public static final String SHOW_ALREADY_EXISTS = "local.error.show.already.exists";
+
+    public static final String NO_SUCH_USER_ERROR = "local.error.login.user";
+    public static final String INVALID_LOGIN_ERROR = "local.error.login";
+    public static final String INCORRECT_PASSWORD_ERROR = "local.error.login.password";
+    public static final String USER_ALREADY_EXISTS_ERROR = "local.error.register.user";
+    public static final String EMAIL_ALREADY_EXISTS_ERROR = "local.error.register.email";
+    public static final String INVALID_PASSWORD = "local.error.register.password";
+    public static final String INVALID_EMAIL = "local.error.email.invalid";
     public static String getUserStatusProperty(User.UserStatus userStatus) {
         return userStatusMap.get(userStatus);
     }

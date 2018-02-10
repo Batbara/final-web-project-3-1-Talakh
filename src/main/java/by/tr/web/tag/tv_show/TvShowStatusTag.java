@@ -2,7 +2,7 @@ package by.tr.web.tag.tv_show;
 
 import by.tr.web.controller.constant.FrontControllerParameter;
 import by.tr.web.controller.constant.LocalizationPropertyKey;
-import by.tr.web.controller.constant.RequestUtil;
+import by.tr.web.controller.util.RequestUtil;
 import by.tr.web.domain.TvShow;
 import by.tr.web.tag.CustomTagLibException;
 import org.apache.log4j.Logger;

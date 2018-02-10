@@ -3,7 +3,7 @@ package by.tr.web.controller.command.entity;
 import by.tr.web.controller.command.Command;
 import by.tr.web.controller.constant.JspAttribute;
 import by.tr.web.controller.constant.JspPagePath;
-import by.tr.web.controller.constant.RequestUtil;
+import by.tr.web.controller.util.RequestUtil;
 import by.tr.web.domain.Review;
 import by.tr.web.domain.TvShow;
 import by.tr.web.service.ServiceException;

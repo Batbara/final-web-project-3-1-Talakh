@@ -1,6 +1,6 @@
 package by.tr.web.dao.tv_show;
 
-import by.tr.web.controller.constant.DateTimeUtil;
+import by.tr.web.controller.util.TypeFormatUtil;
 import by.tr.web.dao.ShowDaoUtil;
 import by.tr.web.dao.configuration.Configuration;
 import by.tr.web.dao.configuration.ConfigurationFactory;
@@ -219,10 +219,10 @@ public class TvShowDAOSqlImpl implements TvShowDAO {
         String synopsis = resultSet.getString(9);
         String poster = resultSet.getString(10);
 
-        int premiereYear = DateTimeUtil.getYearFromDate(premiereDate);
+        int premiereYear = TypeFormatUtil.getYearFromDate(premiereDate);
         int finishedYear = 0;
         if (finishedYearDate != null) {
-            finishedYear = DateTimeUtil.getYearFromDate(finishedYearDate);
+            finishedYear = TypeFormatUtil.getYearFromDate(finishedYearDate);
         }
 
         TvShow tvShow = new TvShowBuilder()

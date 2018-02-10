@@ -35,7 +35,7 @@
                     <h2>${signupMessage}</h2>
                     <hr>
                     <form class="form-horizontal" action="${pageContext.request.contextPath}/mpb" method="post"
-                          id="contact_form" data-toggle="validator" role="form">
+                          id="registerForm" data-toggle="validator" role="form">
                         <fieldset>
                             <input type="hidden" name="command" value="register">
 
@@ -68,27 +68,8 @@
 
                         </fieldset>
                     </form>
-                    <c:if test="${not empty requestScope.registerError}">
-                        <div class="alert alert-warning alert-dismissable fade in">
-                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-
-                            <c:choose>
-                                <c:when test="${requestScope.registerError == 'login'}">
-                                    <c:out value="${regLoginError}"/>
-                                </c:when>
-                                <c:when test="${requestScope.registerError == 'user'}">
-                                    <c:out value="${regUserError}"/>
-                                </c:when>
-                                <c:when test="${requestScope.registerError == 'email'}">
-                                    <c:out value="${regEmailError}"/>
-                                </c:when>
-                                <c:when test="${requestScope.registerError == 'password'}">
-                                    <c:out value="${regPasswordError}"/>
-                                </c:when>
-
-                            </c:choose>
-                        </div>
-                    </c:if>
+                    <div id="errorContainer">
+                    </div>
 
                 </div>
             </div>

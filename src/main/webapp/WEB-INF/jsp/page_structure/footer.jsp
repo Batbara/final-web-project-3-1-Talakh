@@ -17,4 +17,9 @@
 
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/toSubmit.js"></script>
 <script src="${pageContext.request.contextPath}/js/header.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.alert').hide();
+    })
+</script>
 

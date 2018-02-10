@@ -1,9 +1,8 @@
 package by.tr.web.service.show;
 
-import by.tr.web.controller.constant.DateTimeUtil;
 import by.tr.web.controller.constant.FrontControllerParameter;
 import by.tr.web.controller.constant.JspAttribute;
-import by.tr.web.controller.constant.RequestUtil;
+import by.tr.web.controller.util.TypeFormatUtil;
 import by.tr.web.domain.Country;
 import by.tr.web.domain.Genre;
 import by.tr.web.domain.TvShow;
@@ -47,7 +46,7 @@ public class ShowBuildServiceImpl implements ShowBuildService {
         Date premiereDate = retrievePremiereDateFromRequest(request);
         builder.addPremiereDate(premiereDate);
 
-        int showYear = DateTimeUtil.getYearFromDate(premiereDate);
+        int showYear = TypeFormatUtil.getYearFromDate(premiereDate);
         builder.addYear(showYear);
 
         List<Genre> genreList = retrieveGenreListFromRequest(request);
@@ -179,7 +178,7 @@ public class ShowBuildServiceImpl implements ShowBuildService {
         Part filePart = retrieveFileFromRequest(request, lang);
 
         String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
-        String uniqueFileName = RequestUtil.generateUniqueFileName(fileName, lang);
+        String uniqueFileName = TypeFormatUtil.generateUniqueFileName(fileName, lang);
 
         InputStream fileContent = null;
         OutputStream outStream = null;
@@ -275,7 +274,7 @@ public class ShowBuildServiceImpl implements ShowBuildService {
         String premiereDateString = request.getParameter(JspAttribute.SHOW_PREMIERE_DATE);
         Date premiereDate;
         try {
-            premiereDate = DateTimeUtil.getDateFromString(premiereDateString, FrontControllerParameter.SQL_DATE_PATTERN);
+            premiereDate = TypeFormatUtil.getDateFromString(premiereDateString, FrontControllerParameter.SQL_DATE_PATTERN);
         } catch (ParseException e) {
             throw new ValidationException("Invalid show premiere date", e);
         }
@@ -287,7 +286,7 @@ public class ShowBuildServiceImpl implements ShowBuildService {
         String runtimeString = request.getParameter(JspAttribute.SHOW_RUNTIME);
         Time showRuntime;
         try {
-            showRuntime = DateTimeUtil.getTimeFromString(runtimeString, FrontControllerParameter.ONLY_TIME_PATTERN);
+            showRuntime = TypeFormatUtil.getTimeFromString(runtimeString, FrontControllerParameter.ONLY_TIME_PATTERN);
         } catch (ParseException e) {
             throw new ValidationException("Invalid show runtime value", e);
         }

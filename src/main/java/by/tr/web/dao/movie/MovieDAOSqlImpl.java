@@ -1,6 +1,6 @@
 package by.tr.web.dao.movie;
 
-import by.tr.web.controller.constant.DateTimeUtil;
+import by.tr.web.controller.util.TypeFormatUtil;
 import by.tr.web.dao.ShowDaoUtil;
 import by.tr.web.dao.configuration.Configuration;
 import by.tr.web.dao.configuration.ConfigurationFactory;
@@ -195,7 +195,7 @@ public class MovieDAOSqlImpl implements MovieDAO {
             String synopsis = resultSet.getString(7);
             String poster = resultSet.getString(8);
 
-            int year = DateTimeUtil.getYearFromDate(premiereDate);
+            int year = TypeFormatUtil.getYearFromDate(premiereDate);
 
             Movie movie = new MovieBuilder()
                     .addId(movieId)

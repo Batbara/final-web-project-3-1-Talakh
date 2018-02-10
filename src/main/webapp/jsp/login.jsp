@@ -43,7 +43,7 @@
                     <h2>${signinMessage}</h2>
                     <hr>
                     <form class="form-horizontal" action="${pageContext.request.contextPath}/mpb" method="post"
-                          id="contact_form" data-toggle="validator" role="form">
+                          id="loginForm" data-toggle="validator" role="form">
                         <fieldset>
                             <input type="hidden" name="command" value="login">
 
@@ -64,26 +64,8 @@
 
                         </fieldset>
                     </form>
-                    <c:if test="${requestScope.loginError ne null}">
-                        <div class="alert alert-warning alert-dismissable fade in">
-                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                            <c:choose>
-                                <c:when test="${requestScope.loginError == 'user'}">
-                                    <c:out value="${loginUserError}"/>
-                                </c:when>
-                                <c:when test="${requestScope.loginError == 'login'}">
-                                    <c:out value="${loginError}"/>
-                                </c:when>
-                                <c:when test="${requestScope.loginError == 'password'}">
-                                    <c:out value="${loginPasswordError}"/>
-                                </c:when>
-                                <c:when test="${requestScope.loginError == 'userIsBanned'}">
-
-                                    <mpb:ban-info user="${requestScope.user}"/>
-                                </c:when>
-                            </c:choose>
-                        </div>
-                    </c:if>
+                    <div id="errorContainer">
+                    </div>
 
                 </div>
             </div>

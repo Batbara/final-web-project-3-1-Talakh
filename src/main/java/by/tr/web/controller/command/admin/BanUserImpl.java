@@ -1,9 +1,9 @@
 package by.tr.web.controller.command.admin;
 
 import by.tr.web.controller.command.Command;
-import by.tr.web.controller.constant.DateTimeUtil;
 import by.tr.web.controller.constant.FrontControllerParameter;
 import by.tr.web.controller.constant.JspAttribute;
+import by.tr.web.controller.util.TypeFormatUtil;
 import by.tr.web.domain.BanInfo;
 import by.tr.web.domain.BanReason;
 import by.tr.web.domain.User;
@@ -75,7 +75,7 @@ public class BanUserImpl implements Command {
         BanReason banReason = getBanReason(request);
         banInfo.setBanReason(banReason);
 
-        Timestamp banTime = DateTimeUtil.getTimestampFromString(banTimeParameter, FrontControllerParameter.DEFAULT_TIMESTAMP_PATTERN);
+        Timestamp banTime = TypeFormatUtil.getTimestampFromString(banTimeParameter, FrontControllerParameter.DEFAULT_TIMESTAMP_PATTERN);
         banInfo.setBanTime(banTime);
 
         return banInfo;

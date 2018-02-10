@@ -2,7 +2,7 @@ package by.tr.web.controller.command.admin;
 
 import by.tr.web.controller.command.Command;
 import by.tr.web.controller.constant.FrontControllerParameter;
-import by.tr.web.controller.constant.RequestUtil;
+import by.tr.web.controller.util.RequestUtil;
 import by.tr.web.domain.Genre;
 import by.tr.web.service.ServiceException;
 import by.tr.web.service.ServiceFactory;

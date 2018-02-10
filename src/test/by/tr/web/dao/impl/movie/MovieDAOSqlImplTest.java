@@ -1,7 +1,7 @@
 package by.tr.web.dao.impl.movie;
 
-import by.tr.web.controller.constant.DateTimeUtil;
 import by.tr.web.controller.constant.FrontControllerParameter;
+import by.tr.web.controller.util.TypeFormatUtil;
 import by.tr.web.dao.configuration.ConnectionPool;
 import by.tr.web.dao.exception.CounterDAOException;
 import by.tr.web.dao.exception.DAOException;
@@ -113,7 +113,7 @@ public class MovieDAOSqlImplTest {
     public void testAddMovieFailed() throws ParseException, RequestParameterNotFound, DAOException {
         Movie movieToAdd = new MovieBuilder()
                 .addTitle("Logan")
-                .addPremiereDate(DateTimeUtil.getDateFromString("2017-02-17", FrontControllerParameter.SQL_DATE_PATTERN))
+                .addPremiereDate(TypeFormatUtil.getDateFromString("2017-02-17", FrontControllerParameter.SQL_DATE_PATTERN))
                 .create();
         Movie movieToAddRussianTranslation = new MovieBuilder()
                 .addTitle("Логан")
@@ -187,10 +187,10 @@ public class MovieDAOSqlImplTest {
                 "участием множества колоритных персонажей лондонского дна — русского гангстера, троих" +
                 " незадачливых грабителей, хитрого боксера и угрюмого громилы грозного мафиози. " +
                 "Каждый норовит в одиночку сорвать Большой Куш.";
-        long runTimeInMillis = DateTimeUtil.getTimestampFromString("01:42:00", "hh:mm:ss").getTime();
+        long runTimeInMillis = TypeFormatUtil.getTimestampFromString("01:42:00", "hh:mm:ss").getTime();
         Time runTime = new Time(runTimeInMillis);
 
-        long premiereDateInMillis = DateTimeUtil.getTimestampFromString("2000-08-23", "yyyy-MM-dd").getTime();
+        long premiereDateInMillis = TypeFormatUtil.getTimestampFromString("2000-08-23", "yyyy-MM-dd").getTime();
         java.sql.Date premiereDate = new Date(premiereDateInMillis);
 
         List<Genre> movieGenres = new ArrayList<>();
@@ -248,7 +248,7 @@ public class MovieDAOSqlImplTest {
                 "Лично для меня «Большой куш» стал настоящим открытием и я могу смело сказать" +
                 " что это мой самый любимый фильм. ";
 
-        Timestamp postDate = DateTimeUtil.getTimestampFromString("2018-01-21T19:10:49", DEFAULT_TIME_PATTERN);
+        Timestamp postDate = TypeFormatUtil.getTimestampFromString("2018-01-21T19:10:49", DEFAULT_TIME_PATTERN);
 
         List<Review> reviews = new ArrayList<>();
         Review review = new UserReviewBuilder()

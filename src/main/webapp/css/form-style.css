@@ -3,7 +3,8 @@
     box-shadow: rgba(0, 0, 0, 0.1) 0px 5px 5px 2px;
     background: rgba(200, 200, 200, 0.1);
     border-radius: 4px;
-    top:50px;
+    margin-top:50px;
+    margin-bottom:50px;
 }
 
 h2{

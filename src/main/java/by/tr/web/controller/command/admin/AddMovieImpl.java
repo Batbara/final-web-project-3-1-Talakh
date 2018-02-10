@@ -3,7 +3,7 @@ package by.tr.web.controller.command.admin;
 import by.tr.web.controller.command.Command;
 import by.tr.web.controller.constant.FrontControllerParameter;
 import by.tr.web.controller.constant.LocalizationPropertyKey;
-import by.tr.web.controller.constant.RequestUtil;
+import by.tr.web.controller.util.RequestUtil;
 import by.tr.web.domain.Movie;
 import by.tr.web.domain.Show;
 import by.tr.web.domain.builder.MovieBuilder;
@@ -52,7 +52,7 @@ public class AddMovieImpl implements Command {
             ShowBuilder showBuilder = new MovieBuilder();
             showBuilder = buildService.retrieveBasicShowInfo(request, showBuilder);
 
-            MovieBuilder movieBuilder =  buildService.retrieveMovieInfo(request, (MovieBuilder)showBuilder);
+            MovieBuilder movieBuilder = buildService.retrieveMovieInfo(request, (MovieBuilder) showBuilder);
             Movie englishMovie = movieBuilder.create();
 
 
@@ -65,7 +65,7 @@ public class AddMovieImpl implements Command {
 
             dataToSend.put(FrontControllerParameter.REDIRECT_COMMAND, address);
 
-            String jsonResponse =gson.toJson(dataToSend);
+            String jsonResponse = gson.toJson(dataToSend);
 
             out.write(jsonResponse);
         } catch (ShowAlreadyExistsException e) {
@@ -79,8 +79,7 @@ public class AddMovieImpl implements Command {
             dataToSend.put(FrontControllerParameter.ADD_SHOW_ERROR, errorMessage);
             String jsonResponse = gson.toJson(dataToSend);
             out.write(jsonResponse);
-        }
-        catch (ServiceException e) {
+        } catch (ServiceException e) {
             logger.error("Cannot add new movie", e);
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }

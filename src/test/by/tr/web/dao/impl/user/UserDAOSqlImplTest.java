@@ -1,6 +1,6 @@
 package by.tr.web.dao.impl.user;
 
-import by.tr.web.controller.constant.DateTimeUtil;
+import by.tr.web.controller.util.TypeFormatUtil;
 import by.tr.web.dao.configuration.ConnectionPool;
 import by.tr.web.dao.exception.DAOException;
 import by.tr.web.dao.user.PasswordDAOException;
@@ -99,7 +99,7 @@ public class UserDAOSqlImplTest {
         String userName = "Maggie";
         String password = "12345";
         String lang = "ru";
-        Timestamp regDate = DateTimeUtil.getTimestampFromString("2018-01-19T19:19:36", DEFAULT_TIME_PATTERN);
+        Timestamp regDate = TypeFormatUtil.getTimestampFromString("2018-01-19T19:19:36", DEFAULT_TIME_PATTERN);
 
         User expectedUser = new UserBuilder()
                 .addId(37)
@@ -126,7 +126,7 @@ public class UserDAOSqlImplTest {
                         "Знакомые нам всем герои оказываются в очередной смешной передряге, из которой умудряются, как всегда, выйти с улыбками на лицах.\n" +
                         "\n" +
                         "Если хочется от души повеселиться и приятно провести время, посмотрите «Симпсонов».")
-                .addPostDate(DateTimeUtil.getTimestampFromString("2018-01-28T17:17:07", DEFAULT_TIME_PATTERN))
+                .addPostDate(TypeFormatUtil.getTimestampFromString("2018-01-28T17:17:07", DEFAULT_TIME_PATTERN))
                 .addReviewStatus("posted")
                 .create();
 

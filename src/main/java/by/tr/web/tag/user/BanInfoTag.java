@@ -1,12 +1,11 @@
 package by.tr.web.tag.user;
 
 import by.tr.web.controller.constant.FrontControllerParameter;
-import by.tr.web.controller.constant.LocalizationPropertyKey;
-import by.tr.web.controller.constant.RequestUtil;
+import by.tr.web.controller.util.RequestUtil;
+import by.tr.web.controller.util.TypeFormatUtil;
 import by.tr.web.domain.BanInfo;
 import by.tr.web.domain.User;
 import by.tr.web.tag.CustomTagLibException;
-import by.tr.web.tag.CustomTagLibParameter;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,8 +14,6 @@ import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.TagSupport;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.Locale;
-import java.util.ResourceBundle;
 
 public class BanInfoTag extends TagSupport {
     private static final long serialVersionUID = 8345449844325563639L;
@@ -36,9 +33,8 @@ public class BanInfoTag extends TagSupport {
         }
 
         String lang = RequestUtil.getLanguage((HttpServletRequest) pageContext.getRequest());
-        ResourceBundle resourceBundle = ResourceBundle.getBundle(FrontControllerParameter.LOCALIZATION_BUNDLE_NAME,
-                                                                  Locale.forLanguageTag(lang));
-        String tag = formTag(resourceBundle);
+
+        String tag = formTag(lang);
         JspWriter out = pageContext.getOut();
         try {
             out.write(tag);
@@ -50,25 +46,10 @@ public class BanInfoTag extends TagSupport {
         }
     }
 
-    private String formTag(ResourceBundle resourceBundle) {
+    private String formTag(String lang) {
         BanInfo banInfo = user.getBanInfo();
-        StringBuilder tagBuilder = new StringBuilder();
-
-        String banMessage = resourceBundle.getString(LocalizationPropertyKey.USER_BAN_INFO);
-        String banTime = DATE_FORMAT.format(banInfo.getBanTime());
-        appendPair(banMessage, banTime, tagBuilder);
-
-        String reasonMessage = resourceBundle.getString(LocalizationPropertyKey.USER_BAN_REASON);
-        String banReason = banInfo.getBanReason().getReason();
-        appendPair(reasonMessage, banReason, tagBuilder);
-
-        return String.format(BAN_INFO_TAG, tagBuilder.toString());
+        String banInfoTranslated = TypeFormatUtil.translateBanInfo(banInfo, lang);
+        return String.format(BAN_INFO_TAG, banInfoTranslated);
     }
 
-    private void appendPair(String message, String value, StringBuilder builder) {
-        builder.append(message);
-        builder.append(CustomTagLibParameter.COLON_DELIMITER);
-        builder.append(value);
-        builder.append(CustomTagLibParameter.BREAK_LINE_TAG);
-    }
 }

@@ -3,7 +3,7 @@ package by.tr.web.controller.command.admin;
 import by.tr.web.controller.command.Command;
 import by.tr.web.controller.constant.FrontControllerParameter;
 import by.tr.web.controller.constant.LocalizationPropertyKey;
-import by.tr.web.controller.constant.RequestUtil;
+import by.tr.web.controller.util.RequestUtil;
 import by.tr.web.domain.Show;
 import by.tr.web.domain.TvShow;
 import by.tr.web.domain.builder.ShowBuilder;
