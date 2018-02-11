@@ -9,6 +9,14 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class ChangeLanguageImpl implements Command {
+    /**
+     * Command to change application language.
+     *
+     * <p>
+     * Method sets locale, chosen by client, as attribute to request and redirects back to calling address.
+     * Supported languages are specified in {@link FrontControllerParameter.Language}
+     * </p>
+     */
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String currentLocale = request.getParameter(FrontControllerParameter.LOCALE);
@@ -17,17 +25,4 @@ public class ChangeLanguageImpl implements Command {
         response.sendRedirect(address);
     }
 
-    /*private String formRedirectAddress(HttpServletRequest request) {
-        String address = request.getParameter(JspAttribute.ADDRESS);
-        String query = request.getParameter(FrontControllerParameter.QUERY);
-        StringBuilder addressConstructor = new StringBuilder();
-        if (!query.isEmpty()) {
-            addressConstructor.append(JspPagePath.FRONT_CONTROLLER);
-            addressConstructor.append("?");
-            addressConstructor.append(query);
-        } else {
-            addressConstructor.append(address);
-        }
-        return addressConstructor.toString();
-    }*/
 }

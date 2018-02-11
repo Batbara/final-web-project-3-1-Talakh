@@ -26,6 +26,15 @@ public class CommandProvider {
         return instance;
     }
 
+    /**
+     * Binds command names defined in commandProvider.xml with their implementation
+     *
+     * Using JAXB {@link Unmarshaller}, {@link List} of {@link CommandPrototype} is created.
+     * After that instances of {@link Command} are dynamically created and put in Map, so they could be accessed by name.
+     *
+     * @throws CommandProviderException
+     * is thrown if
+     */
     public void initCommandProvider() throws CommandProviderException {
         try {
             JAXBContext jaxbContext = JAXBContext.newInstance(CommandList.class);
@@ -61,6 +70,13 @@ public class CommandProvider {
         return commands.get(name);
     }
 
+    /**
+     * Checks if command can be invoked only by administrator
+     *
+     * @param name
+     * Command name to check access
+     * @return true - if command is administrative; false - otherwise
+     */
     public boolean isAdminCommand(String name) {
         for (String adminCommand : adminCommands) {
             if (adminCommand.equals(name)) {

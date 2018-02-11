@@ -2,7 +2,7 @@ package by.tr.web.dao.impl.show;
 
 import by.tr.web.dao.configuration.ConnectionPool;
 import by.tr.web.dao.exception.DAOException;
-import by.tr.web.dao.show.ReviewDAOImpl;
+import by.tr.web.dao.show.review.ReviewDAOImpl;
 import by.tr.web.domain.Review;
 import by.tr.web.domain.User;
 import by.tr.web.domain.builder.UserReviewBuilder;

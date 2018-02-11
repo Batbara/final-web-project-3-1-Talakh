@@ -1,8 +1,8 @@
 package by.tr.web.service.table;
 
 import by.tr.web.controller.util.TypeFormatUtil;
+import by.tr.web.domain.Table;
 import by.tr.web.service.table.parser.TableConfigHandler;
-import by.tr.web.service.table.parser.TableConfiguration;
 import by.tr.web.service.table.parser.TableXmlParameter;
 import org.xml.sax.SAXException;
 
@@ -15,7 +15,7 @@ import java.util.Map;
 
 public class TableConfigurationFactory {
     private static TableConfigurationFactory instance = new TableConfigurationFactory();
-    private Map<String, TableConfiguration> configurations;
+    private Map<String, Table> configurations;
 
     private TableConfigurationFactory() {
     }
@@ -24,17 +24,24 @@ public class TableConfigurationFactory {
         return instance;
     }
 
-    public TableConfiguration configurationFor(String name) throws TableConfigurationException {
+    public Table configurationFor(String name) throws TableConfigurationException {
         if (configurations == null) {
             throw new TableConfigurationException("TableConfigurationFactory wasn't initialised");
         }
-        TableConfiguration configuration = configurations.get(name);
+        Table configuration = configurations.get(name);
         if (configuration == null) {
             throw new TableConfigurationException("No configuration for name " + name);
         }
         return configuration;
     }
 
+    /**
+     * Initialize TableConfigurationFactory
+     * <p>
+     * Method parses tables configuration file and binds each table configuration with its name so it could be easily requested.
+     *
+     * @throws TableConfigurationException If parsing error occurs
+     */
     public void initFactory() throws TableConfigurationException {
         SAXParserFactory parserFactory = SAXParserFactory.newInstance();
         parserFactory.setNamespaceAware(true);

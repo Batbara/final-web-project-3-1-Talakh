@@ -22,6 +22,14 @@ public class TakeMovieImpl implements Command {
 
     private final static Logger logger = Logger.getLogger(TakeMovieImpl.class);
 
+    /**
+     * Command to take specified instance of {@link Movie} from data base
+     * <p>
+     * Method retrieves all needed data from request, validates it and tries to add it to data base.
+     * In case of success, request is forwarded to {@link Movie} page.
+     * If an error occurs, an appropriate message will be written to response or {@link HttpServletResponse#SC_INTERNAL_SERVER_ERROR}
+     * will be sent.
+     */
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String movieID = request.getParameter(JspAttribute.SHOW_ID);

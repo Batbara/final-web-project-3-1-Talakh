@@ -24,7 +24,21 @@ import java.util.List;
 
 public class TakeMovieListImpl implements Command {
     private static final Logger logger = Logger.getLogger(TakeMovieListImpl.class);
-
+    /**
+     * Command to take {@link List} of {@link Movie} instances.
+     *
+     * <p>
+     * Method retrieves specific number of {@link Movie} objects from data base, starting from specific position
+     * and in specified order.
+     * All needed parameters could be sent with request. If not, data would be taken from cookies or
+     * default values would be set. Default values are provided by {@link by.tr.web.service.table.TableConfigurationFactory}.
+     * In case of success, formed {@code List<Movie>} is put as attribute in request.
+     * </p>
+     * <p>
+     * After that request is forwarded to {@link JspPagePath#MOVIE_LIST_PAGE} page.
+     * If an error occurs, {@link HttpServletResponse#SC_INTERNAL_SERVER_ERROR} will be sent.
+     * </p>
+     */
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
@@ -34,7 +48,7 @@ public class TakeMovieListImpl implements Command {
 
         try {
 
-            int numberOfRecords = movieService.countMovie();
+            int numberOfRecords = movieService.countMovies();
 
             request.setAttribute(FrontControllerParameter.COOKIE_NAME, CookieName.MOVIE_CURRENT_PAGE);
             int currentPage = tableService.takeCurrentPage(request, TableParameter.MOVIES_TABLE);
@@ -45,7 +59,7 @@ public class TakeMovieListImpl implements Command {
             request.setAttribute(TableParameter.RECORDS_ON_PAGE, recordsOnPage);
 
             request.setAttribute(FrontControllerParameter.COOKIE_NAME, CookieName.MOVIE_ORDER);
-            String orderType = tableService.takeMovieOrderType(request, TableParameter.MOVIES_TABLE);
+            String orderType = tableService.takeMovieOrderType(request);
             request.setAttribute(TableParameter.ORDER, orderType);
 
             int recordsToTake = tableService.calcRecordsToTake(recordsOnPage, currentPage, numberOfRecords);
@@ -66,15 +80,27 @@ public class TakeMovieListImpl implements Command {
         } catch (CountingServiceException e) {
             logger.error("Error while counting movies in DB", e);
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            // request.getRequestDispatcher(JspPagePath.INTERNAL_ERROR_PAGE).forward(request, response);
         } catch (ServiceException e) {
             logger.error("Error while getting movie list", e);
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            //request.getRequestDispatcher(JspPagePath.INTERNAL_ERROR_PAGE).forward(request, response);
         }
 
     }
 
+    /**
+     * Saves movie's table parameters to cookies
+     *
+     * @param request
+     * Request object
+     * @param response
+     * Response object
+     * @param orderType
+     * Table order type - one of {@link by.tr.web.domain.Movie.MovieOrderType}
+     * @param currentPage
+     * Number of page user was currently on
+     * @param recordsOnPage
+     * Total table records displayed on the page
+     */
     private void setCookies(HttpServletRequest request, HttpServletResponse response,
                             String orderType, int currentPage, int recordsOnPage) {
 

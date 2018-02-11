@@ -1,4 +1,4 @@
-package by.tr.web.dao.show;
+package by.tr.web.dao.show.review;
 
 import by.tr.web.dao.exception.DAOException;
 import by.tr.web.domain.Review;

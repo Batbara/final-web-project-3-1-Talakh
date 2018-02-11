@@ -2,10 +2,10 @@ package by.tr.web.dao;
 
 import by.tr.web.dao.movie.MovieDAO;
 import by.tr.web.dao.movie.MovieDAOSqlImpl;
-import by.tr.web.dao.show.ReviewDAO;
-import by.tr.web.dao.show.ReviewDAOImpl;
 import by.tr.web.dao.show.ShowDAO;
 import by.tr.web.dao.show.ShowDAOSqlImpl;
+import by.tr.web.dao.show.review.ReviewDAO;
+import by.tr.web.dao.show.review.ReviewDAOImpl;
 import by.tr.web.dao.tv_show.TvShowDAO;
 import by.tr.web.dao.tv_show.TvShowDAOSqlImpl;
 import by.tr.web.dao.user.UserDAO;

@@ -20,7 +20,7 @@ import java.util.List;
 public class MovieServiceImpl implements MovieService {
 
     @Override
-    public List<Movie> takeOrderedMovieList(int startRecordNum, int moviesNumber, String orderType, String lang)
+    public List<Movie> takeOrderedMovieList(int start, int moviesNumber, String orderType, String lang)
             throws ServiceException {
 
         ShowValidator validator = ValidatorFactory.getInstance().getMovieValidator();
@@ -34,7 +34,7 @@ public class MovieServiceImpl implements MovieService {
         }
         MovieDAO movieDAO = DAOFactory.getInstance().getMovieDAO();
         try {
-            return movieDAO.takeSortedMovieList(startRecordNum, moviesNumber, orderType, lang);
+            return movieDAO.takeSortedMovieList(start, moviesNumber, orderType, lang);
         } catch (DAOException e) {
             throw new ServiceException("Error while getting movies list", e);
         }
@@ -73,7 +73,7 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public int countMovie() throws ServiceException {
+    public int countMovies() throws ServiceException {
         MovieDAO movieDAO = DAOFactory.getInstance().getMovieDAO();
         try {
             return movieDAO.countMovie();

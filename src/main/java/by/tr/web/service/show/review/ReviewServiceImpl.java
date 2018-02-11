@@ -2,7 +2,7 @@ package by.tr.web.service.show.review;
 
 import by.tr.web.dao.DAOFactory;
 import by.tr.web.dao.exception.DAOException;
-import by.tr.web.dao.show.ReviewDAO;
+import by.tr.web.dao.show.review.ReviewDAO;
 import by.tr.web.domain.Review;
 import by.tr.web.service.CountingServiceException;
 import by.tr.web.service.ServiceException;

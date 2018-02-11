@@ -10,7 +10,6 @@ import by.tr.web.domain.builder.ShowBuilder;
 import by.tr.web.domain.builder.TvShowBuilder;
 import by.tr.web.service.ServiceException;
 import by.tr.web.service.ServiceFactory;
-import by.tr.web.service.input_validator.DataTypeValidator;
 import by.tr.web.service.show.ShowAlreadyExistsException;
 import by.tr.web.service.show.ShowBuildService;
 import by.tr.web.service.tv_show.TvShowService;
@@ -38,7 +37,8 @@ public class AddTvShowImpl implements Command {
      * <p>
      * Method retrieves all needed data from request, validates it and tries to add it to data base.
      * In case of success, link to added  {@link TvShow} is written to response during AJAX call.
-     * If an error occurs, an appropriate message will be written to response.
+     * If an error occurs, an appropriate message will be written to response or {@link HttpServletResponse#SC_INTERNAL_SERVER_ERROR}
+     *  will be sent.
      */
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
@@ -63,7 +63,7 @@ public class AddTvShowImpl implements Command {
             TvShow tvShowEnglish = tvShowBuilder.create();
 
             ShowBuilder translationShowBuilder = buildService.retrieveShowInfoTranslation(request, tvShowBuilder,
-                    DataTypeValidator.Language.RU);
+                    FrontControllerParameter.Language.RU);
             Show russianTranslation = translationShowBuilder.create();
 
             int tvShowId = tvShowService.addTvShow(tvShowEnglish, russianTranslation);

@@ -1,4 +1,4 @@
-package by.tr.web.dao.constant;
+package by.tr.web.dao.configuration;
 
 public final class SqlQueryName {
     public static final String USER_COUNTER_QUERY = "user.count.users";

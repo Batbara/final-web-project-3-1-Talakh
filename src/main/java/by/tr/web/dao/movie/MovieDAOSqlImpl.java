@@ -1,15 +1,15 @@
 package by.tr.web.dao.movie;
 
 import by.tr.web.controller.util.TypeFormatUtil;
-import by.tr.web.dao.ShowDaoUtil;
 import by.tr.web.dao.configuration.Configuration;
 import by.tr.web.dao.configuration.ConnectionPool;
 import by.tr.web.dao.configuration.QueryConfigurationFactory;
-import by.tr.web.dao.constant.SqlQueryName;
+import by.tr.web.dao.configuration.SqlQueryName;
 import by.tr.web.dao.exception.CounterDAOException;
 import by.tr.web.dao.exception.DAOException;
 import by.tr.web.dao.exception.EntityNotUniqueException;
 import by.tr.web.dao.exception.TransactionInterruptionException;
+import by.tr.web.dao.util.ShowDaoUtil;
 import by.tr.web.domain.Movie;
 import by.tr.web.domain.Show;
 import by.tr.web.domain.builder.MovieBuilder;

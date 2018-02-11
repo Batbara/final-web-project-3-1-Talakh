@@ -1,4 +1,4 @@
-package by.tr.web.dao.constant;
+package by.tr.web.dao.configuration;
 
 public final class DBParameter {
     private DBParameter(){}

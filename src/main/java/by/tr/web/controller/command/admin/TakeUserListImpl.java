@@ -27,6 +27,21 @@ import java.util.List;
 public class TakeUserListImpl implements Command {
     private static final Logger logger = Logger.getLogger(TakeUserListImpl.class);
 
+    /**
+     * Command to take {@link List} of {@link User} instances.
+     *
+     * <p>
+     * Method retrieves specific number of {@link User} objects from data base, starting from specific position.
+     * All needed parameters could be specified in request. If not, data would be taken from cookies or
+     * default values would be set. Default values are provided by {@link by.tr.web.service.table.TableConfigurationFactory}.
+     * In case of success, {@code List<Show>} is put as attribute in request.
+     * </p>
+     * <p>
+     * After that request is forwarded to
+     * {@link JspPagePath#REVIEWS_MODERATION_PAGE_PATH} page.
+     * If an error occurs, {@link HttpServletResponse#SC_INTERNAL_SERVER_ERROR} will be sent.
+     * </p>
+     */
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
@@ -82,6 +97,18 @@ public class TakeUserListImpl implements Command {
         return banReasonList;
     }
 
+    /**
+     * Saves user's table parameters to cookies
+     *
+     * @param request
+     * Request object
+     * @param response
+     * Response object
+     * @param currentPage
+     * Number of page user was currently on
+     * @param recordsOnPage
+     * Total table records displayed on the page
+     */
     private void setCookies(HttpServletRequest request, HttpServletResponse response, int currentPage, int recordsOnPage) {
         CookieManager cookieManager = new CookieManager(request);
         String currentPageString = Integer.toString(currentPage);

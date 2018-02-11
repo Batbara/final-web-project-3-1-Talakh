@@ -1,6 +1,5 @@
 package by.tr.web.service.show;
 
-import by.tr.web.controller.constant.JspAttribute;
 import by.tr.web.dao.DAOFactory;
 import by.tr.web.dao.exception.DAOException;
 import by.tr.web.dao.show.ShowDAO;
@@ -14,20 +13,19 @@ import by.tr.web.service.input_validator.DataTypeValidator;
 import by.tr.web.service.input_validator.ValidatorFactory;
 import by.tr.web.service.show.review.ReviewException;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 public class ShowServiceImpl implements ShowService {
 
 
     @Override
-    public List<Show> takeSortedShowList(int startID, int showsNumber, String lang) throws ServiceException {
+    public List<Show> takeSortedShowList(int start, int showsNumber, String lang) throws ServiceException {
         DataTypeValidator validator = ValidatorFactory.getInstance().getDataTypeValidator();
         validator.checkLanguage(lang);
 
         ShowDAO showDAO = DAOFactory.getInstance().getShowDAO();
         try {
-            return showDAO.takeSortedShowList(startID, showsNumber, lang);
+            return showDAO.takeSortedShowList(start, showsNumber, lang);
         } catch (DAOException e) {
             throw new ReviewException("Cannot take list of all shows from data base", e);
         }
@@ -109,17 +107,6 @@ public class ShowServiceImpl implements ShowService {
             throw new ServiceException("Cannot take show[id=" + showId + "] rating", e);
         }
     }
-
-
-    @Override
-    public int retrieveShowId(HttpServletRequest request) throws ServiceException {
-        DataTypeValidator validator = ValidatorFactory.getInstance().getDataTypeValidator();
-        String parameter = request.getParameter(JspAttribute.SHOW_ID);
-
-        validator.checkForPositive(parameter);
-        return Integer.parseInt(parameter);
-    }
-
 
     @Override
     public int countShowReviews(String showId) throws ServiceException {

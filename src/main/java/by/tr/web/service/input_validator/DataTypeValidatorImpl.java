@@ -1,5 +1,7 @@
 package by.tr.web.service.input_validator;
 
+import by.tr.web.controller.constant.FrontControllerParameter;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -10,7 +12,7 @@ public class DataTypeValidatorImpl implements DataTypeValidator {
     @Override
     public boolean checkLanguage(String lang) throws LangNotSupportedException {
 
-        for (Language language : Language.values()) {
+        for (FrontControllerParameter.Language language : FrontControllerParameter.Language.values()) {
             String langName = language.name();
             if (langName.equalsIgnoreCase(lang)) {
                 return true;

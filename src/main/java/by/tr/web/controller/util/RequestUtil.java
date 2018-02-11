@@ -4,6 +4,7 @@ import by.tr.web.controller.constant.FrontControllerParameter;
 import by.tr.web.controller.constant.JspAttribute;
 import by.tr.web.controller.constant.JspPagePath;
 import by.tr.web.domain.Review;
+import by.tr.web.domain.Table;
 import by.tr.web.domain.User;
 import by.tr.web.service.ServiceException;
 import by.tr.web.service.ServiceFactory;
@@ -11,7 +12,6 @@ import by.tr.web.service.show.ShowService;
 import by.tr.web.service.table.TableConfigurationFactory;
 import by.tr.web.service.table.TableParameter;
 import by.tr.web.service.table.TableService;
-import by.tr.web.service.table.parser.TableConfiguration;
 import by.tr.web.service.user.UserService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,11 +22,19 @@ public final class RequestUtil {
     private RequestUtil() {
     }
 
+    /**
+     * Retrieves application language from current session
+     *
+     * @param request Request object
+     * @return String representation of current client language
+     */
     public static String getLanguage(HttpServletRequest request) {
         HttpSession session = request.getSession();
         String lang = request.getLocale().getLanguage();
-        if (session.getAttribute(FrontControllerParameter.LOCALE) != null) {
-            lang = (String) session.getAttribute(FrontControllerParameter.LOCALE);
+
+        Object sessionLocale = session.getAttribute(FrontControllerParameter.LOCALE);
+        if (sessionLocale != null) {
+            lang = (String) sessionLocale;
         }
         return lang;
     }
@@ -48,15 +56,25 @@ public final class RequestUtil {
         return addressConstructor.toString();
     }
 
+    /**
+     * Takes List of reviews for specified {@link by.tr.web.domain.Show}
+     *
+     * @param request         Request object
+     * @param numberOfReviews Positive number of reviews to take
+     * @param showId          Specified {@link by.tr.web.domain.Show} id number
+     * @return List of {@link Review} objects
+     * @throws ServiceException in case of error at Service Layer
+     */
     public static List<Review> takeReviewListForShow(HttpServletRequest request, int numberOfReviews, int showId)
             throws ServiceException {
         ShowService showService = ServiceFactory.getInstance().getShowService();
         TableService tableService = ServiceFactory.getInstance().getTableService();
         TableConfigurationFactory configurationFactory = TableConfigurationFactory.getInstance();
+
         int currentReviewPage = tableService.takeCurrentPage(request, TableParameter.SHOW_REVIEWS_TABLE);
         request.setAttribute(TableParameter.PAGE, currentReviewPage);
 
-        TableConfiguration configuration = configurationFactory.configurationFor(TableParameter.SHOW_REVIEWS_TABLE);
+        Table configuration = configurationFactory.configurationFor(TableParameter.SHOW_REVIEWS_TABLE);
         int recordsOnPage = configuration.getRecordsOnPage();
 
         int recordsToTake = tableService.calcRecordsToTake(recordsOnPage, currentReviewPage, numberOfReviews);
@@ -72,6 +90,12 @@ public final class RequestUtil {
         return showReviews;
     }
 
+    /**
+     * Takes {@link List} of {@link Review} form for {@link User} in session and sets it to current user.
+     *
+     * @param request Request object
+     * @throws ServiceException in case of error at Service Layer
+     */
     public static void updateUserReviewList(HttpServletRequest request) throws ServiceException {
         HttpSession session = request.getSession();
         if (session.getAttribute(JspAttribute.USER) == null) {

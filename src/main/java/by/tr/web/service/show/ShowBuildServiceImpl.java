@@ -36,9 +36,10 @@ import java.util.List;
 
 public class ShowBuildServiceImpl implements ShowBuildService {
     @Override
-    public ShowBuilder retrieveBasicShowInfo(HttpServletRequest request, ShowBuilder builder) throws ServiceException, IOException, ServletException {
+    public ShowBuilder retrieveBasicShowInfo(HttpServletRequest request, ShowBuilder builder)
+            throws ServiceException, IOException, ServletException {
 
-        builder = retrieveShowInfoTranslation(request, builder, DataTypeValidator.Language.EN);
+        builder = retrieveShowInfoTranslation(request, builder, FrontControllerParameter.Language.EN);
 
         Time showRuntime = retrieveShowRuntimeFromRequest(request);
         builder.addRuntime(showRuntime);
@@ -60,7 +61,7 @@ public class ShowBuildServiceImpl implements ShowBuildService {
 
     @Override
     public ShowBuilder retrieveShowInfoTranslation(HttpServletRequest request, ShowBuilder showBuilder,
-                                                   DataTypeValidator.Language language)
+                                                   FrontControllerParameter.Language language)
             throws ServiceException, IOException, ServletException {
 
         try {
@@ -159,7 +160,16 @@ public class ShowBuildServiceImpl implements ShowBuildService {
         return showStatus.equalsIgnoreCase(finished);
     }
 
-    private void addFinishedYear(HttpServletRequest request, TvShowBuilder tvShowBuilder) throws RequestParameterNotFound, InvalidNumericalInput {
+    /**
+     * Add to TvShowBuilder tv-show year of closing/cancellation provided in request.
+     *
+     * @param request HttpServletRequest object
+     * @param tvShowBuilder TvShowBuilder object where all data is places
+     * @throws RequestParameterNotFound If parameter {@link JspAttribute#TV_SHOW_FINISHED_YEAR} is null or empty
+     * @throws InvalidNumericalInput If value of {@link JspAttribute#TV_SHOW_FINISHED_YEAR} parameter is invalid
+     */
+    private void addFinishedYear(HttpServletRequest request, TvShowBuilder tvShowBuilder)
+            throws RequestParameterNotFound, InvalidNumericalInput {
         DataTypeValidator dataTypeValidator = ValidatorFactory.getInstance().getDataTypeValidator();
         String finishedYear = request.getParameter(JspAttribute.TV_SHOW_FINISHED_YEAR);
 
@@ -172,7 +182,19 @@ public class ShowBuildServiceImpl implements ShowBuildService {
 
     }
 
-    private String savePoster(HttpServletRequest request, DataTypeValidator.Language lang)
+    /**
+     * Save user uploaded poster image to file system
+     *
+     * Method retrieves {@link Part} input stream from request, creates output stream and writes input content to new file.
+     * Unique file name is generated: see {@link TypeFormatUtil#generateUniqueFileName(String, FrontControllerParameter.Language)}
+     * @param request HttpServletRequest object
+     * @param lang Poster language
+     * @return String path to uploaded file
+     * @throws IOException If I/O error occurs
+     * @throws ServletException If HttpServletRequest error occurs
+     * @throws ServiceException When error occurs while reading input stream
+     */
+    private String savePoster(HttpServletRequest request, FrontControllerParameter.Language lang)
             throws IOException, ServletException, ServiceException {
 
         Part filePart = retrieveFileFromRequest(request, lang);
@@ -210,7 +232,7 @@ public class ShowBuildServiceImpl implements ShowBuildService {
 
     }
 
-    private Part retrieveFileFromRequest(HttpServletRequest request, DataTypeValidator.Language lang)
+    private Part retrieveFileFromRequest(HttpServletRequest request, FrontControllerParameter.Language lang)
             throws IOException, ServletException, RequestParameterNotFound {
 
         if (isEnglishLanguage(lang)) {
@@ -293,7 +315,7 @@ public class ShowBuildServiceImpl implements ShowBuildService {
         return showRuntime;
     }
 
-    private String retrieveShowTitleFromRequest(HttpServletRequest request, DataTypeValidator.Language lang)
+    private String retrieveShowTitleFromRequest(HttpServletRequest request, FrontControllerParameter.Language lang)
             throws ValidationException {
         String englishTitle = request.getParameter(JspAttribute.SHOW_TITLE_EN);
         if (englishTitle == null) {
@@ -310,7 +332,7 @@ public class ShowBuildServiceImpl implements ShowBuildService {
 
     }
 
-    private String retrieveShowSynopsisFromRequest(HttpServletRequest request, DataTypeValidator.Language lang)
+    private String retrieveShowSynopsisFromRequest(HttpServletRequest request, FrontControllerParameter.Language lang)
             throws ValidationException {
         String englishSynopsis = request.getParameter(JspAttribute.SHOW_SYNOPSIS_EN);
         if (englishSynopsis == null) {
@@ -325,8 +347,8 @@ public class ShowBuildServiceImpl implements ShowBuildService {
 
     }
 
-    private boolean isEnglishLanguage(DataTypeValidator.Language lang) {
-        return lang == DataTypeValidator.Language.EN;
+    private boolean isEnglishLanguage(FrontControllerParameter.Language lang) {
+        return lang == FrontControllerParameter.Language.EN;
     }
 
 }

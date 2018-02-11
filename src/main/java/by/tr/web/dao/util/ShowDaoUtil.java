@@ -1,9 +1,9 @@
-package by.tr.web.dao;
+package by.tr.web.dao.util;
 
 import by.tr.web.dao.configuration.Configuration;
 import by.tr.web.dao.configuration.ConnectionPool;
 import by.tr.web.dao.configuration.QueryConfigurationFactory;
-import by.tr.web.dao.constant.SqlQueryName;
+import by.tr.web.dao.configuration.SqlQueryName;
 import by.tr.web.dao.exception.DAOException;
 import by.tr.web.dao.exception.EntityNotUniqueException;
 import by.tr.web.dao.exception.TransactionInterruptionException;

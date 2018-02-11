@@ -3,21 +3,20 @@ package by.tr.web.service.table;
 import by.tr.web.controller.constant.FrontControllerParameter;
 import by.tr.web.cookie.CookieManager;
 import by.tr.web.cookie.CookieNotFoundException;
-import by.tr.web.cookie.NoSuchCookieInRequest;
+import by.tr.web.domain.Table;
 import by.tr.web.service.InvalidOrderTypeException;
 import by.tr.web.service.ServiceException;
 import by.tr.web.service.input_validator.DataTypeValidator;
 import by.tr.web.service.input_validator.RequestParameterNotFound;
 import by.tr.web.service.input_validator.ValidatorFactory;
 import by.tr.web.service.show.ShowValidator;
-import by.tr.web.service.table.parser.TableConfiguration;
 
 import javax.servlet.http.HttpServletRequest;
 
 public class TableServiceImpl implements TableService {
     @Override
     public int takeCurrentPage(HttpServletRequest request, String tableName) throws ServiceException {
-        TableConfiguration configuration = TableConfigurationFactory.getInstance().configurationFor(tableName);
+        Table configuration = TableConfigurationFactory.getInstance().configurationFor(tableName);
         int defaultCurrentPageValue = configuration.getCurrentPage();
 
         String currentPageString = request.getParameter(TableParameter.PAGE);
@@ -34,7 +33,7 @@ public class TableServiceImpl implements TableService {
     @Override
     public int takeRecordsOnPage(HttpServletRequest request, String tableName) throws ServiceException {
 
-        TableConfiguration configuration = TableConfigurationFactory.getInstance().configurationFor(tableName);
+        Table configuration = TableConfigurationFactory.getInstance().configurationFor(tableName);
         int defaultRecordsOnPage = configuration.getRecordsOnPage();
 
         String recordsOnPageParameter = request.getParameter(TableParameter.RECORDS_ON_PAGE);
@@ -49,24 +48,40 @@ public class TableServiceImpl implements TableService {
 
     }
 
+    /**
+     * Method determines number of records to be displayed to user.
+     * <p>
+     * Firstly, if {@param numberOfRecords} is less than {@param recordsOnPage},
+     * which means that there is only one page to be displayed,
+     * {@param numberOfRecords} would be returned.
+     * <p>
+     * In other case, method checks if current page is an extra page - if it contains less records,
+     * than {@param recordsOnPage}.
+     * <p>
+     * If so, method will calculate this remaining records and return the value.
+     * <p>
+     * Otherwise, expected value of {@param recordsOnPage} would be returned,
+     */
     @Override
     public int calcRecordsToTake(int recordsOnPage, int currentPage, int numberOfRecords) {
-        int numOfPages = (int) Math.ceil((double) numberOfRecords / recordsOnPage);
-        int recordsToTake = recordsOnPage;
-        if (recordsOnPage * currentPage > numberOfRecords) {
-            if (numOfPages == currentPage) {
-                recordsToTake = numberOfRecords;
-            } else {
-                recordsToTake = recordsOnPage * currentPage - numberOfRecords;
-            }
+        int recordsToTake;
+        if (numberOfRecords < recordsOnPage) {
+            recordsToTake = numberOfRecords;
+        } else {
+            int extraPage = (recordsOnPage * currentPage) / numberOfRecords;
+            int recordsRemainder = (recordsOnPage * currentPage) % numberOfRecords;
+
+            recordsToTake = (extraPage == 0) ? recordsOnPage : recordsRemainder;
         }
         return recordsToTake;
     }
 
     @Override
-    public String takeMovieOrderType(HttpServletRequest request, String tableName) throws TableConfigurationException {
+    public String takeMovieOrderType(HttpServletRequest request) throws TableConfigurationException {
 
-        TableConfiguration configuration = TableConfigurationFactory.getInstance().configurationFor(tableName);
+        TableConfigurationFactory factory = TableConfigurationFactory.getInstance();
+        Table configuration = factory.configurationFor(TableParameter.MOVIES_TABLE);
+
         String defaultOrderType = configuration.getOrderType();
 
         String orderType = request.getParameter(TableParameter.ORDER);
@@ -77,7 +92,7 @@ public class TableServiceImpl implements TableService {
         } catch (InvalidOrderTypeException e) {
             try {
                 orderType = takeValueFromCookie(request);
-            } catch (NoSuchCookieInRequest | CookieNotFoundException noSuchCookieInRequest) {
+            } catch (CookieNotFoundException ex) {
                 orderType = defaultOrderType;
             }
         }
@@ -86,9 +101,9 @@ public class TableServiceImpl implements TableService {
     }
 
     @Override
-    public String takeTvShowOrderType(HttpServletRequest request, String tableName) throws TableConfigurationException {
-
-        TableConfiguration configuration = TableConfigurationFactory.getInstance().configurationFor(tableName);
+    public String takeTvShowOrderType(HttpServletRequest request) throws TableConfigurationException {
+        TableConfigurationFactory factory = TableConfigurationFactory.getInstance();
+        Table configuration = factory.configurationFor(TableParameter.TV_SHOWS_TABLE);
         String defaultOrderType = configuration.getOrderType();
 
         String orderType = request.getParameter(TableParameter.ORDER);
@@ -99,7 +114,7 @@ public class TableServiceImpl implements TableService {
         } catch (InvalidOrderTypeException e) {
             try {
                 orderType = takeValueFromCookie(request);
-            } catch (NoSuchCookieInRequest | CookieNotFoundException noSuchCookieInRequest) {
+            } catch (CookieNotFoundException ex) {
                 orderType = defaultOrderType;
             }
         }
@@ -107,27 +122,39 @@ public class TableServiceImpl implements TableService {
         return orderType;
     }
 
+    /**
+     * Determine either to take int value from cookie or default one
+     * <p>
+     * Method tries to retrieve value from cookie. If the cookie doesn't exist, the default value would be returned.
+     *
+     * @param request      HttpServletRequest object
+     * @param defaultValue int default value
+     * @return int value
+     */
     private int determineValueFromCookie(HttpServletRequest request, int defaultValue) {
-        int currentPage;
+        int value;
         try {
             String valueFromCookie = takeValueFromCookie(request);
-            currentPage = Integer.parseInt(valueFromCookie);
-        } catch (NoSuchCookieInRequest | CookieNotFoundException e) {
-            currentPage = defaultValue;
+            value = Integer.parseInt(valueFromCookie);
+        } catch (CookieNotFoundException e) {
+            value = defaultValue;
         }
-        return currentPage;
+        return value;
     }
 
-    private String takeValueFromCookie(HttpServletRequest request) throws NoSuchCookieInRequest, CookieNotFoundException {
+    /**
+     * Take value of cookie with name specified in request.
+     *
+     * @param request HttpServletRequest object
+     * @return String value of requested cookie
+     * @throws CookieNotFoundException If cookie with specified name is not found in request
+     */
+    private String takeValueFromCookie(HttpServletRequest request) throws CookieNotFoundException {
         CookieManager cookieManager = new CookieManager(request);
         String cookieName = (String) request.getAttribute(FrontControllerParameter.COOKIE_NAME);
 
-        if (cookieManager.isCookieInRequest(cookieName)) {
-            String storedValue = cookieManager.takeCookieValue(cookieName);
-            return storedValue;
-        } else {
-            throw new NoSuchCookieInRequest("Cookie '" + cookieName + "' not found");
-        }
-
+        String storedValue = cookieManager.takeCookieValue(cookieName);
+        return storedValue;
     }
+
 }

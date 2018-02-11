@@ -27,11 +27,13 @@ public class BanUserImpl implements Command {
     private static final Logger logger = Logger.getLogger(BanUserImpl.class);
 
     /**
-     * Command to ban user
+     * Command to ban {@link User}
+     *
      * <p>
      * Method retrieves all needed user data from request, validates it and tries to ban requested user.
      * In case of success, {@link FrontControllerParameter#SUCCESS_RESPONSE} is written to response during AJAX call.
      * If an error occurs, {@link FrontControllerParameter#FAILURE_RESPONSE} will be written to response.
+     * </p>
      */
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {

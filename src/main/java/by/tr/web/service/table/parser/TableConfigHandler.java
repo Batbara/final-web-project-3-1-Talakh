@@ -1,5 +1,6 @@
 package by.tr.web.service.table.parser;
 
+import by.tr.web.domain.Table;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -8,8 +9,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class TableConfigHandler extends DefaultHandler {
-    private Map<String, TableConfiguration> configurations;
-    private TableConfiguration configuration;
+    private Map<String, Table> configurations;
+    private Table configuration;
     private StringBuilder text;
 
     public TableConfigHandler() {
@@ -17,7 +18,7 @@ public class TableConfigHandler extends DefaultHandler {
         configurations = new HashMap<>();
     }
 
-    public Map<String, TableConfiguration> getConfigurations() {
+    public Map<String, Table> getConfigurations() {
         return configurations;
     }
 
@@ -26,7 +27,7 @@ public class TableConfigHandler extends DefaultHandler {
 
         text = new StringBuilder();
         if (localName.equals(TableXmlParameter.TABLE)) {
-            configuration = new TableConfiguration();
+            configuration = new Table();
         }
     }
 

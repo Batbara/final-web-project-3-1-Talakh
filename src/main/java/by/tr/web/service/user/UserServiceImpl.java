@@ -83,7 +83,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> takeUserList(int startRecordNum, int recordsToTake, String lang) throws ServiceException {
         DataTypeValidator validator = ValidatorFactory.getInstance().getDataTypeValidator();
-        validator.validateInputParameters(startRecordNum, recordsToTake, lang);
+        validator.checkLanguage(lang);
 
         DAOFactory daoFactory = DAOFactory.getInstance();
         UserDAO userDAO = daoFactory.getUserDAO();

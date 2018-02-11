@@ -1,9 +1,9 @@
-package by.tr.web.dao.show;
+package by.tr.web.dao.show.review;
 
 import by.tr.web.dao.configuration.Configuration;
 import by.tr.web.dao.configuration.ConnectionPool;
 import by.tr.web.dao.configuration.QueryConfigurationFactory;
-import by.tr.web.dao.constant.SqlQueryName;
+import by.tr.web.dao.configuration.SqlQueryName;
 import by.tr.web.dao.exception.CounterDAOException;
 import by.tr.web.dao.exception.DAOException;
 import by.tr.web.dao.exception.NoSuchEntityException;

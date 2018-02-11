@@ -24,16 +24,15 @@ import java.util.List;
 
 public class TakeShowListImpl implements Command {
     private static final Logger logger = Logger.getLogger(TakeShowListImpl.class);
+
     /**
-     * Command to take List of {@link Show}
+     * Command to take List of {@link Show} instances.
+     *
      * <p>
      * Method retrieves specific number of {@link Show} objects from data base, starting from specific position.
      * All needed parameters could be specified in request. If not, data would be taken from cookies or
-     * default values would be set.
-     * to {@link by.tr.web.domain.Review.ReviewStatus#MODERATED} so administrators
-     * could decide whether to delete review ({@link DeleteReviewImpl#execute(HttpServletRequest, HttpServletResponse)})
-     * or post it ({@link PostReviewImpl#execute(HttpServletRequest, HttpServletResponse)}).
-     * In case of success, List is put as attribute in request. After that request is forwarded to
+     * default values would be set. Default values are provided by {@link by.tr.web.service.table.TableConfigurationFactory}.
+     * In case of success, {@code List<Show>} is put as attribute in request. After that request is forwarded to
      * {@link JspPagePath#REVIEWS_MODERATION_PAGE_PATH} page.
      * If an error occurs, {@link HttpServletResponse#SC_INTERNAL_SERVER_ERROR} will be sent.
      * </p>
@@ -66,7 +65,7 @@ public class TakeShowListImpl implements Command {
             int numOfPages = (int) Math.ceil((double) numberOfRecords / recordsOnPage);
             request.setAttribute(TableParameter.NUMBER_OF_PAGES, numOfPages);
 
-            setCookies(request,response, currentPage, recordsOnPage);
+            setCookies(request, response, currentPage, recordsOnPage);
 
             request.removeAttribute(FrontControllerParameter.COOKIE_NAME);
             request.getRequestDispatcher(JspPagePath.SHOW_LIST_PAGE_PATH).forward(request, response);
@@ -74,12 +73,25 @@ public class TakeShowListImpl implements Command {
         } catch (CountingServiceException e) {
             logger.error("Error while counting movies in DB", e);
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-             request.getRequestDispatcher(JspPagePath.INTERNAL_ERROR_PAGE).forward(request, response);
+            request.getRequestDispatcher(JspPagePath.INTERNAL_ERROR_PAGE).forward(request, response);
         } catch (ServiceException e) {
             logger.error("Error while getting movie list", e);
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
     }
+
+    /**
+     * Saves show's table parameters to cookies
+     *
+     * @param request
+     * Request object
+     * @param response
+     * Response object
+     * @param currentPage
+     * Number of page user was currently on
+     * @param recordsOnPage
+     * Total table records displayed on the page
+     */
     private void setCookies(HttpServletRequest request, HttpServletResponse response,
                             int currentPage, int recordsOnPage) {
 

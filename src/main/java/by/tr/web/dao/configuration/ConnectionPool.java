@@ -1,6 +1,5 @@
 package by.tr.web.dao.configuration;
 
-import by.tr.web.dao.constant.DBParameter;
 import by.tr.web.dao.exception.ConnectionPoolException;
 import by.tr.web.dao.exception.TransactionError;
 import org.apache.log4j.Level;

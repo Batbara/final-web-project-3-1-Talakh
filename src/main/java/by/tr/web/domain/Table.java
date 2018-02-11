@@ -1,12 +1,12 @@
-package by.tr.web.service.table.parser;
+package by.tr.web.domain;
 
-public class TableConfiguration {
+public class Table {
     private String tableName;
     private int currentPage;
     private int recordsOnPage;
     private String orderType;
 
-    public TableConfiguration() {
+    public Table() {
     }
 
     public String getTableName() {

@@ -33,7 +33,16 @@ import java.util.ResourceBundle;
 
 public class RegisterImpl implements Command {
     private final static Logger logger = Logger.getLogger(RegisterImpl.class);
-
+    /**
+     * Command to register new {@link User} in system.
+     * <p>
+     * Method retrieves all needed data from request, validates it and tries to login specified user.
+     * In case of success, new {@link User} is added to data base and {@link HttpSession} is created for him.
+     * Request address is written to response during AJAX call.
+     * If an error occurs, an appropriate message will be written to response or {@link HttpServletResponse#SC_INTERNAL_SERVER_ERROR}
+     * will be sent.
+     *</p>
+     **/
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
@@ -64,7 +73,7 @@ public class RegisterImpl implements Command {
             dataToSend.put(FrontControllerParameter.REDIRECT_COMMAND, JspPagePath.USER_ACCOUNT_PATH);
             String jsonResponse = gson.toJson(dataToSend);
             out.write(jsonResponse);
-            //  response.sendRedirect(JspPagePath.USER_ACCOUNT_PATH);
+
         } catch (InvalidPasswordException ex) {
             logger.error("Incorrect password", ex);
 
@@ -89,6 +98,18 @@ public class RegisterImpl implements Command {
 
     }
 
+    /**
+     * Writes localized register error message to response as JSON object.
+     *
+     * @param request
+     * Request object
+     * @param out
+     * Response write stream
+     * @param gson
+     * Gson object {@see https://github.com/google/gson} to convert error messages to JSON representation
+     * @param errorType
+     * Key to localized message with error
+     */
     private void writeErrorMessage(HttpServletRequest request, PrintWriter out, Gson gson, String errorType) {
         String lang = RequestUtil.getLanguage(request);
         ResourceBundle resourceBundle = ResourceBundle.getBundle(FrontControllerParameter.LOCALIZATION_BUNDLE_NAME,
