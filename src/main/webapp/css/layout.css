@@ -8,11 +8,13 @@ body {
     min-height: 100vh;
     flex-direction: column;
 }
-.holder{
+
+.holder {
     display: flex;
     justify-content: center;
     align-items: center;
 }
+
 .main {
     flex: 1 0 auto;
     background-color: #F0D399;
@@ -40,17 +42,17 @@ body {
     min-width: 200px;
 }
 
-
 .nav {
     margin-top: 50px;
 }
 
-.side-nav-button:hover, .side-nav-button:focus, .nav>li>a:focus, .nav>li>a:hover {
+.side-nav-button:hover, .side-nav-button:focus, .nav > li > a:focus, .nav > li > a:hover {
     background-color: #F0D399;
     color: #494141;
     text-decoration: none;
 }
-.side-nav-button{
+
+.side-nav-button {
     font-family: 'Tinos', serif;
     font-size: 17px;
     color: #B8C99D;
@@ -78,6 +80,7 @@ body {
         -webkit-order: 0;
         order: 0;
     }
+
     .main > aside {
         order: 2;
     }
@@ -89,10 +92,12 @@ body {
         justify-content: space-evenly;
         margin-top: 10px;
     }
+
     .main > nav {
         display: flex;
         order: 2;
     }
+
     .affix {
         position: static;
     }
@@ -104,6 +109,7 @@ body {
     }
 
 }
+
 #return-to-top {
     position: fixed;
     bottom: 20px;
@@ -124,6 +130,7 @@ body {
     -o-transition: all 0.3s ease;
     transition: all 0.3s ease;
 }
+
 #return-to-top i {
     color: #fff;
     margin: 0;
@@ -137,9 +144,11 @@ body {
     -o-transition: all 0.3s ease;
     transition: all 0.3s ease;
 }
+
 #return-to-top:hover {
     background: rgba(0, 0, 0, 0.9);
 }
+
 #return-to-top:hover i {
     color: #fff;
     top: 5px;

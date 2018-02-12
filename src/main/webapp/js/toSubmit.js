@@ -28,14 +28,14 @@ $("#loginForm, #registerForm").on("submit", function (event) {
                 return;
             }
 
-            if(!$.trim( $('#errorContainer').html() ).length ) {
+            if (!$.trim($('#errorContainer').html()).length) {
                 $('#errorContainer').append('<div class="alert alert-warning alert-dismissable fade in" id="loginErrorContainer">\n' +
                     '                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>\n' +
                     '                            <span id="errorText"></span>\n' +
                     '                        </div>');
 
             }
-                $("#errorText").html(Object.values(data)[0]);
+            $("#errorText").html(Object.values(data)[0]);
 
 
         },
@@ -47,6 +47,7 @@ $("#loginForm, #registerForm").on("submit", function (event) {
     });
     event.preventDefault();
 });
+
 $("#deleteShowForm").on("submit", function (event) {
     var form = $(this);
 

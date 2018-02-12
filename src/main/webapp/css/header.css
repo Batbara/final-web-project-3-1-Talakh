@@ -139,6 +139,7 @@ ul {
 .globe-icon {
     margin-top: 10px;
 }
+
 .logo {
     margin-left: 100px;
     margin-top: 10px;
@@ -146,6 +147,7 @@ ul {
     height: 32px;
     margin-right: 10px;
 }
+
 .dropdown {
     position: relative;
     display: inline-block;
@@ -187,32 +189,39 @@ ul {
 .profile-button:hover {
     background-color: #494141;
 }
+
 .on-top-message {
     position: fixed;
     bottom: 0;
     left: 20px;
 }
+
 @media all and (max-width: 480px) {
-     .main-nav {
-         -webkit-flex-flow: column wrap;
-         flex-flow: column wrap;
-         padding: 0;
-         height: 320px;
-         justify-content: flex-start;
-         align-items: center;
+    .main-nav {
+        -webkit-flex-flow: column wrap;
+        flex-flow: column wrap;
+        padding: 0;
+        height: 320px;
+        justify-content: flex-start;
+        align-items: center;
     }
-    .main-nav a{
+
+    .main-nav a {
         text-align: center;
     }
-    .right_li{
+
+    .right_li {
         margin-right: 0;
     }
-    .top-navbar{
+
+    .top-navbar {
         height: 320px;
     }
+
     .logo {
-         margin-left: 0;
-     }
+        margin-left: 0;
+    }
+
     .profile-button {
         margin-right: 0;
     }
