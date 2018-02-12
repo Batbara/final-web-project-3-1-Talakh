@@ -20,7 +20,10 @@
 
         <div class="input-group">
             <label for="channel" class="control-label">${channel}</label>
-            <input  class="form-control" type="text" name="channel" required id="channel">
+            <input  class="form-control" type="text" name="channel"
+                    maxlength="25"
+                    required data-required-error="${emptyFieldMessage}"
+                    id="channel">
         </div>
 
         <div class="help-block with-errors"></div>
@@ -34,7 +37,7 @@
             <label for="seasonsNum" class="control-label">${seasons}</label>
             <input  class="form-control" type="number"
                     data-required-error="${emptyFieldMessage}"
-                    pattern="^[^0]" required
+                    min="1" required
                     name="seasonsNum" id="seasonsNum">
         </div>
 
@@ -49,6 +52,7 @@
         <div class="input-group">
             <label for="episodesNum" class="control-label">${episodes}</label>
             <input  class="form-control" type="number" name="episodesNum"
+                    min="0"
                     required data-required-error="${emptyFieldMessage}"
                     id="episodesNum">
         </div>
@@ -80,7 +84,8 @@
         <div class="input-group">
             <label for="finishedYear" class="control-label">${finishedYear}</label>
             <input  class="form-control" type="number" name="finishedYear"
-                    required data-required-error="${emptyFieldMessage}"
+                    min="1920"
+                    data-required-error="${emptyFieldMessage}"
                     id="finishedYear">
         </div>
 

@@ -15,6 +15,9 @@
     <listener>
         <listener-class>by.tr.web.listener.UserStatusUpdateManager</listener-class>
     </listener>
+    <listener>
+        <listener-class>by.tr.web.listener.LocaleSetter</listener-class>
+    </listener>
 
     <error-page>
         <error-code>500</error-code>
@@ -132,22 +135,7 @@
         <servlet-name>ServerError</servlet-name>
         <url-pattern>/server_error</url-pattern>
     </servlet-mapping>
-    <servlet>
-        <servlet-name>AddMovie</servlet-name>
-        <jsp-file>/WEB-INF/jsp/admin/addMoviePage.jsp</jsp-file>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>AddMovie</servlet-name>
-        <url-pattern>/add/movie</url-pattern>
-    </servlet-mapping>
-    <servlet>
-        <servlet-name>AddTvShow</servlet-name>
-        <jsp-file>/WEB-INF/jsp/admin/addTvShowPage.jsp</jsp-file>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>AddTvShow</servlet-name>
-        <url-pattern>/add/tv-show</url-pattern>
-    </servlet-mapping>
+
     <servlet>
         <servlet-name>ImageUploader</servlet-name>
         <servlet-class>by.tr.web.controller.FileUploader</servlet-class>
@@ -157,11 +145,9 @@
         <url-pattern>/upload</url-pattern>
     </servlet-mapping>
 
-
     <session-config>
         <session-timeout>480</session-timeout>
     </session-config>
-
 
     <filter>
         <filter-name>NoCacheFilter</filter-name>

@@ -34,7 +34,9 @@
 
         <div class="input-group">
             <label for="budget" class="control-label">${budgetMessage}</label>
-            <input  class="form-control" type="number" name="budget" id="budget">
+            <input  class="form-control" type="number"
+                    min="0"
+                    name="budget" id="budget">
         </div>
 
         <div class="help-block with-errors"></div>
@@ -47,7 +49,9 @@
 
         <div class="input-group">
             <label for="boxOffice" class="control-label">${boxOfficeMessage}</label>
-            <input  class="form-control" type="number" name="boxOffice" id="boxOffice">
+            <input  class="form-control" type="number"
+                    min="0"
+                    name="boxOffice" id="boxOffice">
         </div>
 
         <div class="help-block with-errors"></div>

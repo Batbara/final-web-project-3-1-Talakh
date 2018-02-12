@@ -71,7 +71,6 @@
 </div>
 <c:import url="/WEB-INF/jsp/page_structure/footer.jsp"/>
 <c:import url="/WEB-INF/jsp/show/ratingScripts.jsp"/>
-<script src="${pageContext.request.contextPath}/js/content.js"></script>
 
 <script src="${pageContext.request.contextPath}/js/review-submitter.js"></script>
 

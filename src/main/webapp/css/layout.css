@@ -8,7 +8,11 @@ body {
     min-height: 100vh;
     flex-direction: column;
 }
-
+.holder{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 .main {
     flex: 1 0 auto;
     background-color: #F0D399;
@@ -98,6 +102,7 @@ body {
         margin: 0;
 
     }
+
 }
 #return-to-top {
     position: fixed;

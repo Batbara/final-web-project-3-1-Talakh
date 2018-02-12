@@ -42,13 +42,13 @@
     </li>
     <li>
 
-        <a href="${pageContext.request.contextPath}/add/movie" target="_blank" class="side-nav-button">
+        <a href="${pageContext.request.contextPath}/mpb?command=add_show&type=movie" target="_blank" class="side-nav-button">
             ${addMovieButton}
         </a>
     </li>
     <li>
 
-        <a href="${pageContext.request.contextPath}/add/tv-show" target="_blank" class="side-nav-button">
+        <a href="${pageContext.request.contextPath}/mpb?command=add_show&type=tv_series" target="_blank" class="side-nav-button">
             ${addTvShowButton}
         </a>
     </li>

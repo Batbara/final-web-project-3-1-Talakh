@@ -28,17 +28,22 @@ public class MpaaSelectionListTag extends TagSupport {
             throw new CustomTagLibException(message, e);
         }
     }
-    private String formTag(){
+
+    private String formTag() {
         StringBuilder tag = new StringBuilder();
         Movie.MPAARating[] mpaaRatings = Movie.MPAARating.values();
-        for (Movie.MPAARating rating : mpaaRatings){
+        for (Movie.MPAARating rating : mpaaRatings) {
+            if (rating == Movie.MPAARating.NONE) {
+                continue;
+            }
             String optionValue = rating.toString();
             String optionFormatted = formatMpaaRating(rating);
             tag.append(String.format(CustomTagLibParameter.OPTION_TAG, optionValue, optionFormatted));
         }
         return tag.toString();
     }
-    private String formatMpaaRating(Movie.MPAARating rating){
+
+    private String formatMpaaRating(Movie.MPAARating rating) {
 
         return rating.toString().replace("_", "-");
     }

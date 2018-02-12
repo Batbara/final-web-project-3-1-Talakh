@@ -103,6 +103,6 @@
 
 @media screen and (max-width: 600px) {
     .review {
-        width: 600px;
+        width: auto;
     }
 }

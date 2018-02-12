@@ -32,7 +32,11 @@ public final class FrontControllerParameter {
     public static final String POSTER_UPLOAD_FOLDER = "posterUploadFolder";
 
     public enum Language {
-        RU, EN
+        RU, EN;
+
+        public static String getDefault() {
+            return EN.toString().toLowerCase();
+        }
     }
 
     private FrontControllerParameter() {

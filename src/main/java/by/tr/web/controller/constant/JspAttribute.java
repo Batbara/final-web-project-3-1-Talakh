@@ -50,5 +50,7 @@ public final class JspAttribute {
     public static final String TV_SHOW_CHANNEL = "channel";
     public static final String TV_SHOW_STATUS = "tvShowStatus";
     public static final String TV_SHOW_FINISHED_YEAR = "finishedYear";
+
+    public static final String TYPE = "type";
     private JspAttribute(){}
 }

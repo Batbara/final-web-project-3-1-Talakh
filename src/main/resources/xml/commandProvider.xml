@@ -55,6 +55,10 @@
         <cp:commandName>add_tv_show</cp:commandName>
         <cp:className>by.tr.web.controller.command.admin.AddTvShowImpl</cp:className>
     </cp:command>
+    <cp:command scope="admin">
+        <cp:commandName>add_show</cp:commandName>
+        <cp:className>by.tr.web.controller.command.admin.AddShowImpl</cp:className>
+    </cp:command>
 
     <cp:command>
         <cp:commandName>change_language</cp:commandName>

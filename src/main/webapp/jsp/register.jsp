@@ -31,7 +31,7 @@
         <div class="container-fluid">
             <div class="row-fluid">
 
-                <div class="col-md-offset-4 col-md-4" id="box">
+                <div class="col-md-offset-4 col-md-4 box">
                     <h2>${signupMessage}</h2>
                     <hr>
                     <form class="form-horizontal" action="${pageContext.request.contextPath}/mpb" method="post"
@@ -66,7 +66,7 @@
                                 </div>
                             </div>
 
-                        </fieldset>K
+                        </fieldset>
                     </form>
                     <div id="errorContainer">
                     </div>

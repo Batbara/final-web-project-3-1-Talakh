@@ -165,8 +165,6 @@
 <c:import url="/WEB-INF/jsp/page_structure/footer.jsp"/>
 <c:import url="/WEB-INF/jsp/table_control/tableScripts.jsp"/>
 
-<script src="${pageContext.request.contextPath}/js/content.js"></script>
-
 <script src="${pageContext.request.contextPath}/js/review-submitter.js"></script>
 <script type="text/javascript">
     $(document).ready(function () {

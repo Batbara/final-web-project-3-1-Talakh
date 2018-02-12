@@ -136,7 +136,7 @@ public class ShowBuildServiceImpl implements ShowBuildService {
             tvShowBuilder.addEpisodesNum(Integer.parseInt(episodesNumber));
         }
 
-        String seasonsNumber = request.getParameter(JspAttribute.TV_SHOW_EPISODES_NUMBER);
+        String seasonsNumber = request.getParameter(JspAttribute.TV_SHOW_SEASONS_NUMBER);
         if (seasonsNumber == null) {
             throw new RequestParameterNotFound("Seasons number parameter is not in request");
         }

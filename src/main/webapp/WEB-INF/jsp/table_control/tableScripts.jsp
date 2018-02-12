@@ -2,4 +2,3 @@
 <script src="${pageContext.request.contextPath}/js/toSubmit.js"></script>
 <script src="${pageContext.request.contextPath}/js/cookieHandler.js"></script>
 <script src="${pageContext.request.contextPath}/js/table.js"></script>
-<script src="${pageContext.request.contextPath}/js/content.js"></script>

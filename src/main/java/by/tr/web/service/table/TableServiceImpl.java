@@ -51,27 +51,27 @@ public class TableServiceImpl implements TableService {
     /**
      * Method determines number of records to be displayed to user.
      * <p>
-     * Firstly, if {@param numberOfRecords} is less than {@param recordsOnPage},
-     * which means that there is only one page to be displayed,
-     * {@param numberOfRecords} would be returned.
-     * <p>
-     * In other case, method checks if current page is an extra page - if it contains less records,
-     * than {@param recordsOnPage}.
-     * <p>
-     * If so, method will calculate this remaining records and return the value.
-     * <p>
-     * Otherwise, expected value of {@param recordsOnPage} would be returned,
+     * Firstly, method calculates number of extra records in case {@code recordsOnPage}
+     * is displayed on current page. If there are no extra records, method will return {@code recordsOnPage} value.
+     * Otherwise, there are two possible scenarios:
+     * <ul>
+     * <li>
+     * Current page is {@code 1}, which means, that there is only one page at all: {@code numberOfRecords} will be returned.
+     * </li>
+     * <li>
+     * Current page is not {@code 1}. The difference between {@code recordsOnPage} and extra records will be returned.
+     * </li>
+     * </ul>
      */
     @Override
     public int calcRecordsToTake(int recordsOnPage, int currentPage, int numberOfRecords) {
-        int recordsToTake;
-        if (numberOfRecords < recordsOnPage) {
-            recordsToTake = numberOfRecords;
-        } else {
-            int extraPage = (recordsOnPage * currentPage) / numberOfRecords;
-            int recordsRemainder = (recordsOnPage * currentPage) % numberOfRecords;
 
-            recordsToTake = (extraPage == 0) ? recordsOnPage : recordsRemainder;
+        int recordsToTake;
+        int extraRecords = recordsOnPage * currentPage - numberOfRecords;
+        if (extraRecords > 0) {
+            recordsToTake = (currentPage == 1) ? numberOfRecords : recordsOnPage - extraRecords;
+        } else {
+            recordsToTake = recordsOnPage;
         }
         return recordsToTake;
     }

@@ -20,7 +20,7 @@
 <fmt:message bundle="${loc}" key="local.response.success" var="successMessage"/>
 <fmt:message bundle="${loc}" key="local.response.message.review.sent" var="reviewSentMessage"/>
 <fmt:message bundle="${loc}" key="local.message.oops" var="oopsMessage"/>
-<fmt:message bundle="${loc}" key="local.message.reviewDenied" var="reviewDeniedMessage"/>
+<fmt:message bundle="${loc}" key="local.response.message.review.error" var="reviewDeniedMessage"/>
 <fmt:message bundle="${loc}" key="local.show.reviews.none" var="noneReviewsMessage"/>
 <fmt:message bundle="${loc}" key="local.show.reviews.total" var="totalReviewsNumMessage"/>
 
@@ -51,7 +51,8 @@
                 <div class="post-info">
                     <div class="author">
 
-                        <span data-toggle="tooltip" data-placement="left" title="<mpb:user-status userStatus="${review.user.userStatus}"/>"
+                        <span data-toggle="tooltip" data-placement="left"
+                              title="<mpb:user-status userStatus="${review.user.userStatus}"/>"
                               class="glyphicon glyphicon-user"></span>
                         <span class="name"><c:out value="${review.user.userName}"/></span>
 

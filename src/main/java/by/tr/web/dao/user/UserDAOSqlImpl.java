@@ -67,6 +67,7 @@ public class UserDAOSqlImpl implements UserDAO {
             int userID = resultSet.getInt(1);
 
             user.setId(userID);
+            user.setRegistrationDate(new Timestamp(System.currentTimeMillis()));
 
             return true;
         } catch (SQLException e) {

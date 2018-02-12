@@ -57,7 +57,7 @@ $("#deleteShowForm").on("submit", function (event) {
         success: function (data) {
             if (data === 'success') {
                 $("#deleteShowFormWrapper").hide();
-                showAnimated("#deleteShowSuccessAlert");
+                $("#deleteShowSuccessAlert").show();
             } else {
                 $('#deleteShowFailureAlert').show();
             }
@@ -163,9 +163,12 @@ $(function () {
         if (selected === 'FINISHED') {
             $('#finishedYearFormGroup').slideDown(500, function () {
             });
+            $('#finishedYear').attr("required", true);
         } else {
             $('#finishedYearFormGroup').slideUp(500, function () {
             });
+
+            $('#finishedYear').attr("required", false);
         }
     });
 
